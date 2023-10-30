@@ -1,6 +1,6 @@
-# BuzzMeBlue
+# PingPong
 
-### - a instant messaging app
+an instant messaging app
 
 ## Stack used:
 
