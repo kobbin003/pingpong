@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Auth from "../pages/auth/Auth";
 import ErrorBoundary from "../components/errorBoundary/ErrorBoundary";
 import Home from "../pages/home/Home";
-import Conversations from "../components/conversations/Conversations";
+import Layout1 from "../pages/Layout1/Layout1";
 
 export const router = createBrowserRouter([
 	{
@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
 		children: [
 			{
 				path: "chat/:id",
-				element: <Conversations />,
+				element: <Layout1 />,
 			},
 		],
 	},
