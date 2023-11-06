@@ -1,17 +1,15 @@
 import { FC, MouseEvent, useState } from "react";
-import ChatsList from "../chatsList/ChatsList";
-import Request from "../requests/Request";
-import Friends from "../friends/Friends";
+import { FriendsList } from "../friendsList/FriendsList";
+import SearchFriends from "../searchFriends/SearchFriends";
 
 type Props = {};
 
-const ChatNav = ({}: Props) => {
-	const [tab, setTab] = useState<string>("chats");
+const Friends = ({}: Props) => {
+	const [tab, setTab] = useState<string>("friends");
 
 	const tabs: { [key: string]: FC } = {
-		chats: ChatsList,
-		friends: Friends,
-		requests: Request,
+		friends: FriendsList,
+		search: SearchFriends,
 	};
 
 	const handleTabSelection = (e: MouseEvent<HTMLButtonElement>) => {
@@ -20,10 +18,10 @@ const ChatNav = ({}: Props) => {
 		setTab(buttonText);
 	};
 
-	const CurrentTab = tabs[tab] ?? ChatsList;
+	const CurrentTab = tabs[tab] ?? FriendsList;
 
 	return (
-		<div className="bg-red-300 h-full">
+		<div className="bg-red-300">
 			<div className="flex gap-2">
 				{Object.keys(tabs).map((t) => {
 					const currentTab = t == tab;
@@ -43,4 +41,4 @@ const ChatNav = ({}: Props) => {
 	);
 };
 
-export default ChatNav;
+export default Friends;

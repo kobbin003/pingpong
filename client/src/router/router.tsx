@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import Auth from "../pages/auth/Auth";
 import ErrorBoundary from "../components/errorBoundary/ErrorBoundary";
-import Home from "../pages/home/Home";
-import Layout1 from "../pages/Layout1/Layout1";
+import { UserChats } from "../pages/userChats/UserChats";
+import { NotFound } from "../pages/notFound/NotFound";
 
 export const router = createBrowserRouter([
 	{
@@ -16,14 +16,12 @@ export const router = createBrowserRouter([
 		errorElement: <ErrorBoundary />,
 	},
 	{
-		path: "/user",
-		element: <Home />,
+		path: "/user/chat/:id",
+		element: <UserChats />,
 		errorElement: <ErrorBoundary />,
-		children: [
-			{
-				path: "chat/:id",
-				element: <Layout1 />,
-			},
-		],
+	},
+	{
+		path: "*",
+		element: <NotFound />,
 	},
 ]);

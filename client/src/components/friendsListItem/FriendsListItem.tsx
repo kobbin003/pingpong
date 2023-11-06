@@ -1,11 +1,11 @@
 import { useContext, useRef } from "react";
-import { Link } from "react-router-dom";
 import { ShowConversationContext } from "../../pages/userChats/UserChats";
+import { Link } from "react-router-dom";
 import ProfileModal from "../modal/ProfileModal";
 
 type Props = { item: number };
 
-const ChatListItem = ({ item }: Props) => {
+const FriendsListItem = ({ item }: Props) => {
 	const { setShowConversation } = useContext(ShowConversationContext);
 
 	const profileModalRef = useRef<HTMLDialogElement>(null);
@@ -35,7 +35,7 @@ const ChatListItem = ({ item }: Props) => {
 						setShowConversation(true);
 					}}
 				>
-					ChatsListItem-{item}
+					FriendsListItem-{item}
 				</Link>
 			</li>
 			<ProfileModal ref={profileModalRef} />
@@ -43,4 +43,4 @@ const ChatListItem = ({ item }: Props) => {
 	);
 };
 
-export default ChatListItem;
+export default FriendsListItem;

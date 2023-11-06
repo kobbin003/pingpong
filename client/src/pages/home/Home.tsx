@@ -8,7 +8,7 @@ const Home = ({}: Props) => {
 			data-theme="cupcake"
 			className="h-screen"
 		>
-			<h1 className="">Home</h1>
+			<h1 className="">Header</h1>
 			<Outlet />
 		</div>
 	);

@@ -1,26 +1,25 @@
-import { useContext } from "react";
-import { useParams } from "react-router-dom";
-import { ShowChatListContext } from "../../pages/Layout1/Layout1";
+import { useContext, useState } from "react";
+import { ShowConversationContext } from "../../pages/userChats/UserChats";
+import Conversation from "./component/conversation/Conversation";
 
 type Props = {};
 
 const Conversations = ({}: Props) => {
-	const { id } = useParams();
-	console.log("Conversations-params", id);
-	const { setShowChatList } = useContext(ShowChatListContext);
+	const { setShowConversation } = useContext(ShowConversationContext);
+	const [newUserWithNoFriend, setnewUserWithNoFriend] = useState(false);
 	return (
 		<div className="bg-yellow-300 flex-1">
 			<div className="bg-blue-500 flex justify-end">
 				<button
-					className="btn sm:hidden"
+					className="sm:hidden"
 					onClick={() => {
-						setShowChatList(true);
+						setShowConversation(false);
 					}}
 				>
-					chats
+					back
 				</button>
 			</div>
-			<div>Conversations-{id}</div>
+			{!newUserWithNoFriend ? <Conversation /> : <p>Welcome</p>}
 		</div>
 	);
 };
