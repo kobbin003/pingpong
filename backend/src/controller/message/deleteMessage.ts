@@ -18,7 +18,7 @@ export const deleteMessage = async (
 
 		if (!isAllowed) {
 			res.status(401);
-			return next("Unauthorized");
+			return next(new Error("UnAuthorized"));
 		}
 
 		await message.deleteOne();
