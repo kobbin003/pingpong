@@ -7,9 +7,7 @@ export const getUserChats = async (
 	res: Response,
 	next: NextFunction
 ) => {
-	// const user1Id = req.query.user1Id;
 	const user = req.user as User;
-	console.log("get uses chat", user.id);
 	try {
 		const chat = await ChatModel.find({
 			participants: { $all: [user.id] },
@@ -22,6 +20,6 @@ export const getUserChats = async (
 		res.json(chat);
 	} catch (error) {
 		res.status(500);
-		next(new Error(error.message));
+		next(error);
 	}
 };
