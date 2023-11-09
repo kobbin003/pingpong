@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { ChatModel } from "../../models/ChatsModel";
 import { MessageModel } from "../../models/MessageModel";
 import mongoose from "mongoose";
 
@@ -12,7 +11,9 @@ export const getChatMessages = async (
 	const chatObjectId = new mongoose.Types.ObjectId(chatId);
 	const user = req.user;
 	try {
-		const messages = await MessageModel.find({ chat: chatObjectId });
+		const messages = await MessageModel.find({ chat: chatObjectId }).sort({
+			createdAt: -1, // newest to oldest(descending)
+		});
 		if (messages.length > 1) {
 			res.status(200);
 			res.json(messages);
@@ -22,6 +23,6 @@ export const getChatMessages = async (
 		}
 	} catch (error) {
 		res.status(500);
-		next(new Error(error.message));
+		next(error);
 	}
 };
