@@ -7,9 +7,9 @@ export const getChat = async (
 	next: NextFunction
 ) => {
 	const chatId = req.params.id;
-	const user = req.user;
+	// const user = req.user;
 	try {
-		const chat = await ChatModel.findById(chatId).populate("messages");
+		const chat = await ChatModel.findById(chatId);
 		if (!chat) {
 			res.status(404);
 			return next(new Error("Chat not available"));
@@ -18,6 +18,6 @@ export const getChat = async (
 		res.json(chat);
 	} catch (error) {
 		res.status(500);
-		next(new Error(error.message));
+		next(error);
 	}
 };
