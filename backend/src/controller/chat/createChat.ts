@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { User } from "../../types/User";
 import { ChatModel } from "../../models/ChatsModel";
+import { UserModel } from "../../models/UserModel";
 
 export const createChat = async (
 	req: Request,
@@ -8,15 +9,15 @@ export const createChat = async (
 	next: NextFunction
 ) => {
 	const user = req.user as User;
-	const user1Id = req.query.user1Id;
-	const user2Id = req.query.user2Id;
+	const userId = user.id;
+	const friendId = req.query.friendId;
 	try {
-		const isAllowed = user.id == user1Id || user.id == user2Id;
-		if (!isAllowed) {
-			res.status(401);
-			return next(new Error("UnAuthorized"));
+		const friend = await UserModel.findById(friendId);
+		if (!friend) {
+			res.status(400);
+			next(new Error("user not found with the given Id"));
 		}
-		const chat = new ChatModel({ participants: [user1Id, user2Id] });
+		const chat = new ChatModel({ participants: [userId, friendId] });
 		await chat.validate(); // validation set in validate method in pre hook
 		const chatSaved = await chat.save();
 		res.status(201).json(chatSaved);
