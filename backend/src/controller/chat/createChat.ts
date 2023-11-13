@@ -1,25 +1,35 @@
 import { NextFunction, Request, Response } from "express";
 import { User } from "../../types/User";
 import { ChatModel } from "../../models/ChatsModel";
-import { UserModel } from "../../models/UserModel";
+import { RelationModel } from "../../models/RelationModel";
 
 export const createChat = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
-	const user = req.user as User;
-	const userId = user.id;
-	const friendId = req.query.friendId;
+	const relationId = req.query.relationId as string;
+
 	try {
-		const friend = await UserModel.findById(friendId);
-		if (!friend) {
+		/** check if relation exists with "Accepted" status */
+		const relation = await RelationModel.findOne({
+			_id: relationId,
+			status: "accepted",
+		});
+
+		if (!relation) {
 			res.status(400);
-			next(new Error("user not found with the given Id"));
+			next(new Error("relation not found"));
 		}
-		const chat = new ChatModel({ participants: [userId, friendId] });
-		await chat.validate(); // validation set in validate method in pre hook
+
+		/** create new chat */
+
+		const chat = new ChatModel({ relation: relation._id });
+
+		// await chat.validate(); // validation set in validate method in pre hook
+
 		const chatSaved = await chat.save();
+
 		res.status(201).json(chatSaved);
 	} catch (error) {
 		res.status(500);

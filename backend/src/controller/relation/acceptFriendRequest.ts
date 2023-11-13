@@ -31,7 +31,7 @@ export const acceptFriendRequest = async (
 		}
 
 		// update the relation
-		relation.status = "Accepted";
+		relation.status = "accepted";
 
 		await relation.save();
 

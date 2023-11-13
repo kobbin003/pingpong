@@ -31,7 +31,7 @@ export const declineFriendRequest = async (
 		}
 
 		// update the relation
-		relation.status = "Declined";
+		relation.status = "declined";
 
 		await relation.save();
 

@@ -4,7 +4,7 @@ export type TRelation = {
 	_id: mongoose.Schema.Types.ObjectId;
 	sender: mongoose.Schema.Types.ObjectId;
 	recipient: mongoose.Schema.Types.ObjectId;
-	status: "Pending" | "Accepted" | "Declined";
+	status: "pending" | "accepted" | "declined";
 	createdAt: Date;
 	updatedAt: Date;
 };
@@ -13,7 +13,7 @@ const relationSchema = new mongoose.Schema<TRelation>(
 	{
 		sender: { type: mongoose.Types.ObjectId, ref: "user", required: true },
 		recipient: { type: mongoose.Types.ObjectId, ref: "user", required: true },
-		status: { type: String, enum: ["Pending", "Accepted", "Declined"] },
+		status: { type: String, enum: ["pending", "accepted", "declined"] },
 	},
 	{
 		timestamps: true,
