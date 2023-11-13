@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import logger from "morgan";
 import cors from "cors";
 import { connectDb } from "./db/connectDb";
@@ -6,9 +6,8 @@ import { authRouter } from "./routes/auth";
 import { notFound } from "./utils/notFound";
 import { errorHandler } from "./utils/errorHandler";
 import { initializePassportWithJwtStrategy } from "./passport/jwtStrategy";
-import passport from "passport";
 import { createServer } from "http";
-import { Server, Socket } from "socket.io";
+import { Server } from "socket.io";
 import { messageRouter } from "./routes/messages";
 import { chatRouter } from "./routes/chats";
 import { userRouter } from "./routes/users";
@@ -46,6 +45,7 @@ export const io = new Server(httpServer, {
 initializePassportWithJwtStrategy();
 
 app.use(cors());
+
 app.use(express.json());
 
 // logger logs only 4xx and 5xx status responses to console.
