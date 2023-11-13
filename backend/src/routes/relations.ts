@@ -2,7 +2,7 @@ import express from "express";
 import passport from "passport";
 import { sendFriendRequest } from "../controller/relation/sendFriendRequest";
 import { acceptFriendRequest } from "../controller/relation/acceptFriendRequest";
-import { rejectFriendRequest } from "../controller/relation/rejectFriendRequest";
+import { declineFriendRequest } from "../controller/relation/declineFriendRequest";
 
 const router = express.Router();
 
@@ -15,16 +15,16 @@ router.post(
 
 // accept friend request
 router.post(
-	"/accept",
+	"/accept/:relationId",
 	passport.authenticate("jwt", { session: false }),
 	acceptFriendRequest
 );
 
 // reject friend request
 router.post(
-	"/reject",
+	"/decline/:relationId",
 	passport.authenticate("jwt", { session: false }),
-	rejectFriendRequest
+	declineFriendRequest
 );
 
 export { router as relationRouter };

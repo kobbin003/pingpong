@@ -14,7 +14,7 @@ export const deleteMessage = async (
 	try {
 		const message = await MessageModel.findById(messageId);
 
-		const isAllowed = user.id == message.sender._id.toString();
+		const isAllowed = user.id == message.sender.toString();
 
 		if (!isAllowed) {
 			res.status(401);

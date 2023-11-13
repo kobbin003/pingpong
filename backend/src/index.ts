@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import logger from "morgan";
 import cors from "cors";
 import { connectDb } from "./db/connectDb";
@@ -7,14 +7,42 @@ import { notFound } from "./utils/notFound";
 import { errorHandler } from "./utils/errorHandler";
 import { initializePassportWithJwtStrategy } from "./passport/jwtStrategy";
 import passport from "passport";
+import { createServer } from "http";
+import { Server, Socket } from "socket.io";
+import { messageRouter } from "./routes/messages";
+import { chatRouter } from "./routes/chats";
+import { userRouter } from "./routes/users";
+import { relationRouter } from "./routes/relations";
 const app = express();
 const PORT = 3000;
 
 /** connect to database */
 connectDb().catch((err) => console.log("database error", err));
 
+/** express app is attached to the httpserver */
+const httpServer = createServer(app);
+
+export const io = new Server(httpServer, {
+	cors: {
+		origin: process.env.NODE_ENV == "production" ? "" : "*",
+	},
+});
+
+// interface CustomSocket extends Socket {
+// 	username: string;
+// }
+
+// /** middleware to check if the username provided by the client is the right one */
+// io.use((socket: CustomSocket, next: NextFunction) => {
+// 	const username = socket.handshake.auth.username;
+// 	if (!username) {
+// 		return next(new Error("invalid username"));
+// 	}
+// 	socket.username = username;
+// 	next();
+// });
+
 /** initializing passport */
-// app.use(passport.initialize());
 initializePassportWithJwtStrategy();
 
 app.use(cors());
@@ -26,21 +54,20 @@ app.use(
 );
 
 // app.use("/", (req, res) => {
-// 	res.json({ msg: "welcome" });
+// 	res.send("Welcome!");
 // });
+
 /** routes */
 app.use("/auth", authRouter);
-// app.get("/clearsession", (req, res) => {
-// 	req.logout((err) => {
-// 		if (err) {
-// 			// Handle any logout errors here
-// 			console.error(err);
-// 		}
-// 	});
-// 	res.json({ msg: "logged out" });
-// 	// req.logout(); // Clear the user's session
-// 	// res.redirect("/");
-// });
+
+app.use("/users", userRouter);
+
+app.use("/relations", relationRouter);
+
+app.use("/messages", messageRouter);
+
+app.use("/chats", chatRouter);
+
 /** 404 route handling middleware */
 app.use((req, res, next) => {
 	notFound(req, res, next);
@@ -49,4 +76,6 @@ app.use((req, res, next) => {
 /** error handler */
 app.use(errorHandler);
 
-app.listen(PORT, () => console.log(`server is running on port: ${PORT}`));
+httpServer.listen(PORT, () =>
+	console.log(`server is running on port: ${PORT}`)
+);

@@ -1,5 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
-import { string } from "zod";
+import mongoose from "mongoose";
 
 export type TMessage = {
 	_id: mongoose.Schema.Types.ObjectId;

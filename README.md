@@ -6,7 +6,15 @@ an instant messaging app
 
 ### Backend
 
-- nodejs/expressjs
+- nodejs / expressjs
 - mongodb
 - mongoose
 - passportjs
+- socketio
+
+### client
+
+- reactjs/vite
+- react-redux
+- react-router-dom
+- tailwindcss / daisyUI

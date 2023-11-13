@@ -3,9 +3,9 @@ import passport from "passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import "dotenv/config";
 
-import UserModel from "../models/UserModel";
 import { Jwtpayload } from "../types/JwtPayload";
 import { User } from "../types/User";
+import { UserModel } from "../models/UserModel";
 
 export const initializePassportWithJwtStrategy = () => {
 	// console.log("initialise-strategy", process.env.JWT_PRIVATE_KEY);
