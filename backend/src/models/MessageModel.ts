@@ -5,6 +5,8 @@ export type TMessage = {
 	message: string;
 	sender: mongoose.Schema.Types.ObjectId;
 	chat: mongoose.Schema.Types.ObjectId;
+	createdAt: Date;
+	updatedAt: Date;
 };
 
 const messageSchema = new mongoose.Schema<TMessage>(

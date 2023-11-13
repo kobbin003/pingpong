@@ -5,6 +5,8 @@ export type TRelation = {
 	sender: mongoose.Schema.Types.ObjectId;
 	recipient: mongoose.Schema.Types.ObjectId;
 	status: "Pending" | "Accepted" | "Declined";
+	createdAt: Date;
+	updatedAt: Date;
 };
 
 const relationSchema = new mongoose.Schema<TRelation>(

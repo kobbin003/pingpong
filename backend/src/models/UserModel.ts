@@ -8,6 +8,7 @@ export type TUser = {
 	profilePicUrl?: string;
 	desc?: string;
 	createdAt: Date;
+	updatedAt: Date;
 };
 
 const userSchema = new mongoose.Schema<TUser>(

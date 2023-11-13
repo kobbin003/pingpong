@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 export type TChat = {
 	_id: mongoose.Types.ObjectId;
 	participants: mongoose.Types.ObjectId[];
+	createdAt: Date;
+	updatedAt: Date;
 };
 
 const chatSchema = new mongoose.Schema<TChat>(
