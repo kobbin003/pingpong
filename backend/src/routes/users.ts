@@ -3,6 +3,7 @@ import passport from "passport";
 import { getUserProfile } from "../controller/user/getUserProfile";
 import { getCurrentUserProfile } from "../controller/user/getCurrentUserProfile";
 import { getUserByEmail } from "../controller/user/getUserByEmail";
+import { updateCurrentUserProfile } from "../controller/user/updateCurrentUserProfile";
 
 const router = express.Router();
 
@@ -11,6 +12,13 @@ router.get(
 	"/profile",
 	passport.authenticate("jwt", { session: false }),
 	getCurrentUserProfile
+);
+
+// update current user profile
+router.patch(
+	"/profile",
+	passport.authenticate("jwt", { session: false }),
+	updateCurrentUserProfile
 );
 
 // get a user profile
