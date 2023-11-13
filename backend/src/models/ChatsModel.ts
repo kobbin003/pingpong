@@ -1,6 +1,11 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
-const chatSchema = new mongoose.Schema(
+export type TChat = {
+	_id: mongoose.Types.ObjectId;
+	participants: mongoose.Types.ObjectId[];
+};
+
+const chatSchema = new mongoose.Schema<TChat>(
 	{
 		participants: {
 			type: [
@@ -11,7 +16,7 @@ const chatSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-// Add a pre-save hook to validate the participants
+// Add a pre-save hook to validate: exactly two participants should be present
 chatSchema.pre("validate", function (next) {
 	if (this.participants.length !== 2) {
 		console.log("not two");
@@ -21,4 +26,4 @@ chatSchema.pre("validate", function (next) {
 	next();
 });
 
-export const ChatModel = mongoose.model("chat", chatSchema);
+export const ChatModel = mongoose.model<TChat>("chat", chatSchema);

@@ -1,7 +1,14 @@
 import mongoose, { Mongoose } from "mongoose";
 import { string } from "zod";
 
-const messageSchema = new mongoose.Schema(
+export type TMessage = {
+	_id: mongoose.Schema.Types.ObjectId;
+	message: string;
+	sender: mongoose.Schema.Types.ObjectId;
+	chat: mongoose.Schema.Types.ObjectId;
+};
+
+const messageSchema = new mongoose.Schema<TMessage>(
 	{
 		message: {
 			type: String,
@@ -21,4 +28,4 @@ const messageSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-export const MessageModel = mongoose.model("message", messageSchema);
+export const MessageModel = mongoose.model<TMessage>("message", messageSchema);
