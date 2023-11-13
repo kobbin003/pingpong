@@ -1,8 +1,9 @@
 import express from "express";
 import passport from "passport";
-import { sendFriendRequest } from "../controller/friends/sendFriendRequest";
-import { acceptFriendRequest } from "../controller/friends/acceptFriendRequest";
-import { rejectFriendRequest } from "../controller/friends/rejectFriendRequest";
+import { sendFriendRequest } from "../controller/relation/sendFriendRequest";
+import { acceptFriendRequest } from "../controller/relation/acceptFriendRequest";
+import { rejectFriendRequest } from "../controller/relation/rejectFriendRequest";
+
 const router = express.Router();
 
 // send friend request
@@ -25,3 +26,5 @@ router.post(
 	passport.authenticate("jwt", { session: false }),
 	rejectFriendRequest
 );
+
+export { router as relationRouter };
