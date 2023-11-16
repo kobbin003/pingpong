@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { User } from "../../types/User";
 import { RelationModel } from "../../models/RelationModel";
 
+// query: recipientId
 export const sendFriendRequest = async (
 	req: Request,
 	res: Response,
@@ -21,12 +22,13 @@ export const sendFriendRequest = async (
 		}
 
 		// create the friend
+		const sender = new mongoose.Types.ObjectId(senderId);
+		const recipient = new mongoose.Types.ObjectId(recipientId);
 		const relation = await RelationModel.create({
-			sender: new mongoose.Types.ObjectId(senderId),
-			recipient: new mongoose.Types.ObjectId(recipientId),
-			status: "Pending",
+			participants: [sender, recipient],
+			sender,
+			status: "pending",
 		});
-
 		await relation.save();
 		res.status(200).json(relation);
 	} catch (error) {

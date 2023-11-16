@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { User } from "../../types/User";
 import { RelationModel } from "../../models/RelationModel";
+import mongoose from "mongoose";
 
 export const declineFriendRequest = async (
 	req: Request,
@@ -8,7 +9,7 @@ export const declineFriendRequest = async (
 	next: NextFunction
 ) => {
 	const user = req.user as User;
-	const recipientId = user.id;
+	const userId = user.id;
 	const relationId = req.params.relationId;
 
 	try {
@@ -16,18 +17,31 @@ export const declineFriendRequest = async (
 		const relation = await RelationModel.findById(relationId);
 
 		if (!relation) {
+			// console.log("relation not found");
 			res.status(404);
 			return next(new Error("Not found"));
 		}
 
-		// check that the recipient in the relation is the user
-		const relationRecipientId = relation.recipient.toString();
+		// check that the user is in the relation
+		const userIsInTheRelation = relation.participants.some(
+			(user) => user.toString() == userId
+		);
+		// const userIsInTheRelation = relation.participants.includes(userObjectId);
 
-		const recipientIsTheUser = relationRecipientId == recipientId;
+		if (!userIsInTheRelation) {
+			// console.log("user not found", relation.participants, userObjectId);
 
-		if (!recipientIsTheUser) {
+			res.status(404);
+			return next(new Error("Not Found"));
+		}
+
+		// check that the user is not the sender
+		const userIstheSender = relation.sender.toString() === userId;
+
+		if (userIstheSender) {
+			console.log("sender cannot accept", relation.sender.toString(), userId);
 			res.status(401);
-			return next(new Error("UnAuthorised"));
+			return next(new Error("Unauthorized"));
 		}
 
 		// update the relation

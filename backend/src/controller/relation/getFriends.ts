@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { RelationModel, TRelation } from "../../models/RelationModel";
 import { User } from "../../types/User";
 
+// status can be : "accepted", "pending" or "declined"
 export const getFriends = async (
 	req: Request,
 	res: Response,
@@ -14,10 +15,12 @@ export const getFriends = async (
 	const userId = user.id;
 
 	try {
-		const relations = await RelationModel.find().or([
-			{ sender: userId, status },
-			{ recipient: userId, status },
-		]);
+		// const relations = await RelationModel.find({
+		// 	participants: { $in: [userId] },
+		// });
+		const relations = await RelationModel.find()
+			.where("participants")
+			.in([userId]);
 
 		if (relations.length < 1) {
 			res.status(400);
