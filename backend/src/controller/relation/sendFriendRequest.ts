@@ -14,11 +14,23 @@ export const sendFriendRequest = async (
 	const senderId = user.id as string;
 	const recipientId = req.query.recipientId as string;
 	try {
+		// check if recipient is there
 		const recipientUser = await UserModel.findById(recipientId);
 
 		if (!recipientUser) {
 			res.status(400);
 			return next(new Error("User not found"));
+		}
+
+		// check if they already have a relation
+		// (can be used for sending friend request again)
+		const relationFound = await RelationModel.findOne()
+			.where("participants")
+			.all([senderId, recipientId]);
+		if (relationFound) {
+			res
+				.status(200)
+				.json({ ...relationFound, sender: senderId, status: "pending" });
 		}
 
 		// create the friend
