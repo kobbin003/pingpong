@@ -12,14 +12,9 @@ export const getUserChats = async (
 
 	try {
 		/** get all relations */
-		const relations = await RelationModel.find().or([
-			{
-				sender: user.id,
-			},
-			{
-				recipient: user.id,
-			},
-		]);
+		const relations = await RelationModel.find()
+			.where("participants")
+			.in([user.id]);
 
 		if (relations.length < 1) {
 			res.status(404);
