@@ -53,9 +53,9 @@ app.use(
 	logger("dev", { skip: (req: Request, res: Response) => res.statusCode < 400 })
 );
 
-// app.use("/", (req, res) => {
-// 	res.send("Welcome!");
-// });
+app.get("/welcome", (req, res) => {
+	res.send("Welcome!");
+});
 
 /** routes */
 app.use("/auth", authRouter);

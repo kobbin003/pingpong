@@ -1,9 +1,8 @@
 import "dotenv/config";
 import mongoose from "mongoose";
-const dbPassword = process.env.MONGODBPASSWORDFETO;
+const dbPassword = process.env.MONGODBPASSWORD;
 
-const uri = `mongodb+srv://dkfeto:${dbPassword}@cluster0.cedywd8.mongodb.net/?retryWrites=true&w=majority`;
-// const uri = `mongodb+srv://kobin:${dbPassword}@cluster0.zdgbeqw.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://kobin369:${dbPassword}@cluster0.xeiow6y.mongodb.net/?retryWrites=true&w=majority`;
 
 export async function connectDb() {
 	try {
