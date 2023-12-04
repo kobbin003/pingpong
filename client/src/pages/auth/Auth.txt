@@ -3,10 +3,10 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/store/store";
 import { useEffect } from "react";
 import { emptyErrorMsg, setErrorMsg } from "../../redux/reducers/alertSlice";
+import AuthForm from "../../components/authform/AuthForm";
 import AuthButton from "../../components/AuthButton/AuthButton";
 import googleLogin from "../../firebase/authHandlers/googleLogin";
 import { setUser } from "../../redux/reducers/userSlice";
-import EmailLinkForm from "../../components/authform/EmailLinkForm";
 
 type Props = {};
 
@@ -77,27 +77,40 @@ const Auth = (_: Props) => {
 			{alert.errorMessage && <p>Error Alert:{alert.errorMessage}</p>}
 			<div className="">
 				<div>LOGO</div>
-				<>
-					<EmailLinkForm />
-					<div className="">
+				{!pathname.includes("login") ? (
+					<>
+						<AuthForm type="Signup" />
+						<div className="">
+							<div className=""></div>
+							<div className="">OR</div>
+							<div className=""></div>
+						</div>
+						<AuthButton
+							bgColor=""
+							img="/src/assets/google.svg"
+							desc="Continue with Google"
+							onClick={handleGoogleAuth}
+						/>
 						<div className=""></div>
-						<div className="">OR</div>
+						<div className="">
+							<p>Already have an account?</p>{" "}
+							<Link to={`/login`} className="">
+								Log in
+							</Link>
+						</div>
+					</>
+				) : (
+					<>
+						<AuthForm type="Login" />
 						<div className=""></div>
-					</div>
-					<AuthButton
-						bgColor=""
-						img="/src/assets/google.svg"
-						desc="Continue with Google"
-						onClick={handleGoogleAuth}
-					/>
-					<div className=""></div>
-					<div className="">
-						<p>Already have an account?</p>{" "}
-						<Link to={`/login`} className="">
-							Log in
-						</Link>
-					</div>
-				</>
+						<div className="">
+							<p>Don't have an account?</p>{" "}
+							<Link to={`/`} className="">
+								Sign up
+							</Link>
+						</div>
+					</>
+				)}
 			</div>
 		</div>
 	);
