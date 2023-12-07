@@ -1,5 +1,5 @@
-import React from "react";
-import { isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
+// import React from "react";
+// import { isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
 import { emailLinkLogin } from "../firebase/authHandlers/emailLinkLogin";
 type Props = {};
 

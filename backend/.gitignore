@@ -1,4 +1,4 @@
 node_modules/
 dist/
 *.txt
-.env
+/.env
