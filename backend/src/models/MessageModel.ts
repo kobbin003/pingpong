@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 export type TMessage = {
-	_id: mongoose.Schema.Types.ObjectId;
+	// _id: mongoose.Schema.Types.ObjectId;
 	message: string;
-	sender: mongoose.Schema.Types.ObjectId;
-	chat: mongoose.Schema.Types.ObjectId;
-	createdAt: Date;
-	updatedAt: Date;
+	sender: string;
+	chat: mongoose.Types.ObjectId;
+	// createdAt: Date;
+	// updatedAt: Date;
 };
 
 const messageSchema = new mongoose.Schema<TMessage>(
@@ -16,7 +16,7 @@ const messageSchema = new mongoose.Schema<TMessage>(
 			required: true,
 		},
 		sender: {
-			type: mongoose.Schema.Types.ObjectId,
+			type: String,
 			ref: "user",
 			required: true,
 		},

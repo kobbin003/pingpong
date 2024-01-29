@@ -1,18 +1,25 @@
 import express from "express";
-import passport from "passport";
-import { postMessage } from "../controller/message/postMessage";
-import { deleteMessage } from "../controller/message/deleteMessage";
+// import passport from "passport";
+import { firebaseAuth } from "../middlware/firebaseAuth";
+import { messageController } from "../controller/messageController";
 
 const router = express.Router();
 
 // post message
-router.post("/", passport.authenticate("jwt", { session: false }), postMessage);
+// PRIVATE
+// query: chatId
+// body: {message}
+router.post("/", firebaseAuth, messageController.postMessage);
+
+// update message
+// PRIVATE
+// params: chatId
+// body: {message}
+router.patch("/:messageId", firebaseAuth, messageController.updateMessage);
 
 // remove message
-router.delete(
-	"/",
-	passport.authenticate("jwt", { session: false }),
-	deleteMessage
-);
+// PRIVATE
+// params: chatId
+router.delete("/:messageId", firebaseAuth, messageController.deleteMessage);
 
 export { router as messageRouter };
