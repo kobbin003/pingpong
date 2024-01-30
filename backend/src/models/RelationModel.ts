@@ -1,21 +1,19 @@
 import mongoose from "mongoose";
 
 export type TRelation = {
-	_id: mongoose.Schema.Types.ObjectId;
-	participants: mongoose.Schema.Types.ObjectId[];
-	sender: mongoose.Schema.Types.ObjectId;
+	// _id: mongoose.Schema.Types.ObjectId;
+	participants: string[];
+	sender: string;
 	status: "pending" | "accepted" | "declined";
-	createdAt: Date;
-	updatedAt: Date;
+	// createdAt: Date;
+	// updatedAt: Date;
 };
 
 const relationSchema = new mongoose.Schema<TRelation>(
 	{
-		participants: [
-			{ type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
-		],
+		participants: [{ type: String, ref: "user", required: true }],
 		sender: {
-			type: mongoose.Schema.Types.ObjectId,
+			type: String,
 			ref: "user",
 			required: true,
 		},

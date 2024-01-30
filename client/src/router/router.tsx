@@ -3,7 +3,7 @@ import ErrorBoundary from "../components/errorBoundary/ErrorBoundary";
 import { UserChats } from "../pages/userChats/UserChats";
 import { NotFound } from "../pages/notFound/NotFound";
 import Auth from "../pages/auth/Auth";
-import LoggedIn from "../components/LoggedIn";
+import LogIn from "../components/LogIn";
 
 export const router = createBrowserRouter([
 	{
@@ -17,8 +17,8 @@ export const router = createBrowserRouter([
 		errorElement: <ErrorBoundary />,
 	},
 	{
-		path: "loggedin",
-		element: <LoggedIn />,
+		path: "logIn",
+		element: <LogIn />,
 	},
 	{
 		path: "*",

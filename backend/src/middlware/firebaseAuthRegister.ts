@@ -1,30 +1,37 @@
-import { NextFunction, Request } from "express";
+import { NextFunction, Request, Response } from "express";
 import admin from "firebase-admin";
+import { Types } from "mongoose";
+import { randomIdGenerator } from "../utils/randomIdGenerator";
 
-console.log("route", __dirname);
-// initializeApp({ credential: firebase.credential.cert() });
-
-export const firebaseAuthRegister = async (req, res, next) => {
-	const accessToken = req.query.token as string;
-	// const accessToken = req.headers.authorization;
+/** This middleware is for route protection
+ * as well as initial user creation
+ */
+export const firebaseAuthRegister = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	// const accessToken = req.query.token as string;
+	const accessToken = req.headers.authorization.split(" ")[1];
 	try {
 		if (accessToken) {
 			const decodedToken = await admin.auth().verifyIdToken(accessToken);
-
+			console.log("decodedToken", decodedToken.uid);
+			console.log("decodedName", decodedToken.name);
+			req.firebaseId = decodedToken.uid;
 			req.user = {
-				firebaseId: decodedToken.uid,
-				name: decodedToken.name,
+				name: decodedToken.name || `user_${randomIdGenerator()}`,
 				email: decodedToken.email,
 				email_verified: decodedToken.email_verified,
-				profilePicUrl: decodedToken.picture,
+				profilePicUrl: decodedToken.picture || "", // use default image in the client side
 			};
 		} else {
 			throw new Error("not authorised");
 		}
+		next();
 	} catch (error) {
 		next(error);
 	}
-	next();
 };
 
 // decodedToken {

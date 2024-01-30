@@ -2,3 +2,4 @@ node_modules/
 dist/
 *.txt
 /.env
+src/serviceAccountKey.json

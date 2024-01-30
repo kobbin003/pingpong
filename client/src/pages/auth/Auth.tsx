@@ -91,12 +91,12 @@ const Auth = (_: Props) => {
 						onClick={handleGoogleAuth}
 					/>
 					<div className=""></div>
-					<div className="">
+					{/* <div className="">
 						<p>Already have an account?</p>{" "}
 						<Link to={`/login`} className="">
 							Log in
 						</Link>
-					</div>
+					</div> */}
 				</>
 			</div>
 		</div>

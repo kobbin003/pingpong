@@ -17,7 +17,7 @@ class ChatController {
 		}
 	}
 
-	async getUserChat(req: Request, res: Response, next: NextFunction) {
+	async getUserChats(req: Request, res: Response, next: NextFunction) {
 		const { firebaseId: userId } = req;
 		try {
 			const chats = await chatService.getUserChats(userId);
@@ -36,24 +36,6 @@ class ChatController {
 		const chatId = req.params.id;
 		try {
 			const chats = await chatService.getMessagesByChatId({ chatId, userId });
-			if ("error" in chats) {
-				res.status(chats.status);
-				throw new Error(chats.errMsg);
-			}
-			res.status(chats.status).json(chats.data);
-		} catch (error) {
-			next(error);
-		}
-	}
-
-	async getAllUserChatMessages(
-		req: Request,
-		res: Response,
-		next: NextFunction
-	) {
-		const { firebaseId: userId } = req;
-		try {
-			const chats = await chatService.getUserChats(userId);
 			if ("error" in chats) {
 				res.status(chats.status);
 				throw new Error(chats.errMsg);

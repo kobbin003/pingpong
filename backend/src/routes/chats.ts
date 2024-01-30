@@ -1,26 +1,25 @@
 import express from "express";
-import { createChat } from "../controller/chat/createChat";
-import passport from "passport";
-import { getUserChats } from "../controller/chat/getUserChats";
-import { getChat } from "../controller/chat/getChat";
-import { getChatMessages } from "../controller/chat/getChatMessages";
+// import passport from "passport";
+import { firebaseAuth } from "../middlware/firebaseAuth";
+import { chatController } from "../controller/chatController";
 
 const router = express.Router();
 
 // create chat
-router.post("/", passport.authenticate("jwt", { session: false }), createChat);
-
-// get chat by id
-router.get("/:id", passport.authenticate("jwt", { session: false }), getChat);
-
-// get messages of a chat
-router.get(
-	"/:id/messages",
-	passport.authenticate("jwt", { session: false }),
-	getChatMessages
-);
+// PRIVATE
+// query: relationId
+router.post("/", firebaseAuth, chatController.createChat);
 
 //get all chats of a user
-router.get("/", passport.authenticate("jwt", { session: false }), getUserChats);
+router.get("/", firebaseAuth, chatController.getUserChats);
+
+// get chat by id
+// router.get("/:id", firebaseAuth, getChat);
+
+// get messages of a chat(chatId)
+router.get("/:id/messages", firebaseAuth, chatController.getChatMessages);
+
+// get messages of all chat of a user
+// router.get()
 
 export { router as chatRouter };

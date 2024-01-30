@@ -1,6 +1,8 @@
 import ChatNav from "../../components/chatNav/ChatNav";
 import Conversations from "../../components/conversations/Conversations";
 import React, { createContext, useState } from "react";
+import { auth } from "../../firebase/config";
+import { onAuthStateChanged } from "firebase/auth";
 
 type Props = {};
 
@@ -15,12 +17,16 @@ export const ShowConversationContext =
 
 export const UserChats = ({}: Props) => {
 	const [showConversation, setShowConversation] = useState(false);
-
+	onAuthStateChanged(auth, (user) => {
+		if (user) {
+			console.log("User is signed in.", user);
+		} else {
+			console.log("User is not-signed in.");
+		}
+	});
 	return (
-		<div
-			className="flex flex-col h-screen"
-			data-theme="cupcake"
-		>
+		<div className="flex flex-col h-screen" data-theme="cupcake">
+			<button onClick={() => auth.signOut()}>signout</button>
 			<ShowConversationContext.Provider value={{ setShowConversation }}>
 				<div className="flex h-full bg-green-200">
 					<div

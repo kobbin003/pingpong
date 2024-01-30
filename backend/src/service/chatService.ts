@@ -50,13 +50,13 @@ class ChatService {
 			if (!relations) {
 				return { error: true, status: 400, errMsg: "error" };
 			}
-
+			console.log("relations", relations);
 			/** get each relation's chat */
 			const relationIds = relations.map((relation) => relation.id);
 
 			// const chats = await ChatModel.find().where("relation").in(relationIds);
 			const chats = await ChatModel.find({ relation: { $in: relationIds } });
-
+			console.log("chats", chats);
 			return { status: 200, data: chats };
 		} catch (error) {
 			return { error: true, status: 400, errMsg: error.message };
@@ -71,26 +71,15 @@ class ChatService {
 		userId: string;
 	}): Promise<TSuccess | TError> {
 		try {
-			// check chatId is of user
-			// find chat where
-			// 1 - id is chatId
-			// 2 - user is present in participant of chat's relation
-			const chat = await ChatModel.findById(chatId)
-				// .populate("relation")
-				.populate({
-					path: "relation",
-					populate: { path: "participants", model: "user" },
-				}) // so that we can populate the participants field of the relation
-				.where({ relation: { participants: { $in: [userId] } } });
-			// .where("relation.participants")
-			// .in([userId]);
+			const messages = await messageRepository.findUserMessageByChatId({
+				chatId,
+				userId,
+			});
+			// console.log("messages", messages);
+			// console.log("userId", userId);
 
-			if (!chat) {
-				return { error: true, status: 401, errMsg: "not authorized" };
-			}
-			const messages = await messageRepository.findByChatId(chat.id);
 			if (!messages) {
-				return { error: true, status: 404, errMsg: "not found" };
+				return { error: true, status: 404, errMsg: "not foundddd" };
 			}
 			return { status: 200, data: messages };
 		} catch (error) {

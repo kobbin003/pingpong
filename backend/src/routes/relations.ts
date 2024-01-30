@@ -1,37 +1,35 @@
 import express from "express";
-import passport from "passport";
-import { sendFriendRequest } from "../controller/relation/sendFriendRequest";
-import { acceptFriendRequest } from "../controller/relation/acceptFriendRequest";
-import { declineFriendRequest } from "../controller/relation/declineFriendRequest";
-import { getFriends } from "../controller/relation/getFriends";
+import { firebaseAuth } from "../middlware/firebaseAuth";
+import { relationController } from "../controller/relationController";
 
 const router = express.Router();
 
 // send friend request
-router.post(
-	"/request",
-	passport.authenticate("jwt", { session: false }),
-	sendFriendRequest
-);
+// PRIVATE
+// query: recipientId
+router.post("/request", firebaseAuth, relationController.sendFriendRequest);
 
 // accept friend request
+// PRIVATE
+// params: relationsId
 router.post(
 	"/accept/:relationId",
-	passport.authenticate("jwt", { session: false }),
-	acceptFriendRequest
+	firebaseAuth,
+	relationController.acceptFriendRequest
 );
 
 // reject friend request
+// PRIVATE
+// params: relationsId
 router.post(
 	"/decline/:relationId",
-	passport.authenticate("jwt", { session: false }),
-	declineFriendRequest
+	firebaseAuth,
+	relationController.declineFriendRequest
 );
 
-router.get(
-	"/friends/:status",
-	passport.authenticate("jwt", { session: false }),
-	getFriends
-);
+// find relations by status
+// PRIVATE
+// query: status - "pending" | "accepted" | "declined"
+router.get("/friends", firebaseAuth, relationController.getRelationsByStatus);
 
 export { router as relationRouter };

@@ -4,6 +4,8 @@ import SearchFriendsLists from "./components/searchFriendsLists/SearchFriendsLis
 type Props = {};
 
 const SearchFriends = ({}: Props) => {
+	// TODO
+	// "/request" -> send request.
 	return (
 		<div>
 			<SearchBar />

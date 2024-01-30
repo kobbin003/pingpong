@@ -6,10 +6,14 @@ type Props = {};
 
 const Conversations = ({}: Props) => {
 	const { setShowConversation } = useContext(ShowConversationContext);
+
 	const [newUserWithNoFriend, setNewUserWithNoFriend] = useState(false);
+
 	useEffect(() => {
+		/* check if user hase friends */
 		setNewUserWithNoFriend(true);
 	}, []);
+
 	return (
 		<div className="bg-yellow-300 flex-1">
 			<div className="bg-blue-500 flex justify-end">

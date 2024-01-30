@@ -5,7 +5,7 @@ class RelationRepository {
 		return RelationModel.create(relation);
 	}
 
-	async find(query: { [key: string]: string }) {
+	async find(query: { [key: string]: string | { [key: string]: string[] } }) {
 		return RelationModel.findOne(query);
 	}
 
@@ -18,9 +18,10 @@ class RelationRepository {
 	}) {
 		return RelationModel.findOne()
 			.where("participants")
-			.all([senderId, recipientId]);
+			.all([senderId, recipientId]); // both senderId and recipientId should be in the participants array
 	}
 
+	// this is to check whether a relation with relationId has the userId as it's participant
 	async findByIdAndUserId({
 		userId,
 		relationId,
@@ -28,13 +29,18 @@ class RelationRepository {
 		userId: string;
 		relationId: string;
 	}) {
-		return await RelationModel.findOne({ _id: relationId })
+		return RelationModel.findOne({ _id: relationId })
 			.where("participants")
 			.all([userId]);
 	}
 
 	async findById(id: string) {
 		return RelationModel.findById(id);
+	}
+
+	async findByUserId(id: string) {
+		// return RelationModel.find({ participants: { $in: [id] } });
+		return RelationModel.find().where("participants").all([id]);
 	}
 
 	async update(id: string, relationData: Partial<TRelation>) {

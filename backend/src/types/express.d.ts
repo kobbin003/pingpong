@@ -1,13 +1,17 @@
 import { Request } from "express";
+import { Types } from "mongoose";
+// import { ObjectId } from "mongoose";
 
 declare global {
 	namespace Express {
 		interface Request {
-			firebaseId: string; // You can replace 'string' with the actual type of req.user
-			name: string;
-			email: string;
-			email_verified: boolean;
-			profilePicUrl: string;
+			firebaseId: string;
+			user: {
+				name: string;
+				email: string;
+				email_verified: boolean;
+				profilePicUrl: string;
+			};
 		}
 	}
 }
