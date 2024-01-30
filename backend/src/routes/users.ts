@@ -1,37 +1,44 @@
 import express from "express";
-import passport from "passport";
-import { getUserProfile } from "../controller/user/getUserProfile";
-import { getCurrentUserProfile } from "../controller/user/getCurrentUserProfile";
-import { getUserByEmail } from "../controller/user/getUserByEmail";
-import { updateCurrentUserProfile } from "../controller/user/updateCurrentUserProfile";
+// import passport from "passport";
+import { firebaseAuthRegister } from "../middlware/firebaseAuthRegister";
+import { firebaseAuth } from "../middlware/firebaseAuth";
+import { userController } from "../controller/userController";
 
 const router = express.Router();
 
 // get current user profile
+// PRIVATE
 router.get(
 	"/profile",
-	passport.authenticate("jwt", { session: false }),
-	getCurrentUserProfile
+	firebaseAuthRegister,
+	userController.getCurrentUserProfile
 );
 
 // update current user profile
+// PRIVATE
+// body: { name, profilePicUrl }
+router.patch("/profile", firebaseAuth, userController.updateCurrentUserProfile);
+
+// update current user profile status
+// PRIVATE
+// body: { status }
 router.patch(
-	"/profile",
-	passport.authenticate("jwt", { session: false }),
-	updateCurrentUserProfile
+	"/profile/status",
+	firebaseAuth,
+	// passport.authenticate("jwt", { session: false }),
+	userController.updateCurrentUserStatus
 );
+
+// delete current user profile
+// PRIVATE
+router.delete("/del", firebaseAuth, userController.deleteCurrentUserProfile);
 
 // get a user profile
-router.get(
-	"/:id/profile",
-	passport.authenticate("jwt", { session: false }),
-	getUserProfile
-);
+// params: id
+router.get("/:id/profile", userController.getUserById);
 
-router.get(
-	"/email",
-	passport.authenticate("jwt", { session: false }),
-	getUserByEmail
-);
+//get user by email
+// query: email
+router.get("/email", userController.getUserByEmail);
 
 export { router as userRouter };

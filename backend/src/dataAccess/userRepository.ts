@@ -1,23 +1,25 @@
 import { TUser, UserModel } from "../models/UserModel";
 
 class UserRepository {
-	async createUser(user: TUser) {
+	async create(user: TUser) {
+		// console.log("repo", user);
 		return UserModel.create(user);
 	}
 
-	async findUser(query: { [key: string]: string }) {
+	async find(query: { [key: string]: string }) {
 		return UserModel.findOne(query);
 	}
 
-	async findUserById(id: string) {
+	async findById(id: TUser["_id"]) {
+		// return UserModel.findOne({ _id: id });
 		return UserModel.findById(id);
 	}
 
-	async updateUser(id: string, userData: Partial<TUser>) {
+	async update(id: string, userData: Partial<TUser>) {
 		return UserModel.findByIdAndUpdate(id, userData, { new: true });
 	}
 
-	async deleteUserById(id: string) {
+	async deleteById(id: string) {
 		return UserModel.findByIdAndDelete(id);
 	}
 }
