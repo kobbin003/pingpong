@@ -9,7 +9,6 @@ an instant messaging app
 - nodejs / expressjs
 - mongodb
 - mongoose
-- passportjs
 - socketio
 
 ### client

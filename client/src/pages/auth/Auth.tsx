@@ -7,10 +7,14 @@ import AuthButton from "../../components/AuthButton/AuthButton";
 import googleLogin from "../../firebase/authHandlers/googleLogin";
 import { setUser } from "../../redux/reducers/userSlice";
 import EmailLinkForm from "../../components/authform/EmailLinkForm";
+import { useGetWelcomeQuery } from "../../api/welcomeQuery";
+import { setAccessToken } from "../../redux/reducers/authSlice";
 
 type Props = {};
 
 const Auth = (_: Props) => {
+	// const { data, error, isLoading } = useGetWelcomeQuery();
+	// console.log("welcom-data", data, error, isLoading);
 	const { pathname } = useLocation();
 
 	const dispatch = useDispatch();
@@ -24,41 +28,24 @@ const Auth = (_: Props) => {
 		googleLogin()
 			.then((res) => {
 				if (res) {
-					const { displayName, email, photoURL, phoneNumber, uid } = res;
-
-					// add "USD" as default currency
-					const userInfo = {
-						displayName,
-						email,
-						photoURL,
-						phoneNumber,
-						uid,
-					};
-
+					const { accessToken } = res;
+					// res.getIdToken().then((token) => {
+					dispatch(setAccessToken(accessToken));
+					// console.log("token", token);
 					//*  set the user in redux state
-					dispatch(setUser(userInfo));
+					// dispatch(setUser(userInfo));
 
 					//* navigate to app
-					navigate(`/user/chat/:id`);
-
-					//*  skip adding the user in database if already present.
-					// email &&
-					// 	getUser(email).then((res) => {
-					// 		const userWithEmailExists =
-					// 			res?.docs.length && res?.docs.length > 0;
-					// 		if (!userWithEmailExists) {
-					// 			//*  add the user in firestore if a user with email does not exist.
-					// 			addUser(userInfo);
-					// 		}
-					// 	});
+					navigate(`/user/chat/welcome`);
 
 					//* empty error on success
 					dispatch(emptyErrorMsg());
+					// });
 				}
 			})
 			.catch((err) => {
 				console.log("google login error", err);
-				dispatch(setErrorMsg("your google account not found"));
+				dispatch(setErrorMsg("could not login"));
 			});
 	};
 
@@ -91,14 +78,9 @@ const Auth = (_: Props) => {
 						onClick={handleGoogleAuth}
 					/>
 					<div className=""></div>
-					{/* <div className="">
-						<p>Already have an account?</p>{" "}
-						<Link to={`/login`} className="">
-							Log in
-						</Link>
-					</div> */}
 				</>
 			</div>
+			<Link to={`/user/chat/welcome`}>chat:id</Link>
 		</div>
 	);
 };

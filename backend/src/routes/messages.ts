@@ -1,5 +1,4 @@
 import express from "express";
-// import passport from "passport";
 import { firebaseAuth } from "../middlware/firebaseAuth";
 import { messageController } from "../controller/messageController";
 

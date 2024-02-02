@@ -11,7 +11,18 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { alertReducer } from "../reducers/alertSlice";
-const rootReducer = combineReducers({ alert: alertReducer });
+import { userReducer } from "../reducers/userSlice";
+import { welcomeApi } from "../../api/welcomeQuery";
+import { usersApi } from "../../api/users";
+import { authReducer } from "../reducers/authSlice";
+
+const rootReducer = combineReducers({
+	alert: alertReducer,
+	user: userReducer,
+	auth: authReducer,
+	[welcomeApi.reducerPath]: welcomeApi.reducer,
+	[usersApi.reducerPath]: usersApi.reducer,
+});
 
 const persistConfig = {
 	key: "root",
@@ -22,12 +33,16 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
 	reducer: persistedReducer,
+	//
+	devTools: process.env.NODE_ENV !== "production",
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({
 			serializableCheck: {
 				ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
 			},
-		}),
+		})
+			.concat(welcomeApi.middleware)
+			.concat(usersApi.middleware),
 });
 
 export const persistor = persistStore(store);

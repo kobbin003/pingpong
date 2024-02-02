@@ -1,5 +1,4 @@
 import express from "express";
-// import passport from "passport";
 import { firebaseAuthRegister } from "../middlware/firebaseAuthRegister";
 import { firebaseAuth } from "../middlware/firebaseAuth";
 import { userController } from "../controller/userController";
@@ -25,7 +24,6 @@ router.patch("/profile", firebaseAuth, userController.updateCurrentUserProfile);
 router.patch(
 	"/profile/status",
 	firebaseAuth,
-	// passport.authenticate("jwt", { session: false }),
 	userController.updateCurrentUserStatus
 );
 

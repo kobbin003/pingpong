@@ -1,44 +1,42 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export type UserType = {
-	displayName: string | null;
+export type TUserProfile = {
+	name: string | null;
 	email: string | null;
-	phoneNumber: string | null;
-	photoURL: string | null;
+	email_verified: boolean;
+	profilePicUrl: string | null;
+	status: string | null;
 	uid: string;
-	// firestoreUserDocId?: string;
-	// currency: string;
 };
-
-const initialState: UserType = {
-	displayName: "",
+const initialState: TUserProfile = {
+	name: "",
 	email: "",
-	phoneNumber: "",
-	photoURL: "",
+	email_verified: false,
+	profilePicUrl: "",
+	status: "",
 	uid: "",
-	// firestoreUserDocId: "",
-	// currency: "",
 };
 
 export const userSlice = createSlice({
 	name: "user",
 	initialState,
 	reducers: {
-		setUser: (state, action: PayloadAction<UserType>) => {
+		setUser: (state, action: PayloadAction<TUserProfile>) => {
 			const { payload } = action;
 			return { ...state, ...payload };
 		},
-		updateUser: (state, action: PayloadAction<Partial<UserType>>) => {
+		updateUser: (state, action: PayloadAction<Partial<TUserProfile>>) => {
 			const { payload } = action;
 			console.log("updateUserS", payload);
 			return { ...state, ...payload };
 		},
+
 		removeUser: () => {
 			return initialState;
 		},
 	},
 });
 
-export const { setUser, removeUser, updateUser } = userSlice.actions;
+export const { setUser, updateUser, removeUser } = userSlice.actions;
 
-export default userSlice.reducer;
+export const userReducer = userSlice.reducer;

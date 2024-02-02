@@ -1,44 +1,64 @@
 import ChatNav from "../../components/chatNav/ChatNav";
 import Conversations from "../../components/conversations/Conversations";
-import React, { createContext, useState } from "react";
 import { auth } from "../../firebase/config";
+import { ShowConversationProvider } from "../../context/ShowConversationProvider";
+import { useNavigate } from "react-router-dom";
+import { removeUser, setUser } from "../../redux/reducers/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
+import { useEffect } from "react";
+import { useGetUserProfileQuery } from "../../api/users";
+import { RootState } from "../../redux/store/store";
 
 type Props = {};
 
-type ShowConversationContextType = {
-	setShowConversation: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-export const ShowConversationContext =
-	createContext<ShowConversationContextType>({
-		setShowConversation: () => false,
-	});
-
 export const UserChats = ({}: Props) => {
-	const [showConversation, setShowConversation] = useState(false);
-	onAuthStateChanged(auth, (user) => {
-		if (user) {
-			console.log("User is signed in.", user);
-		} else {
-			console.log("User is not-signed in.");
-		}
-	});
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const { accessToken } = useSelector((state: RootState) => state.auth);
+	const { data, error, isLoading } = useGetUserProfileQuery({ accessToken });
+	console.log("userprofile-data", data, error, isLoading);
+
+	if (data && data.profilePicUrl) {
+		const { name, email, email_verified, status, profilePicUrl, _id } = data;
+		dispatch(
+			setUser({ name, email, email_verified, status, profilePicUrl, uid: _id })
+		);
+	}
+	// const [showConversation, setShowConversation] = useState(false);
+	// onAuthStateChanged(auth, (user) => {
+	// 	if (user) {
+	// 		console.log("User is signed in.", user);
+	// 	} else {
+	// 		console.log("User is not-signed in.");
+	// 	}
+	// });
+	// console.log(auth.currentUser);
+
+	const handleSignout = () => {
+		auth.signOut();
+		dispatch(removeUser());
+		navigate("/");
+	};
+	useEffect(() => {
+		console.log("inside useEffect", data, error, isLoading);
+	}, []);
 	return (
-		<div className="flex flex-col h-screen" data-theme="cupcake">
-			<button onClick={() => auth.signOut()}>signout</button>
-			<ShowConversationContext.Provider value={{ setShowConversation }}>
-				<div className="flex h-full bg-green-200">
-					<div
-						className={`${
-							showConversation ? "hidden sm:block" : "block"
-						} fixed w-full sm:w-max sm:relative h-full bg-orange-300`}
-					>
-						<ChatNav />
-					</div>
-					<Conversations />
+		<>
+			{isLoading ? (
+				<p>Loading...</p>
+			) : (
+				<div className="flex flex-col h-screen" data-theme="cupcake">
+					<button onClick={handleSignout}>signout</button>
+
+					<ShowConversationProvider>
+						<div className="flex h-full bg-green-200">
+							<ChatNav />
+							<Conversations />
+						</div>
+					</ShowConversationProvider>
 				</div>
-			</ShowConversationContext.Provider>
-		</div>
+			)}
+		</>
 	);
 };

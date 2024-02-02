@@ -17,6 +17,7 @@ export default async function googleLogin() {
 			const user = result.user;
 			// IdP data available using getAdditionalUserInfo(result)
 			// ...
+			// console.log("credential", credential);
 			return user;
 			// console.log(getAdditionalUserInfo(result));
 		}

@@ -4,6 +4,7 @@ import { UserChats } from "../pages/userChats/UserChats";
 import { NotFound } from "../pages/notFound/NotFound";
 import Auth from "../pages/auth/Auth";
 import LogIn from "../components/LogIn";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
 	{
@@ -13,7 +14,11 @@ export const router = createBrowserRouter([
 	},
 	{
 		path: "/user/chat/:id",
-		element: <UserChats />,
+		element: (
+			<PrivateRoute>
+				<UserChats />
+			</PrivateRoute>
+		),
 		errorElement: <ErrorBoundary />,
 	},
 	{

@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { ShowConversationContext } from "../../pages/userChats/UserChats";
+// import { ShowConversationContext } from "../../pages/userChats/UserChats";
 import Conversation from "./component/conversation/Conversation";
+import { ShowConversationContext } from "../../context/ShowConversationProvider";
+import Welcome from "../Welcome/Welcome";
 
 type Props = {};
 
@@ -26,7 +28,7 @@ const Conversations = ({}: Props) => {
 					back
 				</button>
 			</div>
-			{newUserWithNoFriend ? <p>Welcome</p> : <Conversation />}
+			{newUserWithNoFriend ? <Welcome /> : <Conversation />}
 		</div>
 	);
 };

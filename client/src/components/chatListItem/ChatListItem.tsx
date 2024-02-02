@@ -1,7 +1,7 @@
 import { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ShowConversationContext } from "../../pages/userChats/UserChats";
 import ProfileModal from "../modal/ProfileModal";
+import { ShowConversationContext } from "../../context/ShowConversationProvider";
 
 type Props = { item: number };
 
