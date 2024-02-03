@@ -2,10 +2,16 @@ import { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import ProfileModal from "../modal/ProfileModal";
 import { ShowConversationContext } from "../../context/ShowConversationProvider";
+import { TChat } from "../../types/chat";
 
-type Props = { item: number };
+type Props = { chat: TChat };
 
-const ChatListItem = ({ item }: Props) => {
+const ChatListItem = ({ chat }: Props) => {
+	const {
+		_id: chatId,
+		relation: { participants },
+	} = chat;
+
 	const { setShowConversation } = useContext(ShowConversationContext);
 
 	const profileModalRef = useRef<HTMLDialogElement>(null);
@@ -29,13 +35,13 @@ const ChatListItem = ({ item }: Props) => {
 					/>
 				</div>
 				<Link
-					to={`/user/chat/${item}`}
+					to={`/user/chat/${chatId}`}
 					className=""
 					onClick={() => {
 						setShowConversation(true);
 					}}
 				>
-					ChatsListItem-{item}
+					{participants[0].name}
 				</Link>
 			</li>
 			<ProfileModal ref={profileModalRef} />

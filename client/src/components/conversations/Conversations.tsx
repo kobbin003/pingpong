@@ -3,10 +3,13 @@ import { useContext, useEffect, useState } from "react";
 import Conversation from "./component/conversation/Conversation";
 import { ShowConversationContext } from "../../context/ShowConversationProvider";
 import Welcome from "../Welcome/Welcome";
+import { useParams } from "react-router-dom";
 
 type Props = {};
 
 const Conversations = ({}: Props) => {
+	const { id } = useParams();
+	// console.log("param", param);
 	const { setShowConversation } = useContext(ShowConversationContext);
 
 	const [newUserWithNoFriend, setNewUserWithNoFriend] = useState(false);
@@ -28,7 +31,7 @@ const Conversations = ({}: Props) => {
 					back
 				</button>
 			</div>
-			{newUserWithNoFriend ? <Welcome /> : <Conversation />}
+			{id == "welcome" ? <Welcome /> : <Conversation />}
 		</div>
 	);
 };

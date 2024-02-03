@@ -5,16 +5,15 @@ import { useEffect } from "react";
 import { emptyErrorMsg, setErrorMsg } from "../../redux/reducers/alertSlice";
 import AuthButton from "../../components/AuthButton/AuthButton";
 import googleLogin from "../../firebase/authHandlers/googleLogin";
-import { setUser } from "../../redux/reducers/userSlice";
 import EmailLinkForm from "../../components/authform/EmailLinkForm";
-import { useGetWelcomeQuery } from "../../api/welcomeQuery";
 import { setAccessToken } from "../../redux/reducers/authSlice";
 
 type Props = {};
-
+// console.log("vite-base url", VITE_BASE_URL);
 const Auth = (_: Props) => {
 	// const { data, error, isLoading } = useGetWelcomeQuery();
-	// console.log("welcom-data", data, error, isLoading);
+	// console.log("data-welcom", data, error, isLoading);
+
 	const { pathname } = useLocation();
 
 	const dispatch = useDispatch();
