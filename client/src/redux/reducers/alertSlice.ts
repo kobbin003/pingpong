@@ -17,7 +17,7 @@ export const alertSlice = createSlice({
 	initialState,
 	reducers: {
 		setErrorMsg: (state, action: PayloadAction<string>) => {
-			console.log("setsuccesmessage called");
+			// console.log("setsuccesmessage called");
 			state.errorMessage = action.payload;
 		},
 		setSuccessMsg: (state, action: PayloadAction<string>) => {

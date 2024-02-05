@@ -7,13 +7,11 @@ import AuthButton from "../../components/AuthButton/AuthButton";
 import googleLogin from "../../firebase/authHandlers/googleLogin";
 import EmailLinkForm from "../../components/authform/EmailLinkForm";
 import { setAccessToken } from "../../redux/reducers/authSlice";
+import Trial from "../../components/Trial";
 
 type Props = {};
 // console.log("vite-base url", VITE_BASE_URL);
 const Auth = (_: Props) => {
-	// const { data, error, isLoading } = useGetWelcomeQuery();
-	// console.log("data-welcom", data, error, isLoading);
-
 	const { pathname } = useLocation();
 
 	const dispatch = useDispatch();
@@ -47,7 +45,10 @@ const Auth = (_: Props) => {
 				dispatch(setErrorMsg("could not login"));
 			});
 	};
-
+	//
+	// useEffect(() => {
+	// 	console.log("lazydata", result, lastPromiseInfo);
+	// }, [result]);
 	//* empty error on start
 	useEffect(() => {
 		dispatch(emptyErrorMsg());
@@ -61,6 +62,7 @@ const Auth = (_: Props) => {
 	return (
 		<div className="bg-slate-50">
 			{alert.errorMessage && <p>Error Alert:{alert.errorMessage}</p>}
+			{/* <button onClick={() => trigger()}>trigger welcom</button> */}
 			<div className="">
 				<div>LOGO</div>
 				<>
@@ -80,6 +82,7 @@ const Auth = (_: Props) => {
 				</>
 			</div>
 			<Link to={`/user/chat/welcome`}>chat:id</Link>
+			{/* <Trial /> */}
 		</div>
 	);
 };

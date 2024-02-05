@@ -16,6 +16,7 @@ import { welcomeApi } from "../../api/welcomeQuery";
 import { usersApi } from "../../api/users";
 import { authReducer } from "../reducers/authSlice";
 import { chatsApi } from "../../api/chats";
+import { relationsApi } from "../../api/relations";
 
 const rootReducer = combineReducers({
 	alert: alertReducer,
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
 	[welcomeApi.reducerPath]: welcomeApi.reducer,
 	[usersApi.reducerPath]: usersApi.reducer,
 	[chatsApi.reducerPath]: chatsApi.reducer,
+	[relationsApi.reducerPath]: relationsApi.reducer,
 });
 
 const persistConfig = {
@@ -45,7 +47,8 @@ export const store = configureStore({
 		})
 			.concat(welcomeApi.middleware)
 			.concat(usersApi.middleware)
-			.concat(chatsApi.middleware),
+			.concat(chatsApi.middleware)
+			.concat(relationsApi.middleware),
 });
 
 export const persistor = persistStore(store);

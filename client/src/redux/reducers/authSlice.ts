@@ -16,9 +16,12 @@ export const authSlice = createSlice({
 			const { payload } = action;
 			return { ...state, accessToken: payload };
 		},
+		removeAccessToken: (state) => {
+			return { ...state, accessToken: "" };
+		},
 	},
 });
 
-export const { setAccessToken } = authSlice.actions;
+export const { setAccessToken, removeAccessToken } = authSlice.actions;
 
 export const authReducer = authSlice.reducer;

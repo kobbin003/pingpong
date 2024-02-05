@@ -9,6 +9,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { useGetUserProfileQuery } from "../../api/users";
 import { RootState } from "../../redux/store/store";
+import { removeAccessToken } from "../../redux/reducers/authSlice";
 
 type Props = {};
 
@@ -38,6 +39,7 @@ export const UserChats = ({}: Props) => {
 	const handleSignout = () => {
 		auth.signOut();
 		dispatch(removeUser());
+		dispatch(removeAccessToken());
 		navigate("/");
 	};
 	useEffect(() => {

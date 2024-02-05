@@ -12,12 +12,12 @@ const Conversations = ({}: Props) => {
 	// console.log("param", param);
 	const { setShowConversation } = useContext(ShowConversationContext);
 
-	const [newUserWithNoFriend, setNewUserWithNoFriend] = useState(false);
+	// const [newUserWithNoFriend, setNewUserWithNoFriend] = useState(false);
 
-	useEffect(() => {
-		/* check if user hase friends */
-		setNewUserWithNoFriend(true);
-	}, []);
+	// useEffect(() => {
+	// 	/* check if user has friends */
+	// 	setNewUserWithNoFriend(true);
+	// }, []);
 
 	return (
 		<div className="bg-yellow-300 flex-1">
