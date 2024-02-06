@@ -1,17 +1,20 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import "./searchBar.css";
 import { useNavigate } from "react-router-dom";
-const SearchBar = () => {
+type Props = {
+	setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+};
+const SearchBar = ({ setSearchQuery: setSearch }: Props) => {
 	const [clearButtonVisibility, setClearButtonVisibility] = useState<
 		"visible" | "hidden"
 	>("hidden");
-	const [searchValue, setSearchValue] = useState("");
+	const [searchQuery, setSearchQuery] = useState("");
 	const searchInput = useRef<HTMLInputElement>(null);
 	const navigate = useNavigate();
 	const [containerBackgroundColor, setContainerBackgroundColor] =
 		useState("#eeeeee");
 	const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setSearchValue(e.target.value);
+		setSearchQuery(e.target.value);
 
 		// start showing reset button after inital input.
 		if (clearButtonVisibility == "hidden") {
@@ -23,7 +26,7 @@ const SearchBar = () => {
 		}
 	};
 	const handleReset = () => {
-		setSearchValue("");
+		setSearchQuery("");
 		setClearButtonVisibility("hidden");
 		// keep focus on input even after resetting
 		if (searchInput.current) {
@@ -31,28 +34,20 @@ const SearchBar = () => {
 		}
 	};
 
-	const handleKeyEnterDown = (e: KeyboardEvent<HTMLInputElement>) => {
-		if (e.key === "Enter") {
-			navigate(`/search/${searchValue}/photos`);
-		}
-	};
 	// DEBOUNCING:
 	useEffect(() => {
-		const timeout = setTimeout(() => {
-			// setSearchValue(searchValue);
-		}, 500);
-		return () => clearTimeout(timeout);
-	}, [searchValue]);
+		setSearch(searchQuery); // no need of debouncing since we fetching with click
+		// const timeout = setTimeout(() => {
+		// 	// setSearch(searchQuery);
+		// }, 500);
+		// return () => clearTimeout(timeout);
+	}, [searchQuery]);
 	return (
 		<div
 			id="searchbar__container"
 			style={{ backgroundColor: `${containerBackgroundColor}` }}
 		>
-			<img
-				src="/src/assets/search.svg"
-				height={20}
-				width={20}
-			/>
+			{/* <img src="/src/assets/search.svg" height={20} width={20} /> */}
 			<input
 				id="searchbar"
 				type="search"
@@ -65,8 +60,7 @@ const SearchBar = () => {
 				onBlur={() => {
 					setContainerBackgroundColor("#eeeeee");
 				}}
-				onKeyDown={handleKeyEnterDown}
-				value={searchValue}
+				value={searchQuery}
 			/>
 			<button onClick={handleReset}>
 				<img

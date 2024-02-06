@@ -6,6 +6,7 @@ import { VITE_BASE_URL } from "../utils/env";
 export const usersApi = createApi({
 	reducerPath: "usersApi",
 	baseQuery: fetchBaseQuery({ baseUrl: `${VITE_BASE_URL}/users` }),
+	// tagTypes: ["user"],
 	endpoints: (builder) => ({
 		getUserProfile: builder.query<TUserServer, { accessToken: string }>({
 			query: ({ accessToken }) => ({
@@ -13,7 +14,13 @@ export const usersApi = createApi({
 				headers: { Authorization: `Bearer ${accessToken}` },
 			}),
 		}),
+		getUserByEmail: builder.query<TUserServer, { email: string }>({
+			// query:()=>({})
+			query: ({ email }) => ({ url: `/email?email=${email}` }),
+			// providesTags: ["user"],
+			keepUnusedDataFor: 1,
+		}),
 	}),
 });
 
-export const { useGetUserProfileQuery } = usersApi;
+export const { useGetUserProfileQuery, useLazyGetUserByEmailQuery } = usersApi;
