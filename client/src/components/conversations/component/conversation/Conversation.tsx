@@ -13,11 +13,12 @@ const Conversation = ({}: Props) => {
 	console.log("conversation-chatId", id);
 	const { accessToken } = useSelector((state: RootState) => state.auth);
 
-	const { data, error, isLoading } = useGetMessageByChatIdQuery({
-		accessToken,
-		chatId: id || "",
-	});
-	console.log("conversation", data);
+	const { data, error, isLoading, refetch, ...rest } =
+		useGetMessageByChatIdQuery({
+			accessToken,
+			chatId: id || "",
+		});
+	console.log("conversation", data, rest);
 	if (isLoading) {
 		return <p>Loading...</p>;
 	}

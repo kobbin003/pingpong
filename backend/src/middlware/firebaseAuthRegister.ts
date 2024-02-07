@@ -16,8 +16,8 @@ export const firebaseAuthRegister = async (
 	try {
 		if (accessToken) {
 			const decodedToken = await admin.auth().verifyIdToken(accessToken);
-			console.log("decodedToken", decodedToken.uid);
-			console.log("decodedName", decodedToken.name);
+			// console.log("decodedToken", decodedToken.uid);
+			// console.log("decodedName", decodedToken.name);
 			req.firebaseId = decodedToken.uid;
 			req.user = {
 				name: decodedToken.name || `user_${randomIdGenerator()}`,

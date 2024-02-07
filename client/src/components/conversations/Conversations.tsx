@@ -4,6 +4,7 @@ import Conversation from "./component/conversation/Conversation";
 import { ShowConversationContext } from "../../context/ShowConversationProvider";
 import Welcome from "../Welcome/Welcome";
 import { useParams } from "react-router-dom";
+import MsgSendForm from "../msgSendForm/MsgSendForm";
 
 type Props = {};
 
@@ -20,7 +21,7 @@ const Conversations = ({}: Props) => {
 	// }, []);
 
 	return (
-		<div className="bg-yellow-300 flex-1">
+		<div className="relative bg-yellow-300 flex-1">
 			<div className="bg-blue-500 flex justify-end">
 				<button
 					className="sm:hidden"
@@ -32,6 +33,7 @@ const Conversations = ({}: Props) => {
 				</button>
 			</div>
 			{id == "welcome" ? <Welcome /> : <Conversation />}
+			<MsgSendForm />
 		</div>
 	);
 };

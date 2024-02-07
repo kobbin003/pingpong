@@ -26,7 +26,7 @@ class RelationService {
 
 			// if found, send the relation after updating the sender and the status
 			if (relationFound) {
-				console.log("relationFound", relationFound);
+				// console.log("relationFound", relationFound);
 				//update the relation
 				relationFound.sender = senderId;
 				relationFound.status = "pending";

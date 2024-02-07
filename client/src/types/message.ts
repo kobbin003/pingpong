@@ -3,10 +3,12 @@ export type TMessage = {
 	message: string;
 	sender: string;
 	createdAt: Date;
-	chat: {
-		_id: string;
-		relation: {
-			_id: string;
-		};
-	};
+	chat:
+		| {
+				_id: string;
+				relation: {
+					_id: string;
+				};
+		  }
+		| string;
 };

@@ -42,9 +42,9 @@ export const UserChats = ({}: Props) => {
 		dispatch(removeAccessToken());
 		navigate("/");
 	};
-	useEffect(() => {
-		console.log("inside useEffect", data, error, isLoading);
-	}, []);
+	// useEffect(() => {
+	// 	console.log("inside useEffect", data, error, isLoading);
+	// }, []);
 	return (
 		<>
 			{isLoading ? (

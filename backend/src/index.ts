@@ -32,7 +32,7 @@ export const io = new Server(httpServer, {
 	},
 });
 
-console.log("hiii");
+// console.log("hiii");
 app.use(cors());
 
 app.use(express.json());
@@ -43,7 +43,10 @@ app.use(
 );
 
 app.get("/welcome", (req, res) => {
-	res.send("Welcome!");
+	// res.send("Welcome!");
+	// res.json({ msg: "Welcome" });
+	res.status(400);
+	throw new Error("welcome error");
 });
 
 /** routes */

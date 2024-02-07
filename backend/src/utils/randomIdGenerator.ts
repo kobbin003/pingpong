@@ -7,4 +7,4 @@ export function randomIdGenerator() {
 
 	return `${randomNumber}_${timeStamp}`;
 }
-console.log(randomIdGenerator());
+// console.log(randomIdGenerator());

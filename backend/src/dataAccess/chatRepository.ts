@@ -5,9 +5,33 @@ class ChatRepository {
 		return ChatModel.create(chat);
 	}
 
-	async find(query: { [key: string]: string }) {
-		// return UserModel.findOne(query);
+	async find(query: { [key: string]: any }) {
+		return ChatModel.find(query);
 	}
+
+	async findWithContact(userId: string, relationIds: string[]) {
+		return ChatModel.find({
+			relation: { $in: relationIds },
+		}).populate({
+			path: "relation",
+			// select: "_id",
+			select: "participants",
+			populate: {
+				path: "participants",
+				// select: "_id",
+				match: { _id: { $not: { $eq: userId } } },
+			},
+		});
+	}
+	// async findWithContact(relationIds: string[]) {
+	// 	return ChatModel.find({
+	// 		relation: { $in: relationIds },
+	// 	}).populate({
+	// 		path: "relation",
+	// 			select: "_id",
+	// 			match: { participants: { $in: [userId] } },
+	// 	});
+	// }
 
 	async findById(id: string) {
 		// return UserModel.findById(id);

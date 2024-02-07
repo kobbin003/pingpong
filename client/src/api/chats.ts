@@ -22,6 +22,7 @@ export const chatsApi = createApi({
 				url: `/${chatId}/messages`,
 				headers: { Authorization: `Bearer ${accessToken}` },
 			}),
+			keepUnusedDataFor: 1,
 		}),
 	}),
 });

@@ -5,6 +5,9 @@ class MessageController {
 	async postMessage(req: Request, res: Response, next: NextFunction) {
 		const { firebaseId: userId } = req;
 		const chatId = req.query.chatId as string;
+		if (!chatId) {
+			res.status(400).json({ msg: "chatId missing" });
+		}
 		const msg = req.body.message;
 		try {
 			const message = await messageService.postMessage({

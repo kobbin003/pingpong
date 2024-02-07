@@ -58,7 +58,13 @@ class RelationRepository {
 		userId: string;
 		status: TRelation["status"];
 	}) {
-		return RelationModel.find({ status }).where("participants").all([userId]);
+		return RelationModel.find({ status })
+			.where("participants")
+			.all([userId])
+			.populate({
+				path: "participants",
+				select: "_id name status profilePicUrl email",
+			});
 	}
 }
 

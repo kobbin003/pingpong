@@ -48,15 +48,21 @@ class ChatService {
 
 			const relations = await relationRepository.findByUserId(userId);
 			if (!relations) {
-				return { error: true, status: 400, errMsg: "error" };
+				return { error: true, status: 400, errMsg: "could not find chat" };
 			}
-			console.log("relations", relations);
+			// console.log("relations", relations);
+			// console.log("participants", relations[0].participants);
 			/** get each relation's chat */
 			const relationIds = relations.map((relation) => relation.id);
 
 			// const chats = await ChatModel.find().where("relation").in(relationIds);
-			const chats = await ChatModel.find({ relation: { $in: relationIds } });
-			console.log("chats", chats);
+			const chats = await chatRepository.findWithContact(userId, relationIds);
+			// const chats = await ChatModel.find({ relation: { $in: relationIds } });
+
+			if (!chats) {
+				return { error: true, status: 400, errMsg: "could not find chat" };
+			}
+			// console.log("chats", chats);
 			return { status: 200, data: chats };
 		} catch (error) {
 			return { error: true, status: 400, errMsg: error.message };

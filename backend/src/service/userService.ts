@@ -11,7 +11,7 @@ class UserService {
 		try {
 			// console.log("arg", firebaseId);
 			const foundUser = await userRepository.findById(firebaseId);
-			console.log("foundUser");
+			// console.log("foundUser");
 			if (!foundUser) {
 				// create user
 				console.log("newuser");

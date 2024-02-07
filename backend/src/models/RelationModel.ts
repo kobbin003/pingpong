@@ -33,6 +33,7 @@ relationSchema.pre("save", function (next) {
 	console.log("two");
 	next();
 });
+// relationSchema.virtual('receiver')
 
 export const RelationModel = mongoose.model<TRelation>(
 	"relationship",

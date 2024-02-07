@@ -1,6 +1,5 @@
-import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import "./searchBar.css";
-import { useNavigate } from "react-router-dom";
 type Props = {
 	setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 };
@@ -10,7 +9,6 @@ const SearchBar = ({ setSearchQuery: setSearch }: Props) => {
 	>("hidden");
 	const [searchQuery, setSearchQuery] = useState("");
 	const searchInput = useRef<HTMLInputElement>(null);
-	const navigate = useNavigate();
 	const [containerBackgroundColor, setContainerBackgroundColor] =
 		useState("#eeeeee");
 	const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
