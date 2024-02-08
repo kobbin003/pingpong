@@ -3,9 +3,10 @@ import { useCreatePostMutation } from "../../api/message";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store/store";
 import { useParams } from "react-router-dom";
+import { useGetMessageByChatIdQuery } from "../../api/chats";
 
 const MsgSendForm = () => {
-	const [msg, setMsg] = useState<string>();
+	const [msg, setMsg] = useState<string>("");
 
 	const handleMsgInput = (e: ChangeEvent<HTMLInputElement>) => {
 		const msgInput = e.target.value;
@@ -14,6 +15,13 @@ const MsgSendForm = () => {
 	const { id } = useParams();
 	const { accessToken } = useSelector((state: RootState) => state.auth);
 	const [createPost, result] = useCreatePostMutation();
+	/** refetch query */
+	// const { accessToken } = useSelector((state: RootState) => state.auth);
+
+	const { refetch } = useGetMessageByChatIdQuery({
+		accessToken,
+		chatId: id || "",
+	});
 
 	const sendMsg = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -29,6 +37,9 @@ const MsgSendForm = () => {
 
 	useEffect(() => {
 		console.log("msg-send-result", result);
+		if (result.isSuccess) {
+			refetch();
+		}
 	}, [result]);
 
 	return (

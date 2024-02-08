@@ -10,7 +10,7 @@ const ChatsList = ({}: Props) => {
 	const { accessToken } = useSelector((state: RootState) => state.auth);
 
 	const { data, error, isLoading } = useGetUserChatsQuery({ accessToken });
-	console.log("chats", data, error, isLoading);
+	// console.log("chats", data, error, isLoading);
 	return (
 		<ul className="list-none">
 			{data && data.map((chat) => <ChatListItem chat={chat} key={chat._id} />)}

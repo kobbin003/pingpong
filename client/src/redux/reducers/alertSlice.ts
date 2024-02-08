@@ -17,20 +17,19 @@ export const alertSlice = createSlice({
 	initialState,
 	reducers: {
 		setErrorMsg: (state, action: PayloadAction<string>) => {
-			// console.log("setsuccesmessage called");
-			state.errorMessage = action.payload;
+			return { ...state, errorMessage: action.payload };
 		},
 		setSuccessMsg: (state, action: PayloadAction<string>) => {
-			state.successMessage = action.payload;
+			return { ...state, successMessage: action.payload };
 		},
 		emptyErrorMsg: (state) => {
-			state.errorMessage = "";
+			return { ...state, errorMessage: "" };
 		},
 		emptySuccessMsg: (state) => {
-			state.successMessage = "";
+			return { ...state, successMessage: "" };
 		},
 		setIsLoading: (state, action: PayloadAction<boolean>) => {
-			state.isLoading = action.payload;
+			return { ...state, isLoading: action.payload };
 		},
 	},
 });

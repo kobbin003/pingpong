@@ -7,6 +7,7 @@ import { TMessage } from "../types/message";
 export const chatsApi = createApi({
 	reducerPath: "chatsApi",
 	baseQuery: fetchBaseQuery({ baseUrl: `${VITE_BASE_URL}/chats` }),
+	tagTypes: ["message"],
 	endpoints: (builder) => ({
 		getUserChats: builder.query<TChat[], { accessToken: string }>({
 			query: ({ accessToken }) => ({

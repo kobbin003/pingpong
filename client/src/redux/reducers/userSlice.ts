@@ -31,8 +31,8 @@ export const userSlice = createSlice({
 			return { ...state, ...payload };
 		},
 
-		removeUser: () => {
-			return initialState;
+		removeUser: (state) => {
+			return { ...state, ...initialState };
 		},
 	},
 });

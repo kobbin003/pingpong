@@ -10,7 +10,7 @@ type Props = {};
 const Conversation = ({}: Props) => {
 	const { id } = useParams();
 	const dispatch = useDispatch();
-	console.log("conversation-chatId", id);
+	// console.log("conversation-chatId", id);
 	const { accessToken } = useSelector((state: RootState) => state.auth);
 
 	const { data, error, isLoading, refetch, ...rest } =
@@ -18,7 +18,7 @@ const Conversation = ({}: Props) => {
 			accessToken,
 			chatId: id || "",
 		});
-	console.log("conversation", data, rest);
+	// console.log("conversation", data, rest);
 	if (isLoading) {
 		return <p>Loading...</p>;
 	}

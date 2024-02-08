@@ -7,6 +7,7 @@ import { TMessage } from "../types/message";
 export const messageApi = createApi({
 	reducerPath: "messageApi",
 	baseQuery: fetchBaseQuery({ baseUrl: `${VITE_BASE_URL}/messages` }),
+	// tagTypes: ["message"],
 	endpoints: (builder) => ({
 		createPost: builder.mutation<
 			TMessage,
@@ -14,11 +15,11 @@ export const messageApi = createApi({
 		>({
 			query: ({ accessToken, message, chatId }) => ({
 				url: `?chatId=${chatId}`,
-				// TODO chatId here.....
 				method: "POST",
 				body: { message },
 				headers: { Authorization: `Bearer ${accessToken}` },
 			}),
+			// invalidatesTags: ["message"],
 		}),
 	}),
 });
