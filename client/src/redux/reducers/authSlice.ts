@@ -14,6 +14,7 @@ export const authSlice = createSlice({
 	reducers: {
 		setAccessToken: (state, action: PayloadAction<string>) => {
 			const { payload } = action;
+			console.log("token store updated");
 			return { ...state, accessToken: payload };
 		},
 		removeAccessToken: (state) => {

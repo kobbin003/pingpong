@@ -10,7 +10,6 @@ import { messageRouter } from "./routes/messages";
 import { chatRouter } from "./routes/chats";
 import { userRouter } from "./routes/users";
 import { relationRouter } from "./routes/relations";
-
 import "dotenv/config";
 import { firebaseInit } from "./firebase/firebaseInit";
 
@@ -31,7 +30,43 @@ export const io = new Server(httpServer, {
 		origin: process.env.NODE_ENV == "production" ? "" : "*",
 	},
 });
+io.on("connection", (socket) => {
+	console.log(" client connected: ", socket.id);
+	/* --------------------------------------------------------------- */
+	// socket.emit("from-server", "Welcome to the server!");
 
+	// socket.on("client-message", (message, cb) => {
+	// 	console.log(`Received from client: ${message}`);
+	// 	cb(`got the message`);
+	// 	// io.emit("from-server", message);
+	// });
+	/* ---------------------- ROOM ------------------------------- */
+	socket.on("join-room", (roomId, cb) => {
+		console.log(`room joined: ${roomId}`);
+		socket.join(roomId);
+		cb(`room joined`);
+	});
+
+	socket.on("leave-room", (roomId, cb) => {
+		console.log(`room left: ${roomId}`);
+		socket.leave(roomId);
+		cb(`room left`);
+	});
+
+	/* ------------------------- PRIVATE MSG ------------------------- */
+	socket.on("private-msg", (msg, cb) => {
+		const { msg: message, roomId } = msg as { msg: string; roomId: string };
+		console.log(`private-msg received: ${msg}`);
+		console.log("roomId", roomId);
+		// socket.emit("private-msg-receive", { msg: message });
+		io.to(roomId).emit("private-msg-receive", { msg: message });
+		cb({ status: 200, msg: message });
+	});
+
+	socket.on("disconnect", () => {
+		console.log(`client disconnected`);
+	});
+});
 // console.log("hiii");
 app.use(cors());
 

@@ -1,12 +1,15 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 import { useCreatePostMutation } from "../../api/message";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store/store";
 import { useParams } from "react-router-dom";
 import { useGetMessageByChatIdQuery } from "../../api/chats";
+import { SocketContext } from "../../context/SocketProvider";
 
 const MsgSendForm = () => {
 	const [msg, setMsg] = useState<string>("");
+
+	const { sendMsg: sendSocketMsg } = useContext(SocketContext);
 
 	const handleMsgInput = (e: ChangeEvent<HTMLInputElement>) => {
 		const msgInput = e.target.value;
@@ -25,18 +28,21 @@ const MsgSendForm = () => {
 
 	const sendMsg = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log("is msg", msg);
-		if (msg) {
-			createPost({ accessToken, message: msg, chatId: id || "" });
+		// console.log("is msg", msg);
+		// if (msg) {
+		// 	createPost({ accessToken, message: msg, chatId: id || "" });
+		// }
+		if (id) {
+			sendSocketMsg({ msg, roomId: id });
 		}
 	};
 
 	useEffect(() => {
-		console.log("msg-change", msg);
+		// console.log("msg-change", msg);
 	}, [msg]);
 
 	useEffect(() => {
-		console.log("msg-send-result", result);
+		// console.log("msg-send-result", result);
 		if (result.isSuccess) {
 			refetch();
 		}

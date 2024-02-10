@@ -10,7 +10,10 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { useGetUserProfileQuery } from "../../api/users";
 import { RootState } from "../../redux/store/store";
-import { removeAccessToken } from "../../redux/reducers/authSlice";
+import {
+	removeAccessToken,
+	setAccessToken,
+} from "../../redux/reducers/authSlice";
 import SocketProvider from "../../context/SocketProvider";
 // import "../../socket";
 type Props = {};
@@ -26,7 +29,7 @@ export const UserChats = ({}: Props) => {
 	if (error) {
 		console.log("userchats error", error);
 	}
-	console.log("rest", rest);
+	// console.log("rest", rest);
 	// console.log("userprofile-data", data, error, isLoading);
 	//***** */
 	useEffect(() => {
@@ -64,6 +67,24 @@ export const UserChats = ({}: Props) => {
 		navigate("/");
 	};
 
+	useEffect(() => {
+		//* refetch token every 55 min(firebase accessToken has 1 hr life)
+		//* and store it in auth store as accessToken
+
+		// 55 min = 55 * 60sec = 55 * 60 * 1000ms = 3300000ms
+
+		const fetchTokenInterval = setInterval(() => {
+			auth.currentUser?.getIdToken(true).then((token) => {
+				const accessToken = token as string;
+				console.log("access-token-refetched", accessToken);
+				dispatch(setAccessToken(accessToken));
+			});
+		}, 33e5);
+
+		return () => {
+			return clearInterval(fetchTokenInterval);
+		};
+	}, []);
 	return (
 		<>
 			{isLoading ? (
