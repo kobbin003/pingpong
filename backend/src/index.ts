@@ -1,18 +1,18 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import logger from "morgan";
 import cors from "cors";
 import { connectDb } from "./db/connectDb";
 import { notFound } from "./utils/notFound";
 import { errorHandler } from "./utils/errorHandler";
 import { createServer } from "http";
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { messageRouter } from "./routes/messages";
 import { chatRouter } from "./routes/chats";
 import { userRouter } from "./routes/users";
 import { relationRouter } from "./routes/relations";
 import "dotenv/config";
 import { firebaseInit } from "./firebase/firebaseInit";
-
+import admin from "firebase-admin";
 const app = express();
 const PORT = 3000;
 
@@ -30,16 +30,36 @@ export const io = new Server(httpServer, {
 		origin: process.env.NODE_ENV == "production" ? "" : "*",
 	},
 });
+
+export type TSocketMsg = {
+	message: string;
+	createdAt: string;
+	sender: string; //sender uid
+};
+
+//socket auth middleware:
+io.use(async (socket: Socket, next: NextFunction) => {
+	const accessToken = socket.handshake.auth.accessToken;
+	// decode the accessToken(firebase)
+	try {
+		if (accessToken) {
+			const decodedToken = await admin.auth().verifyIdToken(accessToken);
+			const userId = decodedToken.uid;
+			socket.userId = userId;
+		} else {
+			console.log("token not found");
+			throw new Error("not authorised");
+		}
+		next();
+	} catch (error) {
+		next(error);
+	}
+});
+
 io.on("connection", (socket) => {
 	console.log(" client connected: ", socket.id);
-	/* --------------------------------------------------------------- */
-	// socket.emit("from-server", "Welcome to the server!");
+	console.log("user uid", socket.userId);
 
-	// socket.on("client-message", (message, cb) => {
-	// 	console.log(`Received from client: ${message}`);
-	// 	cb(`got the message`);
-	// 	// io.emit("from-server", message);
-	// });
 	/* ---------------------- ROOM ------------------------------- */
 	socket.on("join-room", (roomId, cb) => {
 		console.log(`room joined: ${roomId}`);
@@ -54,20 +74,33 @@ io.on("connection", (socket) => {
 	});
 
 	/* ------------------------- PRIVATE MSG ------------------------- */
-	socket.on("private-msg", (msg, cb) => {
-		const { msg: message, roomId } = msg as { msg: string; roomId: string };
-		console.log(`private-msg received: ${msg}`);
-		console.log("roomId", roomId);
-		// socket.emit("private-msg-receive", { msg: message });
-		io.to(roomId).emit("private-msg-receive", { msg: message });
-		cb({ status: 200, msg: message });
-	});
+	socket.on(
+		"private-msg",
+		(
+			{
+				msg,
+				roomId,
+			}: {
+				msg: TSocketMsg;
+				roomId: string;
+			},
+			cb
+		) => {
+			console.log("msg-backend", msg);
+			const { message, sender, createdAt } = msg;
+			console.log(`private-msg received: ${message}`);
+			console.log("roomId", roomId);
+			// socket.emit("private-msg-receive", { msg: message });
+			io.to(roomId).emit("private-msg-receive", { message, sender, createdAt });
+			cb({ status: 200, msg: { message, sender, createdAt } });
+		}
+	);
 
 	socket.on("disconnect", () => {
 		console.log(`client disconnected`);
 	});
 });
-// console.log("hiii");
+
 app.use(cors());
 
 app.use(express.json());
