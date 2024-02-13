@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+import { TSocketMsgDb } from "..";
 import { messageRepository } from "../dataAccess/messageRepository";
 import { TError, TSuccess } from "../types/serviceReturnTypes";
 
@@ -7,7 +9,7 @@ class MessageService {
 		senderId,
 		chatId,
 	}: {
-		msg: string;
+		msg: { message: string; sentAt: string };
 		senderId: string;
 		chatId: string;
 	}): Promise<TSuccess | TError> {
@@ -23,6 +25,30 @@ class MessageService {
 			}
 
 			return { status: 200, data: message };
+		} catch (error) {
+			return { error: true, status: 400, errMsg: error.message };
+		}
+	}
+
+	async postMessageMultiple({
+		msgs,
+		chatId,
+	}: {
+		msgs: TSocketMsgDb[];
+		chatId: string;
+	}) {
+		// add chat field in the msg items
+		const updatedMsgs = msgs.map(
+			(msg: TSocketMsgDb & { chat: Types.ObjectId }) =>
+				// (msg.chat = new Types.ObjectId(chatId))
+				({ ...msg, chat: new Types.ObjectId(chatId) })
+		);
+		try {
+			const msgs = await messageRepository.createMessageMultiple(updatedMsgs);
+			if (!msgs) {
+				return { error: true, status: 400, errMsg: "could not create message" };
+			}
+			return { status: 200, data: msgs };
 		} catch (error) {
 			return { error: true, status: 400, errMsg: error.message };
 		}

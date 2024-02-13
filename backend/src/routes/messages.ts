@@ -7,8 +7,15 @@ const router = express.Router();
 // post message
 // PRIVATE
 // query: chatId
-// body: {message}
+// body: {msg:string; sentAt :string}
+// sentAt -> in ISOstring.
 router.post("/", firebaseAuth, messageController.postMessage);
+
+// post multiple message
+// PRIVATE
+// query: chatId
+// body :{messages:{}[]}
+router.post("/multiple", firebaseAuth, messageController.postMessageMultiple);
 
 // update message
 // PRIVATE

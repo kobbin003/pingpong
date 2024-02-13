@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { messageService } from "../service/messageService";
+import { TSocketMsgDb } from "..";
+import { Types } from "mongoose";
+import { TMessage } from "../models/MessageModel";
 
 class MessageController {
 	async postMessage(req: Request, res: Response, next: NextFunction) {
@@ -8,7 +11,7 @@ class MessageController {
 		if (!chatId) {
 			res.status(400).json({ msg: "chatId missing" });
 		}
-		const msg = req.body.message;
+		const msg = req.body as { message: string; sentAt: string };
 		try {
 			const message = await messageService.postMessage({
 				senderId: userId,
@@ -22,6 +25,30 @@ class MessageController {
 			res.status(message.status).json(message.data);
 		} catch (error) {
 			next(error);
+		}
+	}
+
+	async postMessageMultiple(req: Request, res: Response, next: NextFunction) {
+		const chatId = req.query.chatId as string;
+		const messages = req.body.messages as TSocketMsgDb[];
+		if (!chatId) {
+			res.status(400).json({ msg: "chatId missing" });
+		}
+		if (messages) {
+			try {
+				// request to messageService.postMessageMultiple
+				const msgs = await messageService.postMessageMultiple({
+					msgs: messages,
+					chatId,
+				});
+				if ("error" in msgs) {
+					res.status(msgs.status);
+					throw new Error(msgs.errMsg);
+				}
+				res.status(msgs.status).json(msgs.data);
+			} catch (error) {
+				next(error);
+			}
 		}
 	}
 	async updateMessage(req: Request, res: Response, next: NextFunction) {

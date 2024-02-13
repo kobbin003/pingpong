@@ -8,15 +8,29 @@ class MessageRepository {
 		senderId,
 		chatId,
 	}: {
-		msg: string;
+		msg: { message: string; sentAt: string };
 		senderId: string;
 		chatId: string;
 	}) {
 		return MessageModel.create({
-			message: msg,
+			message: msg.message,
 			sender: senderId,
 			chat: new Types.ObjectId(chatId),
+			createdAt: new Date(msg.sentAt),
 		});
+	}
+
+	async createMessageMultiple(
+		msgs: {
+			message: string;
+			createdAt: string;
+			sender: string;
+			chat: Types.ObjectId;
+		}[]
+	) {
+		/** use insertMany query */
+
+		return MessageModel.insertMany(msgs);
 	}
 
 	async findById(msgId: string) {

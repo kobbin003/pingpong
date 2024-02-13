@@ -5,7 +5,7 @@ export type TMessage = {
 	message: string;
 	sender: string;
 	chat: mongoose.Types.ObjectId;
-	// createdAt: Date;
+	// createdAt?: string;
 	// updatedAt: Date;
 };
 

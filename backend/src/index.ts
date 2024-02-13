@@ -31,15 +31,17 @@ export const io = new Server(httpServer, {
 	},
 });
 
-export type TSocketMsg = {
+type TSocketMsg = {
 	message: string;
 	createdAt: string;
-	sender: string; //sender uid
+	// sender: string; //sender uid
 };
+export type TSocketMsgDb = TSocketMsg & { sender: string };
 
 //socket auth middleware:
 io.use(async (socket: Socket, next: NextFunction) => {
 	const accessToken = socket.handshake.auth.accessToken;
+	console.log("token", accessToken);
 	// decode the accessToken(firebase)
 	try {
 		if (accessToken) {
@@ -87,7 +89,8 @@ io.on("connection", (socket) => {
 			cb
 		) => {
 			console.log("msg-backend", msg);
-			const { message, sender, createdAt } = msg;
+			const { message, createdAt } = msg;
+			const sender = socket.userId;
 			console.log(`private-msg received: ${message}`);
 			console.log("roomId", roomId);
 			// socket.emit("private-msg-receive", { msg: message });
