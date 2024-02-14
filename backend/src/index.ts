@@ -13,6 +13,7 @@ import { relationRouter } from "./routes/relations";
 import "dotenv/config";
 import { firebaseInit } from "./firebase/firebaseInit";
 import admin from "firebase-admin";
+import { messageService } from "./service/messageService";
 const app = express();
 const PORT = 3000;
 
@@ -41,7 +42,7 @@ export type TSocketMsgDb = TSocketMsg & { sender: string };
 //socket auth middleware:
 io.use(async (socket: Socket, next: NextFunction) => {
 	const accessToken = socket.handshake.auth.accessToken;
-	console.log("token", accessToken);
+	// console.log("token", accessToken);
 	// decode the accessToken(firebase)
 	try {
 		if (accessToken) {
@@ -93,9 +94,22 @@ io.on("connection", (socket) => {
 			const sender = socket.userId;
 			console.log(`private-msg received: ${message}`);
 			console.log("roomId", roomId);
-			// socket.emit("private-msg-receive", { msg: message });
+
 			io.to(roomId).emit("private-msg-receive", { message, sender, createdAt });
-			cb({ status: 200, msg: { message, sender, createdAt } });
+
+			// save the messages in db
+			(async () => {
+				try {
+					await messageService.postMessage({
+						msg: { message, sentAt: createdAt },
+						chatId: roomId,
+						senderId: sender,
+					});
+					cb({ status: 200, msg: `msg: ${message}  saved` });
+				} catch (error) {
+					cb({ status: 400, msg: `msg: ${message} could not be saved` });
+				}
+			})();
 		}
 	);
 
