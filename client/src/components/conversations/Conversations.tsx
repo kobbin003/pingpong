@@ -21,7 +21,7 @@ const Conversations = ({}: Props) => {
 	// }, []);
 
 	return (
-		<div className="relative bg-yellow-300 flex-1">
+		<div className="relative bg-yellow-300 flex-1 ">
 			<div className="bg-blue-500 flex justify-end">
 				<button
 					className="sm:hidden"

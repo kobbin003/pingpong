@@ -1,23 +1,27 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Socket, io } from "socket.io-client";
+import { RootState } from "../redux/store/store";
 
 type Props = { children: ReactNode };
 const serverURL = `http://localhost:3000`;
 
 export type SocketMsg = {
-	msg: string;
-	status?: number;
+	message: string;
+	createdAt: string;
+	// sender: string; //sender uid
 };
+
+export type MsgListItem = SocketMsg & { sender: string };
 export const SocketContext = createContext<{
 	socket: Socket | null;
 	joinRoom: (roomId: string) => void | null;
 	leaveRoom: (roomId: string) => void | null;
-	sendMsg: (arg: { msg: string; roomId: string }) => void | null;
-	setMsgList: React.Dispatch<React.SetStateAction<SocketMsg[]>> | null;
-	msgList: SocketMsg[];
+	sendMsg: (arg: { msg: SocketMsg; roomId: string }) => void | null;
+	setMsgList: React.Dispatch<React.SetStateAction<MsgListItem[]>> | null;
+	msgList: MsgListItem[];
 }>({
 	socket: null,
-	// joinRoom: null,
 	joinRoom: () => {},
 	leaveRoom: () => {},
 	sendMsg: () => {},
@@ -27,7 +31,7 @@ export const SocketContext = createContext<{
 
 const SocketProvider = ({ children }: Props) => {
 	const [socket, setSocket] = useState<Socket>();
-	const [msgList, setMsgList] = useState<SocketMsg[]>([]);
+	const [msgList, setMsgList] = useState<MsgListItem[]>([]);
 	// roomId =  chatId
 	const joinRoom = (roomId: string) => {
 		socket?.emit("join-room", roomId, (ack: any) => {
@@ -41,19 +45,31 @@ const SocketProvider = ({ children }: Props) => {
 		});
 	};
 
-	const sendPrivateMsg = ({ msg, roomId }: { msg: string; roomId: string }) => {
+	const sendPrivateMsg = ({
+		msg,
+		roomId,
+	}: {
+		msg: SocketMsg;
+		roomId: string;
+	}) => {
 		socket?.emit(
 			"private-msg",
 			{ msg, roomId },
-			(ack: { status: number; msg: string }) => {
+			(ack: { status: number; msg: SocketMsg }) => {
 				console.log("private-msg server-ack: ", ack);
 			}
 		);
 	};
 
+	const { accessToken } = useSelector((state: RootState) => state.auth);
+
 	useEffect(() => {
 		console.log("socket provider");
-		const _socket: Socket = io(serverURL);
+
+		const _socket: Socket = io(serverURL, {
+			autoConnect: true,
+			auth: { accessToken },
+		});
 
 		setSocket(_socket);
 		const onSocketConnect = () => {
@@ -70,7 +86,7 @@ const SocketProvider = ({ children }: Props) => {
 		};
 
 		// listening broadcasted private message.
-		_socket.on("private-msg-receive", (msg: SocketMsg) => {
+		_socket.on("private-msg-receive", (msg: MsgListItem) => {
 			console.log("private-msg-received", msg);
 			// update msgList on receiving broadcasted private message.
 			if (msg) {

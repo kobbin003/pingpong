@@ -1,4 +1,3 @@
-import { io } from "socket.io-client";
 import ChatNav from "../../components/chatNav/ChatNav";
 import Conversations from "../../components/conversations/Conversations";
 import { auth } from "../../firebase/config";
@@ -15,6 +14,7 @@ import {
 	setAccessToken,
 } from "../../redux/reducers/authSlice";
 import SocketProvider from "../../context/SocketProvider";
+// import SocketProvider from "../../context/SocketProvider";
 // import "../../socket";
 type Props = {};
 
@@ -22,7 +22,7 @@ export const UserChats = ({}: Props) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const { accessToken } = useSelector((state: RootState) => state.auth);
-	const { data, error, isLoading, isSuccess, ...rest } = useGetUserProfileQuery(
+	const { data, error, isLoading, isSuccess } = useGetUserProfileQuery(
 		{ accessToken },
 		{ skip: !accessToken }
 	);
@@ -73,6 +73,7 @@ export const UserChats = ({}: Props) => {
 
 		// 55 min = 55 * 60sec = 55 * 60 * 1000ms = 3300000ms
 
+		console.log("interval set");
 		const fetchTokenInterval = setInterval(() => {
 			auth.currentUser?.getIdToken(true).then((token) => {
 				const accessToken = token as string;
@@ -82,6 +83,7 @@ export const UserChats = ({}: Props) => {
 		}, 33e5);
 
 		return () => {
+			console.log("interval removed");
 			return clearInterval(fetchTokenInterval);
 		};
 	}, []);

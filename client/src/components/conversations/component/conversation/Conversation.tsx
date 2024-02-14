@@ -14,7 +14,6 @@ const Conversation = ({}: Props) => {
 
 	const dispatch = useDispatch();
 	// console.log("conversation-chatId", id);
-
 	const { accessToken } = useSelector((state: RootState) => state.auth);
 
 	const { msgList, joinRoom, leaveRoom, setMsgList } =
@@ -25,20 +24,19 @@ const Conversation = ({}: Props) => {
 		chatId: id || "",
 	});
 
-	// console.log("conversation", data, error);
-
 	useEffect(() => {
 		if (id) {
 			console.log("room joined", id);
 			joinRoom(id);
 			return () => {
 				console.log("room left", id);
+				console.log("change in id this is where I am supposed to save msgList");
 				leaveRoom(id);
 				// epmty msg list
 				if (setMsgList) {
 					// TODO save the msgList into database before removing it.
-					// No, this task should be assigned to backend server.
-					// OR, checkout createPost mutation(rtk)
+					//  this task should be assigned to backend server.
+
 					setMsgList([]);
 				}
 			};
@@ -57,7 +55,7 @@ const Conversation = ({}: Props) => {
 	}
 
 	return (
-		<div className="">
+		<div className="relative max-h-96 overflow-scroll">
 			{data &&
 				data.map((msg) => (
 					<li key={msg._id} className="border border-black list-none">
@@ -73,7 +71,9 @@ const Conversation = ({}: Props) => {
 							key={msg + index.toString()}
 							className="border border-black list-none"
 						>
-							{msg.msg}
+							<p>{msg.message}</p>
+							{/* <p>{msg.sender.name}</p> */}
+							<p>{msg.createdAt}</p>
 						</li>
 					);
 				})}
