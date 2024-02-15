@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { messageService } from "../service/messageService";
-import { TSocketMsgDb } from "..";
 import { Types } from "mongoose";
 import { TMessage } from "../models/MessageModel";
+import { TSocketMsgDb } from "../types/socketMsgs";
 
 class MessageController {
 	async postMessage(req: Request, res: Response, next: NextFunction) {

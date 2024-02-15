@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
-import { TSocketMsgDb } from "..";
 import { messageRepository } from "../dataAccess/messageRepository";
 import { TError, TSuccess } from "../types/serviceReturnTypes";
+import { TSocketMsgDb } from "../types/socketMsgs";
 
 class MessageService {
 	async postMessage({
