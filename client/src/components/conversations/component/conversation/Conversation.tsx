@@ -4,14 +4,17 @@ import { RootState } from "../../../../redux/store/store";
 import { useGetMessageByChatIdQuery } from "../../../../api/chats";
 import { setErrorMsg } from "../../../../redux/reducers/alertSlice";
 import { TError } from "../../../../types/error";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../../../context/SocketProvider";
+import { TMessage } from "../../../../types/message";
 
 type Props = {};
-
+const LIMIT = 5;
 const Conversation = ({}: Props) => {
 	const { id } = useParams();
-
+	const [messages, setMessages] = useState<TMessage[]>([]);
+	const [page, setPage] = useState<number>(0);
+	const [endOfMessage, setEndOfMessage] = useState(false);
 	const dispatch = useDispatch();
 	// console.log("conversation-chatId", id);
 	const { accessToken } = useSelector((state: RootState) => state.auth);
@@ -19,10 +22,35 @@ const Conversation = ({}: Props) => {
 	const { msgList, joinRoom, leaveRoom, setMsgList } =
 		useContext(SocketContext);
 
-	const { data, error, isLoading } = useGetMessageByChatIdQuery({
+	const paginate = () => {
+		setPage((prev) => prev + LIMIT);
+	};
+
+	const { data, error, isLoading, currentData } = useGetMessageByChatIdQuery({
 		accessToken,
 		chatId: id || "",
+		offset: page,
+		limit: LIMIT,
 	});
+
+	useEffect(() => {
+		console.log("currentData", currentData);
+		if (currentData?.length == 0) {
+			//TODO
+			// set a message that this is the end of all the messages
+			setEndOfMessage(true);
+		}
+	}, [currentData]);
+
+	useEffect(() => {
+		if (data) {
+			const reversedData = [...data].reverse();
+			// console.log("reversedData", reversedData);
+			setMessages((prev) => {
+				return [...reversedData, ...prev];
+			});
+		}
+	}, [data]);
 
 	useEffect(() => {
 		if (id) {
@@ -37,7 +65,11 @@ const Conversation = ({}: Props) => {
 					// TODO save the msgList into database before removing it.
 					//  this task should be assigned to backend server.
 
+					// resetting
 					setMsgList([]);
+					setMessages([]);
+					setPage(0);
+					setEndOfMessage(false);
 				}
 			};
 		}
@@ -56,13 +88,16 @@ const Conversation = ({}: Props) => {
 
 	return (
 		<div className="relative max-h-96 overflow-scroll">
-			{data &&
-				data.map((msg) => (
-					<li key={msg._id} className="border border-black list-none">
-						<div>{msg.message}</div>
-						<div>{msg.createdAt.toString()}</div>
-					</li>
-				))}
+			<button onClick={paginate} className="btn btn-primary">
+				fetch
+			</button>
+			{endOfMessage && <p>No more messages available</p>}
+			{messages.map((msg) => (
+				<li key={msg._id} className="border border-black list-none">
+					<div>{msg.message}</div>
+					<div>{msg.createdAt.toString()}</div>
+				</li>
+			))}
 			{msgList &&
 				msgList.length > 0 &&
 				msgList.map((msg, index) => {

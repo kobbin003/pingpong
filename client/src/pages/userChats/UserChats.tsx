@@ -68,7 +68,14 @@ export const UserChats = ({}: Props) => {
 	};
 
 	useEffect(() => {
-		//* refetch token every 55 min(firebase accessToken has 1 hr life)
+		//* step-1: fetch the token whenever the component is refreshed:
+		auth.currentUser?.getIdToken(true).then((token) => {
+			const accessToken = token as string;
+			console.log("access-token-refetched", accessToken);
+			dispatch(setAccessToken(accessToken));
+		});
+
+		//* step-2: refetch token every 55 min(firebase accessToken has 1 hr life)
 		//* and store it in auth store as accessToken
 
 		// 55 min = 55 * 60sec = 55 * 60 * 1000ms = 3300000ms
@@ -83,6 +90,7 @@ export const UserChats = ({}: Props) => {
 		}, 33e5);
 
 		return () => {
+			//* step-3: remove the fetchInterval handler
 			console.log("interval removed");
 			return clearInterval(fetchTokenInterval);
 		};

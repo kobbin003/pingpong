@@ -6,7 +6,6 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import { VITE_BASE_URL } from "../utils/env";
 import { TError } from "../types/error";
-// import { BASE_URL } from "../utils/env";
 
 // Define a service using a base URL and expected endpoints
 export const welcomeApi = createApi({

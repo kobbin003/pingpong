@@ -34,8 +34,15 @@ class ChatController {
 	async getChatMessages(req: Request, res: Response, next: NextFunction) {
 		const { firebaseId: userId } = req;
 		const chatId = req.params.id;
+		const offset = req.query.offset;
+		const limit = req.query.limit;
 		try {
-			const chats = await chatService.getMessagesByChatId({ chatId, userId });
+			const chats = await chatService.getMessagesByChatId({
+				chatId,
+				userId,
+				offset: Number(offset),
+				limit: Number(limit),
+			});
 			if ("error" in chats) {
 				res.status(chats.status);
 				throw new Error(chats.errMsg);

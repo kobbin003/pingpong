@@ -17,10 +17,10 @@ export const chatsApi = createApi({
 		}),
 		getMessageByChatId: builder.query<
 			TMessage[],
-			{ accessToken: string; chatId: string }
+			{ accessToken: string; chatId: string; offset: number; limit: number }
 		>({
-			query: ({ accessToken, chatId }) => ({
-				url: `/${chatId}/messages`,
+			query: ({ accessToken, chatId, offset, limit }) => ({
+				url: `/${chatId}/messages?offset=${offset}&limit=${limit}`,
 				headers: { Authorization: `Bearer ${accessToken}` },
 			}),
 			keepUnusedDataFor: 1,

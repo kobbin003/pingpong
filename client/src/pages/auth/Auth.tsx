@@ -7,13 +7,12 @@ import AuthButton from "../../components/AuthButton/AuthButton";
 import googleLogin from "../../firebase/authHandlers/googleLogin";
 import EmailLinkForm from "../../components/authform/EmailLinkForm";
 import { setAccessToken } from "../../redux/reducers/authSlice";
-import Trial from "../../components/Trial";
+import { useGetWelcomeQuery } from "../../api/welcomeQuery";
 
 type Props = {};
 // console.log("vite-base url", VITE_BASE_URL);
 const Auth = (_: Props) => {
 	const { pathname } = useLocation();
-
 	const dispatch = useDispatch();
 
 	const navigate = useNavigate();

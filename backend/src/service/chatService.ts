@@ -72,14 +72,20 @@ class ChatService {
 	async getMessagesByChatId({
 		chatId,
 		userId,
+		limit,
+		offset,
 	}: {
 		chatId: string;
 		userId: string;
+		limit: number;
+		offset: number;
 	}): Promise<TSuccess | TError> {
 		try {
 			const messages = await messageRepository.findUserMessageByChatId({
 				chatId,
 				userId,
+				limit,
+				offset,
 			});
 			// console.log("messages", messages);
 			// console.log("userId", userId);
@@ -87,6 +93,10 @@ class ChatService {
 			if (!messages) {
 				return { error: true, status: 404, errMsg: "not foundddd" };
 			}
+			// if(messages.length==0){
+
+			// 	return { status: 200, data: messages };
+			// }
 			return { status: 200, data: messages };
 		} catch (error) {
 			return { error: true, status: 400, errMsg: error.message };

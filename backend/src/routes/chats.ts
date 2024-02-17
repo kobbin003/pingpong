@@ -16,6 +16,7 @@ router.get("/", firebaseAuth, chatController.getUserChats);
 // router.get("/:id", firebaseAuth, getChat);
 
 // get messages of a chat(chatId)
+// query: offset:number; limit:number
 router.get("/:id/messages", firebaseAuth, chatController.getChatMessages);
 
 // get messages of all chat of a user
