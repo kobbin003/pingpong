@@ -16,14 +16,17 @@ const Conversation = ({}: Props) => {
 	const [page, setPage] = useState<number>(0);
 	const [endOfMessage, setEndOfMessage] = useState(false);
 	const dispatch = useDispatch();
-	// console.log("conversation-chatId", id);
 	const { accessToken } = useSelector((state: RootState) => state.auth);
 
 	const { msgList, joinRoom, leaveRoom, setMsgList } =
 		useContext(SocketContext);
 
 	const paginate = () => {
-		setPage((prev) => prev + LIMIT);
+		const newSocketMsgs = msgList.length;
+		// offset will get incremented by the number of new socket messaages in current session/component-mount
+
+		setPage((prev) => prev + newSocketMsgs + LIMIT);
+		// console.log("socket messages", msgList.length);
 	};
 
 	const { data, error, isLoading, currentData } = useGetMessageByChatIdQuery({
@@ -62,10 +65,7 @@ const Conversation = ({}: Props) => {
 				leaveRoom(id);
 				// epmty msg list
 				if (setMsgList) {
-					// TODO save the msgList into database before removing it.
-					//  this task should be assigned to backend server.
-
-					// resetting
+					// resettings
 					setMsgList([]);
 					setMessages([]);
 					setPage(0);
@@ -74,10 +74,6 @@ const Conversation = ({}: Props) => {
 			};
 		}
 	}, [id]);
-
-	if (isLoading) {
-		return <p>Loading...</p>;
-	}
 
 	if (error) {
 		const myError = error as TError;
@@ -91,6 +87,7 @@ const Conversation = ({}: Props) => {
 			<button onClick={paginate} className="btn btn-primary">
 				fetch
 			</button>
+			{isLoading && <p>Loading...</p>}
 			{endOfMessage && <p>No more messages available</p>}
 			{messages.map((msg) => (
 				<li key={msg._id} className="border border-black list-none">

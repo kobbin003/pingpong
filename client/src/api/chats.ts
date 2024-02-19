@@ -28,4 +28,8 @@ export const chatsApi = createApi({
 	}),
 });
 
-export const { useGetUserChatsQuery, useGetMessageByChatIdQuery } = chatsApi;
+export const {
+	useGetUserChatsQuery,
+	useGetMessageByChatIdQuery,
+	useLazyGetMessageByChatIdQuery,
+} = chatsApi;
