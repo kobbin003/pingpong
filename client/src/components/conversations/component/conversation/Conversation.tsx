@@ -4,7 +4,7 @@ import { RootState } from "../../../../redux/store/store";
 import { useGetMessageByChatIdQuery } from "../../../../api/chats";
 import { setErrorMsg } from "../../../../redux/reducers/alertSlice";
 import { TError } from "../../../../types/error";
-import { useContext, useEffect, useState } from "react";
+import { UIEvent, useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../../../context/SocketProvider";
 import { TMessage } from "../../../../types/message";
 
@@ -36,6 +36,10 @@ const Conversation = ({}: Props) => {
 		limit: LIMIT,
 	});
 
+	const handleMsgListScroll = (e: UIEvent<HTMLDivElement>) => {
+		console.log("scroll", e);
+	};
+	// look for end message
 	useEffect(() => {
 		console.log("currentData", currentData);
 		if (currentData?.length == 0) {
@@ -45,6 +49,7 @@ const Conversation = ({}: Props) => {
 		}
 	}, [currentData]);
 
+	// update msgList on new data
 	useEffect(() => {
 		if (data) {
 			const reversedData = [...data].reverse();
@@ -55,6 +60,23 @@ const Conversation = ({}: Props) => {
 		}
 	}, [data]);
 
+	// resetting initial states
+	useEffect(() => {
+		if (id) {
+			return () => {
+				// resetting initial states
+				// epmty msg list
+				if (setMsgList) {
+					setMsgList([]);
+				}
+				setMessages([]);
+				setPage(0);
+				setEndOfMessage(false);
+			};
+		}
+	}, [id]);
+
+	//room joining-leaving
 	useEffect(() => {
 		if (id) {
 			console.log("room joined", id);
@@ -63,14 +85,6 @@ const Conversation = ({}: Props) => {
 				console.log("room left", id);
 				console.log("change in id this is where I am supposed to save msgList");
 				leaveRoom(id);
-				// epmty msg list
-				if (setMsgList) {
-					// resettings
-					setMsgList([]);
-					setMessages([]);
-					setPage(0);
-					setEndOfMessage(false);
-				}
 			};
 		}
 	}, [id]);
@@ -83,9 +97,15 @@ const Conversation = ({}: Props) => {
 	}
 
 	return (
-		<div className="relative max-h-96 overflow-scroll">
-			<button onClick={paginate} className="btn btn-primary">
-				fetch
+		<div
+			className="overflow-auto "
+			// onScroll={handleMsgListScroll}
+		>
+			<button
+				onClick={paginate}
+				className="text-center w-full text-blue-400 font-normal"
+			>
+				View old messages
 			</button>
 			{isLoading && <p>Loading...</p>}
 			{endOfMessage && <p>No more messages available</p>}

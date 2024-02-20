@@ -19,21 +19,24 @@ const Conversations = ({}: Props) => {
 	// 	/* check if user has friends */
 	// 	setNewUserWithNoFriend(true);
 	// }, []);
-
+	console.log("showConversation");
 	return (
-		<div className="relative bg-yellow-300 flex-1 ">
+		<div className="relative bg-yellow-300 flex-1">
 			<div className="bg-blue-500 flex justify-end">
 				<button
-					className="sm:hidden"
+					className="sm:hidden fixed btn"
 					onClick={() => {
-						setShowConversation(false);
+						console.log("clicked");
+						setShowConversation((prev) => !prev);
 					}}
 				>
 					back
 				</button>
 			</div>
-			{id == "welcome" ? <Welcome /> : <Conversation />}
-			<MsgSendForm />
+			<div className="h-screen max-h-screen flex flex-col justify-between">
+				{id == "welcome" ? <Welcome /> : <Conversation />}
+				{id !== "welcome" && <MsgSendForm />}
+			</div>
 		</div>
 	);
 };

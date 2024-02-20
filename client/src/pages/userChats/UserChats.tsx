@@ -102,10 +102,10 @@ export const UserChats = ({}: Props) => {
 			) : (
 				<SocketProvider>
 					<div className="flex flex-col h-screen" data-theme="cupcake">
-						<button onClick={handleSignout}>signout</button>
+						{/* <button onClick={handleSignout}>signout</button> */}
 
 						<ShowConversationProvider>
-							<div className="flex h-full bg-green-200">
+							<div className="flex h-full">
 								<ChatNav />
 								<Conversations />
 							</div>

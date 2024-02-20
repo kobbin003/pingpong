@@ -7,3 +7,25 @@
 	padding: 0;
 	box-sizing: border-box;
 }
+/* width */
+::-webkit-scrollbar {
+	width: 9px;
+	/* background-color: red; */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	background-color: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 3px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}

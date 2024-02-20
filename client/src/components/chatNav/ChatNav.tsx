@@ -23,12 +23,13 @@ const ChatNav = ({}: Props) => {
 	};
 
 	const CurrentTab = tabs[tab] ?? ChatsList;
+	console.log("showConversation", showConversation);
 
 	return (
 		<div
 			className={`${
 				showConversation ? "hidden sm:block" : "block"
-			} fixed w-full sm:w-max sm:relative h-full bg-orange-300`}
+			} fixed w-full sm:w-max sm:relative h-full bg-orange-300 z-10 px-2`}
 		>
 			<div className="bg-red-300 h-full">
 				<div className="flex gap-2">
@@ -48,6 +49,7 @@ const ChatNav = ({}: Props) => {
 				<CurrentTab />
 			</div>
 		</div>
+		// <div>{showConversation ? <p>show</p> : <p>dont show</p>}</div>
 	);
 };
 

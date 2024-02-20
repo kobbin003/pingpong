@@ -28,7 +28,8 @@ const MsgSendForm = () => {
 	};
 
 	return (
-		<div className="absolute w-full bottom-0 bg-green-500">
+		<div className="bg-green-500/30">
+			{/* <div className="absolute w-full bottom-0 bg-green-500"> */}
 			<form onSubmit={sendMsg}>
 				<input type="text" value={msg} onChange={handleMsgInput} />
 				<button type="submit">send</button>
