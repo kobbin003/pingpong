@@ -11,7 +11,7 @@ const ChatListItem = ({ chat }: Props) => {
 		_id: chatId,
 		relation: { participants },
 	} = chat;
-
+	const { name, profilePicUrl, status, _id: contactId } = participants[0];
 	const { setShowConversation } = useContext(ShowConversationContext);
 
 	const profileModalRef = useRef<HTMLDialogElement>(null);
@@ -35,17 +35,21 @@ const ChatListItem = ({ chat }: Props) => {
 					to={`/user/chat/${chatId}`}
 					className=""
 					onClick={handleChatSelection}
+					state={{ contact: name }}
 				>
 					<div>
 						<img
-							src="/src/assets/defaultProfilePic.svg"
+							src={profilePicUrl && "/src/assets/defaultProfilePic.svg"}
 							alt=""
 							height={20}
 							width={20}
 							onClick={showProfileModal}
 						/>
 					</div>
-					{participants[0].name}
+					<div>
+						<p>{name}</p>
+						<p>{status}</p>
+					</div>
 				</Link>
 			</li>
 			<ProfileModal ref={profileModalRef} />

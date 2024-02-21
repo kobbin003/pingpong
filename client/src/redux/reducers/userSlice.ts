@@ -23,6 +23,7 @@ export const userSlice = createSlice({
 	reducers: {
 		setUser: (state, action: PayloadAction<TUserProfile>) => {
 			const { payload } = action;
+			console.log("setUser triggered!!!");
 			return { ...state, ...payload };
 		},
 		updateUser: (state, action: PayloadAction<Partial<TUserProfile>>) => {

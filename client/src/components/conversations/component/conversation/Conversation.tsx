@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { RootState } from "../../../../redux/store/store";
 import { useGetMessageByChatIdQuery } from "../../../../api/chats";
 import { setErrorMsg } from "../../../../redux/reducers/alertSlice";
@@ -7,10 +7,14 @@ import { TError } from "../../../../types/error";
 import { UIEvent, useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../../../context/SocketProvider";
 import { TMessage } from "../../../../types/message";
+import ChatBubble from "../../../chatbubble/ChatBubble";
 
 type Props = {};
 const LIMIT = 5;
 const Conversation = ({}: Props) => {
+	const { state } = useLocation() as { state: { contact: string } };
+	const [contact, setContact] = useState(state.contact);
+	// console.log("state", state);
 	const { id } = useParams();
 	const [messages, setMessages] = useState<TMessage[]>([]);
 	const [page, setPage] = useState<number>(0);
@@ -36,12 +40,9 @@ const Conversation = ({}: Props) => {
 		limit: LIMIT,
 	});
 
-	const handleMsgListScroll = (e: UIEvent<HTMLDivElement>) => {
-		console.log("scroll", e);
-	};
 	// look for end message
 	useEffect(() => {
-		console.log("currentData", currentData);
+		// console.log("currentData", currentData);
 		if (currentData?.length == 0) {
 			//TODO
 			// set a message that this is the end of all the messages
@@ -55,7 +56,10 @@ const Conversation = ({}: Props) => {
 			const reversedData = [...data].reverse();
 			// console.log("reversedData", reversedData);
 			setMessages((prev) => {
-				return [...reversedData, ...prev];
+				if (reversedData !== prev) {
+					return [...reversedData, ...prev];
+				}
+				return prev;
 			});
 		}
 	}, [data]);
@@ -79,11 +83,11 @@ const Conversation = ({}: Props) => {
 	//room joining-leaving
 	useEffect(() => {
 		if (id) {
-			console.log("room joined", id);
+			// console.log("room joined", id);
 			joinRoom(id);
 			return () => {
-				console.log("room left", id);
-				console.log("change in id this is where I am supposed to save msgList");
+				// console.log("room left", id);
+				// console.log("change in id this is where I am supposed to save msgList");
 				leaveRoom(id);
 			};
 		}
@@ -97,10 +101,7 @@ const Conversation = ({}: Props) => {
 	}
 
 	return (
-		<div
-			className="overflow-auto "
-			// onScroll={handleMsgListScroll}
-		>
+		<div className="overflow-auto ">
 			<button
 				onClick={paginate}
 				className="text-center w-full text-blue-400 font-normal"
@@ -109,12 +110,22 @@ const Conversation = ({}: Props) => {
 			</button>
 			{isLoading && <p>Loading...</p>}
 			{endOfMessage && <p>No more messages available</p>}
-			{messages.map((msg) => (
-				<li key={msg._id} className="border border-black list-none">
-					<div>{msg.message}</div>
-					<div>{msg.createdAt.toString()}</div>
-				</li>
-			))}
+			{messages.map((msg) => {
+				const { message, createdAt, sender } = msg;
+				// console.log("contact in map-change", contact);
+				return (
+					<li key={msg._id} className="list-none">
+						{/* <div>{msg.message}</div>
+					<div>{msg.createdAt.toString()}</div> */}
+						<ChatBubble
+							msg={message}
+							// sender={state.contact}
+							sender={{ id: sender, name: contact }}
+							time={createdAt.toString()}
+						/>
+					</li>
+				);
+			})}
 			{msgList &&
 				msgList.length > 0 &&
 				msgList.map((msg, index) => {
@@ -123,9 +134,11 @@ const Conversation = ({}: Props) => {
 							key={msg + index.toString()}
 							className="border border-black list-none"
 						>
-							<p>{msg.message}</p>
-							{/* <p>{msg.sender.name}</p> */}
-							<p>{msg.createdAt}</p>
+							<ChatBubble
+								msg={msg.message}
+								time={msg.createdAt}
+								sender={{ id: msg.sender, name: contact }}
+							/>
 						</li>
 					);
 				})}

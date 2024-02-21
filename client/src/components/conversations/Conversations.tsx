@@ -19,7 +19,6 @@ const Conversations = ({}: Props) => {
 	// 	/* check if user has friends */
 	// 	setNewUserWithNoFriend(true);
 	// }, []);
-	console.log("showConversation");
 	return (
 		<div className="relative bg-yellow-300 flex-1">
 			<div className="bg-blue-500 flex justify-end">

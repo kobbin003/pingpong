@@ -22,33 +22,66 @@ export const UserChats = ({}: Props) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const { accessToken } = useSelector((state: RootState) => state.auth);
-	const { data, error, isLoading, isSuccess } = useGetUserProfileQuery(
+	const { data, error, isLoading, status } = useGetUserProfileQuery(
 		{ accessToken },
 		{ skip: !accessToken }
+		// {onSucc}
 	);
 	if (error) {
 		console.log("userchats error", error);
 	}
 	// console.log("rest", rest);
 	// console.log("userprofile-data", data, error, isLoading);
+	if (data && status == "fulfilled") {
+		const { name, email, email_verified, status, profilePicUrl, _id } = data;
+		// console.log(
+		// 	"userprofile-data",
+		// 	name,
+		// 	email,
+		// 	email_verified,
+		// 	status,
+		// 	profilePicUrl,
+		// 	_id
+		// );
+		dispatch(
+			setUser({
+				name,
+				email,
+				email_verified,
+				status,
+				profilePicUrl: profilePicUrl || "",
+				uid: _id,
+			})
+		);
+	}
 	//***** */
-	useEffect(() => {
-		if (isSuccess) {
-			const { name, email, email_verified, status, profilePicUrl, _id } = data;
-			if (profilePicUrl) {
-				dispatch(
-					setUser({
-						name,
-						email,
-						email_verified,
-						status,
-						profilePicUrl,
-						uid: _id,
-					})
-				);
-			}
-		}
-	}, [isSuccess]);
+	// useEffect(() => {
+	// 	console.log("status-change", status);
+	// 	if (status == "fulfilled" && data) {
+	// 		const { name, email, email_verified, status, profilePicUrl, _id } = data;
+	// 		console.log(
+	// 			"userprofile-data",
+	// 			name,
+	// 			email,
+	// 			email_verified,
+	// 			status,
+	// 			profilePicUrl,
+	// 			_id
+	// 		);
+	// 		// if (profilePicUrl) {
+	// 		dispatch(
+	// 			setUser({
+	// 				name,
+	// 				email,
+	// 				email_verified,
+	// 				status,
+	// 				profilePicUrl: profilePicUrl || "",
+	// 				uid: _id,
+	// 			})
+	// 		);
+	// 		// }
+	// 	}
+	// }, [data]);
 	//***** */
 	// const [showConversation, setShowConversation] = useState(false);
 	// onAuthStateChanged(auth, (user) => {
@@ -102,7 +135,9 @@ export const UserChats = ({}: Props) => {
 			) : (
 				<SocketProvider>
 					<div className="flex flex-col h-screen" data-theme="cupcake">
-						{/* <button onClick={handleSignout}>signout</button> */}
+						<button onClick={handleSignout} className="fixed z-20 right-0 btn">
+							signout
+						</button>
 
 						<ShowConversationProvider>
 							<div className="flex h-full">
