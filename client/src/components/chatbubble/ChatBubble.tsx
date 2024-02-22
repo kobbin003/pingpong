@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store/store";
 import { dateFormatter } from "../../utils/dateFormatter";
@@ -10,7 +9,7 @@ type Props = {
 };
 
 const ChatBubble = ({ msg, sender, time }: Props) => {
-	const { hr, min, sec, day, month, year } = dateFormatter(new Date(time));
+	const { hr, min } = dateFormatter(new Date(time));
 	// console.log("formatted date", hr, min, sec);
 	const { uid } = useSelector((state: RootState) => state.user);
 	const chatType = uid == sender.id ? "chat-end" : "chat-start";
@@ -20,12 +19,11 @@ const ChatBubble = ({ msg, sender, time }: Props) => {
 	return (
 		// <div className={`chat chat-start`}>
 		<div className={`chat ${chatType}`}>
-			<p className="chat-header">{senderName}</p>
-			<p className={`chat-bubble ${bubbleType}`}>
+			<p className="chat-header pb-1">{senderName}</p>
+			<p className={`chat-bubble ${bubbleType} text-white`}>
 				{msg}&nbsp;
 				<time className="text-xs">{`${hr}:${min}`}</time>
 			</p>
-			{/* <p>{time.toString()}</p> */}
 		</div>
 	);
 };

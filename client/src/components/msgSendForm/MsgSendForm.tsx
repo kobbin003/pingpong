@@ -28,11 +28,22 @@ const MsgSendForm = () => {
 	};
 
 	return (
-		<div className="bg-green-500/30">
+		<div className="p-2 w-full">
 			{/* <div className="absolute w-full bottom-0 bg-green-500"> */}
-			<form onSubmit={sendMsg}>
-				<input type="text" value={msg} onChange={handleMsgInput} />
-				<button type="submit">send</button>
+			<form onSubmit={sendMsg} className=" flex gap-2 ">
+				<input
+					type="text"
+					value={msg}
+					onChange={handleMsgInput}
+					className="flex-1 caret-black p-2 w-4/5"
+					placeholder="type a message"
+				/>
+				<button
+					type="submit"
+					className="text-center bg-slate-700/90 px-3 text-white rounded-sm"
+				>
+					send
+				</button>
 			</form>
 		</div>
 	);

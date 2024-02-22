@@ -11,6 +11,14 @@ const ChatsList = ({}: Props) => {
 
 	const { data, error, isLoading } = useGetUserChatsQuery({ accessToken });
 	// console.log("chats", data, error, isLoading);
+	if (isLoading) {
+		return <p>Loading...</p>;
+	}
+
+	if (error) {
+		console.log("ChatsList-error", error);
+	}
+
 	return (
 		<ul className="list-none">
 			{data && data.map((chat) => <ChatListItem chat={chat} key={chat._id} />)}

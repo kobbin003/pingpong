@@ -4,16 +4,17 @@ import { RootState } from "../../../../redux/store/store";
 import { useGetMessageByChatIdQuery } from "../../../../api/chats";
 import { setErrorMsg } from "../../../../redux/reducers/alertSlice";
 import { TError } from "../../../../types/error";
-import { UIEvent, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../../../context/SocketProvider";
 import { TMessage } from "../../../../types/message";
 import ChatBubble from "../../../chatbubble/ChatBubble";
+import { dateFormatter } from "../../../../utils/dateFormatter";
 
 type Props = {};
 const LIMIT = 5;
 const Conversation = ({}: Props) => {
 	const { state } = useLocation() as { state: { contact: string } };
-	const [contact, setContact] = useState(state.contact);
+	const [contact, _] = useState(state.contact);
 	// console.log("state", state);
 	const { id } = useParams();
 	const [messages, setMessages] = useState<TMessage[]>([]);
@@ -101,25 +102,25 @@ const Conversation = ({}: Props) => {
 	}
 
 	return (
-		<div className="overflow-auto ">
+		<div className="overflow-auto px-2">
 			<button
 				onClick={paginate}
-				className="text-center w-full text-blue-400 font-normal"
+				className="text-center w-full text-blue-400 font-normal py-2 text-sm tracking-wide"
 			>
-				View old messages
+				view old messages
 			</button>
 			{isLoading && <p>Loading...</p>}
 			{endOfMessage && <p>No more messages available</p>}
 			{messages.map((msg) => {
 				const { message, createdAt, sender } = msg;
-				// console.log("contact in map-change", contact);
+				const { day, month, year } = dateFormatter(new Date(createdAt));
 				return (
-					<li key={msg._id} className="list-none">
-						{/* <div>{msg.message}</div>
-					<div>{msg.createdAt.toString()}</div> */}
+					<li key={msg._id} className="list-none  flex flex-col">
+						<p className="self-center text-xs text-slate-400/80">
+							{day}/{month}/{year}
+						</p>
 						<ChatBubble
 							msg={message}
-							// sender={state.contact}
 							sender={{ id: sender, name: contact }}
 							time={createdAt.toString()}
 						/>
@@ -132,8 +133,9 @@ const Conversation = ({}: Props) => {
 					return (
 						<li
 							key={msg + index.toString()}
-							className="border border-black list-none"
+							className="list-none flex flex-col"
 						>
+							<p className="self-center text-xs text-slate-400/80">Today</p>
 							<ChatBubble
 								msg={msg.message}
 								time={msg.createdAt}

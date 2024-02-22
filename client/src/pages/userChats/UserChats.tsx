@@ -5,7 +5,7 @@ import { ShowConversationProvider } from "../../context/ShowConversationProvider
 import { useNavigate } from "react-router-dom";
 import { removeUser, setUser } from "../../redux/reducers/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { onAuthStateChanged } from "firebase/auth";
+// import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { useGetUserProfileQuery } from "../../api/users";
 import { RootState } from "../../redux/store/store";
@@ -32,57 +32,31 @@ export const UserChats = ({}: Props) => {
 	}
 	// console.log("rest", rest);
 	// console.log("userprofile-data", data, error, isLoading);
-	if (data && status == "fulfilled") {
-		const { name, email, email_verified, status, profilePicUrl, _id } = data;
-		// console.log(
-		// 	"userprofile-data",
-		// 	name,
-		// 	email,
-		// 	email_verified,
-		// 	status,
-		// 	profilePicUrl,
-		// 	_id
-		// );
-		dispatch(
-			setUser({
-				name,
-				email,
-				email_verified,
-				status,
-				profilePicUrl: profilePicUrl || "",
-				uid: _id,
-			})
-		);
-	}
-	//***** */
-	// useEffect(() => {
-	// 	console.log("status-change", status);
-	// 	if (status == "fulfilled" && data) {
-	// 		const { name, email, email_verified, status, profilePicUrl, _id } = data;
-	// 		console.log(
-	// 			"userprofile-data",
-	// 			name,
-	// 			email,
-	// 			email_verified,
-	// 			status,
-	// 			profilePicUrl,
-	// 			_id
-	// 		);
-	// 		// if (profilePicUrl) {
-	// 		dispatch(
-	// 			setUser({
-	// 				name,
-	// 				email,
-	// 				email_verified,
-	// 				status,
-	// 				profilePicUrl: profilePicUrl || "",
-	// 				uid: _id,
-	// 			})
-	// 		);
-	// 		// }
-	// 	}
-	// }, [data]);
-	//***** */
+	useEffect(() => {
+		if (data && status == "fulfilled") {
+			const { name, email, email_verified, status, profilePicUrl, _id } = data;
+			// console.log(
+			// 	"userprofile-data",
+			// 	name,
+			// 	email,
+			// 	email_verified,
+			// 	status,
+			// 	profilePicUrl,
+			// 	_id
+			// );
+			dispatch(
+				setUser({
+					name,
+					email,
+					email_verified,
+					status,
+					profilePicUrl: profilePicUrl || "",
+					uid: _id,
+				})
+			);
+		}
+	}, [data]);
+
 	// const [showConversation, setShowConversation] = useState(false);
 	// onAuthStateChanged(auth, (user) => {
 	// 	if (user) {

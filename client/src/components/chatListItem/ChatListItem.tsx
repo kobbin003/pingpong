@@ -11,7 +11,8 @@ const ChatListItem = ({ chat }: Props) => {
 		_id: chatId,
 		relation: { participants },
 	} = chat;
-	const { name, profilePicUrl, status, _id: contactId } = participants[0];
+	const { name, profilePicUrl, status } = participants[0];
+	console.log("profile pic url", profilePicUrl);
 	const { setShowConversation } = useContext(ShowConversationContext);
 
 	const profileModalRef = useRef<HTMLDialogElement>(null);
@@ -30,25 +31,26 @@ const ChatListItem = ({ chat }: Props) => {
 	};
 	return (
 		<>
-			<li className="my-2 flex items-center">
+			<li className="my-2 flex items-center text-sm border-b border-b-black/10 pb-2">
 				<Link
 					to={`/user/chat/${chatId}`}
-					className=""
+					className="flex gap-2"
 					onClick={handleChatSelection}
 					state={{ contact: name }}
 				>
-					<div>
+					<div className=" flex items-center">
 						<img
-							src={profilePicUrl && "/src/assets/defaultProfilePic.svg"}
+							src={profilePicUrl || "/src/assets/defaultProfilePic.svg"}
 							alt=""
-							height={20}
-							width={20}
+							className=" h-12 w-12"
+							// className="h-14 w-14"
 							onClick={showProfileModal}
 						/>
 					</div>
-					<div>
+					<div className="flex flex-col gap-1">
 						<p>{name}</p>
-						<p>{status}</p>
+						<p className="">{status}</p>
+						{/* <p className=" max-w-[220px] truncate overflow-hidden">{status}</p> */}
 					</div>
 				</Link>
 			</li>
