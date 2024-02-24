@@ -9,13 +9,13 @@
 	padding: 10px;
 	padding-right: 15px;
 	> button {
-		background-color: transparent;
+		/* background-color: transparent; */
 		color: #767676;
 	}
 	> button:hover {
 		color: black;
 	}
-	background-color: violet;
+	/* background-color: violet; */
 	/* border: 1px solid red; */
 }
 #searchbar__container > img {
@@ -29,7 +29,8 @@
 
 #searchbar {
 	width: 80%;
-	background-color: #eeeeee;
+	/* background-color: #eeeeee; */
+	background-color: transparent;
 	padding: 0.1rem;
 	font-size: 10px;
 	padding-right: 5px;

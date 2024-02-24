@@ -4,16 +4,19 @@ import { RootState } from "../../../../redux/store/store";
 import { useGetMessageByChatIdQuery } from "../../../../api/chats";
 import { setErrorMsg } from "../../../../redux/reducers/alertSlice";
 import { TError } from "../../../../types/error";
-import { useContext, useEffect, useState } from "react";
+import { MouseEvent, useContext, useEffect, useRef, useState } from "react";
 import { SocketContext } from "../../../../context/SocketProvider";
 import { TMessage } from "../../../../types/message";
 import ChatBubble from "../../../chatbubble/ChatBubble";
 import { dateFormatter } from "../../../../utils/dateFormatter";
+import ProfileModal from "../../../modal/ProfileModal";
 
 type Props = {};
 const LIMIT = 5;
 const Conversation = ({}: Props) => {
-	const { state } = useLocation() as { state: { contact: string } };
+	const { state } = useLocation() as {
+		state: { contact: string; profilePicUrl: string };
+	};
 	const [contact, _] = useState(state.contact);
 	// console.log("state", state);
 	const { id } = useParams();
@@ -34,6 +37,16 @@ const Conversation = ({}: Props) => {
 		// console.log("socket messages", msgList.length);
 	};
 
+	const profileModalRef = useRef<HTMLDialogElement>(null);
+
+	const showProfileModal = (e: MouseEvent<HTMLDivElement>) => {
+		console.log("e-modal", e);
+		e.stopPropagation();
+		e.preventDefault();
+		if (profileModalRef.current) {
+			profileModalRef.current.showModal();
+		}
+	};
 	const { data, error, isLoading, currentData } = useGetMessageByChatIdQuery({
 		accessToken,
 		chatId: id || "",
@@ -102,48 +115,69 @@ const Conversation = ({}: Props) => {
 	}
 
 	return (
-		<div className="overflow-auto px-2">
-			<button
-				onClick={paginate}
-				className="text-center w-full text-blue-400 font-normal py-2 text-sm tracking-wide"
+		<div className="overflow-auto">
+			<div
+				className="w-full bg-slate-500/80 p-2 flex items-center text-sm gap-2 hover:cursor-pointer"
+				onClick={showProfileModal}
 			>
-				view old messages
-			</button>
-			{isLoading && <p>Loading...</p>}
-			{endOfMessage && <p>No more messages available</p>}
-			{messages.map((msg) => {
-				const { message, createdAt, sender } = msg;
-				const { day, month, year } = dateFormatter(new Date(createdAt));
-				return (
-					<li key={msg._id} className="list-none  flex flex-col">
-						<p className="self-center text-xs text-slate-400/80">
-							{day}/{month}/{year}
+				<img
+					src={state.profilePicUrl || "/src/assets/defaultProfilePic.svg"}
+					alt=""
+					className="h-6 w-6 "
+				/>
+				<p className=" ">{state.contact}</p>
+			</div>
+			<ProfileModal ref={profileModalRef} />
+			<div className="px-2">
+				<div className="flex justify-center py-1">
+					{endOfMessage ? (
+						<p className="text-center w-max text-blue-400 font-normal py-2 text-sm tracking-wide">
+							No more messages available
 						</p>
-						<ChatBubble
-							msg={message}
-							sender={{ id: sender, name: contact }}
-							time={createdAt.toString()}
-						/>
-					</li>
-				);
-			})}
-			{msgList &&
-				msgList.length > 0 &&
-				msgList.map((msg, index) => {
-					return (
-						<li
-							key={msg + index.toString()}
-							className="list-none flex flex-col"
+					) : (
+						<button
+							onClick={paginate}
+							className="text-center w-max text-blue-400 font-normal py-2 text-sm tracking-wide "
 						>
-							<p className="self-center text-xs text-slate-400/80">Today</p>
+							view old messages
+						</button>
+					)}
+				</div>
+				{isLoading && <p>Loading...</p>}
+				{messages.map((msg) => {
+					const { message, createdAt, sender } = msg;
+					const { day, month, year } = dateFormatter(new Date(createdAt));
+					return (
+						<li key={msg._id} className="list-none  flex flex-col">
+							<p className="self-center text-xs text-slate-400/80">
+								{day}/{month}/{year}
+							</p>
 							<ChatBubble
-								msg={msg.message}
-								time={msg.createdAt}
-								sender={{ id: msg.sender, name: contact }}
+								msg={message}
+								sender={{ id: sender, name: contact }}
+								time={createdAt.toString()}
 							/>
 						</li>
 					);
 				})}
+				{msgList &&
+					msgList.length > 0 &&
+					msgList.map((msg, index) => {
+						return (
+							<li
+								key={msg + index.toString()}
+								className="list-none flex flex-col"
+							>
+								<p className="self-center text-xs text-slate-400/80">Today</p>
+								<ChatBubble
+									msg={msg.message}
+									time={msg.createdAt}
+									sender={{ id: msg.sender, name: contact }}
+								/>
+							</li>
+						);
+					})}
+			</div>
 		</div>
 	);
 };

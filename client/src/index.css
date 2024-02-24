@@ -29,3 +29,12 @@
 ::-webkit-scrollbar-thumb:hover {
 	background: #555;
 }
+
+/* auto fill in text input */
+/* input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	-webkit-box-shadow: none;
+} */
+/* -webkit-box-shadow: 0 0 0 30px transparent inset !important; */

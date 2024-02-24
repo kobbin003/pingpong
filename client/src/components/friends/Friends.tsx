@@ -21,7 +21,7 @@ const Friends = ({}: Props) => {
 	const CurrentTab = tabs[tab] ?? FriendsList;
 
 	return (
-		<div className="bg-red-300">
+		<div className="">
 			<div className="flex gap-2">
 				{Object.keys(tabs).map((t) => {
 					const currentTab = t == tab;

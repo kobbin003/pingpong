@@ -5,25 +5,28 @@ import { RootState } from "../../../../redux/store/store";
 type Props = { item: TRelation };
 
 const RequestListItem = ({ item }: Props) => {
-	const recipient = item.participants.filter(
-		(user) => user._id !== item.sender
-	)[0];
+	const { uid } = useSelector((state: RootState) => state.user);
+	const contact = item.participants.filter((user) => user._id !== uid)[0];
 	const sender = item.participants.filter((user) => user._id == item.sender)[0];
-	const user = useSelector((state: RootState) => state.user);
-	const userIsTheSender = recipient._id == user.uid;
-	console.log("user", user);
-	console.log("recipient", recipient);
+	const userIsTheSender = contact._id == uid;
+	console.log("contact", contact);
 	return (
-		<li className="flex flex-col border border-black">
+		<li className="my-2 flex items-center text-sm border-b border-b-black/10 pb-2">
 			{userIsTheSender ? (
-				<div>
-					<p>{recipient.name}</p>
-					<button> {item.status}</button>
+				<div className="w-full flex justify-between">
+					<p>{contact.name}</p>
+					<p className="badge badge-primary"> {item.status}</p>
+				</div>
+			) : item.status == "pending" ? (
+				<div className="flex flex-col gap-1">
+					<p>{sender.name}</p>
+					<button className="btn btn-xs border bg-blue-300 hover:bg-blue-400 rounded-sm w-max lowercase font-normal">
+						accept request
+					</button>
 				</div>
 			) : (
 				<div>
-					<p>{sender.name}</p>
-					<button>accept request: {item.status}</button>
+					<p>request activity not found</p>
 				</div>
 			)}
 		</li>

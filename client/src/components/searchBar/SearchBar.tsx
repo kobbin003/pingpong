@@ -9,8 +9,8 @@ const SearchBar = ({ setSearchQuery: setSearch }: Props) => {
 	>("hidden");
 	const [searchQuery, setSearchQuery] = useState("");
 	const searchInput = useRef<HTMLInputElement>(null);
-	const [containerBackgroundColor, setContainerBackgroundColor] =
-		useState("#eeeeee");
+	// const [containerBackgroundColor, setContainerBackgroundColor] =
+	// 	useState("#eeeeee");
 	const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setSearchQuery(e.target.value);
 
@@ -43,7 +43,7 @@ const SearchBar = ({ setSearchQuery: setSearch }: Props) => {
 	return (
 		<div
 			id="searchbar__container"
-			style={{ backgroundColor: `${containerBackgroundColor}` }}
+			// style={{ backgroundColor: `${containerBackgroundColor}` }}
 		>
 			{/* <img src="/src/assets/search.svg" height={20} width={20} /> */}
 			<input
@@ -53,10 +53,11 @@ const SearchBar = ({ setSearchQuery: setSearch }: Props) => {
 				placeholder="Search friend by email"
 				onChange={handleOnChange}
 				onFocus={() => {
-					setContainerBackgroundColor("transparent");
+					// setContainerBackgroundColor("#eeeeee");
+					// setContainerBackgroundColor("transparent");
 				}}
 				onBlur={() => {
-					setContainerBackgroundColor("#eeeeee");
+					// setContainerBackgroundColor("#eeeeee");
 				}}
 				value={searchQuery}
 			/>

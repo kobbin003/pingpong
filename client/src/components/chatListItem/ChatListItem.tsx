@@ -36,7 +36,7 @@ const ChatListItem = ({ chat }: Props) => {
 					to={`/user/chat/${chatId}`}
 					className="flex gap-2"
 					onClick={handleChatSelection}
-					state={{ contact: name }}
+					state={{ contact: name, profilePicUrl }}
 				>
 					<div className=" flex items-center">
 						<img

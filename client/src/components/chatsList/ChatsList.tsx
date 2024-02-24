@@ -21,7 +21,11 @@ const ChatsList = ({}: Props) => {
 
 	return (
 		<ul className="list-none">
-			{data && data.map((chat) => <ChatListItem chat={chat} key={chat._id} />)}
+			{data ? (
+				data.map((chat) => <ChatListItem chat={chat} key={chat._id} />)
+			) : (
+				<p>l</p>
+			)}
 		</ul>
 	);
 };

@@ -8,7 +8,7 @@ const SearchFriends = ({}: Props) => {
 	const [searchQuery, setSearchQuery] = useState("");
 
 	return (
-		<div>
+		<div className="py-2">
 			<SearchBar setSearchQuery={setSearchQuery} />
 			<SearchFriendsLists searchQuery={searchQuery} />
 		</div>
