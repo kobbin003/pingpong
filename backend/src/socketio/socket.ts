@@ -94,11 +94,12 @@ export class SocketService {
 		io.on("connection", (socket) => {
 			console.log(" client connected: ", socket.id);
 			console.log("user uid", socket.userId);
-
 			/* ---------------------- ROOM ------------------------------- */
 			socket.on("join-room", (roomId, cb) => {
-				console.log(`room joined: ${roomId}`);
 				socket.join(roomId);
+
+				console.log(`room joined: ${roomId}`);
+
 				cb(`room joined`);
 			});
 
@@ -135,12 +136,19 @@ export class SocketService {
 
 					// save the messages in db
 					(async () => {
+						let msg = {
+							msg: { message, sentAt: createdAt, read: false },
+							chatId: roomId,
+							senderId: sender,
+						};
 						try {
-							await messageService.postMessage({
-								msg: { message, sentAt: createdAt },
-								chatId: roomId,
-								senderId: sender,
-							});
+							// TODO: check if this working in app.
+
+							const sockets = await io.in(roomId).fetchSockets();
+							if (sockets.length == 2) {
+								msg.msg.read = true;
+							}
+							await messageService.postMessage(msg);
 							cb({ status: 200, msg: `msg: ${message}  saved` });
 						} catch (error) {
 							cb({ status: 400, msg: `msg: ${message} could not be saved` });

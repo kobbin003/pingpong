@@ -9,7 +9,7 @@ class MessageService {
 		senderId,
 		chatId,
 	}: {
-		msg: { message: string; sentAt: string };
+		msg: { message: string; sentAt: string; read: boolean };
 		senderId: string;
 		chatId: string;
 	}): Promise<TSuccess | TError> {
@@ -25,6 +25,39 @@ class MessageService {
 			}
 
 			return { status: 200, data: message };
+		} catch (error) {
+			return { error: true, status: 400, errMsg: error.message };
+		}
+	}
+
+	async getUnreadMsgs({ chatId, userId }: { chatId: string; userId: string }) {
+		try {
+			const messages = await messageRepository.findMessages({
+				chatId,
+				userId,
+			});
+
+			if (!messages) {
+				return { error: true, status: 400, errMsg: "could not create message" };
+			}
+
+			return { status: 200, data: messages };
+		} catch (error) {
+			return { error: true, status: 400, errMsg: error.message };
+		}
+	}
+	async readUnreadMsgs({ chatId, userId }: { chatId: string; userId: string }) {
+		try {
+			const messages = await messageRepository.readMessages({
+				chatId,
+				userId,
+			});
+
+			if (!messages) {
+				return { error: true, status: 400, errMsg: "could not create message" };
+			}
+
+			return { status: 200, data: messages };
 		} catch (error) {
 			return { error: true, status: 400, errMsg: error.message };
 		}

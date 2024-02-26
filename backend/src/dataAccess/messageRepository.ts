@@ -8,7 +8,7 @@ class MessageRepository {
 		senderId,
 		chatId,
 	}: {
-		msg: { message: string; sentAt: string };
+		msg: { message: string; sentAt: string; read: boolean };
 		senderId: string;
 		chatId: string;
 	}) {
@@ -17,6 +17,7 @@ class MessageRepository {
 			sender: senderId,
 			chat: new Types.ObjectId(chatId),
 			createdAt: new Date(msg.sentAt),
+			read: msg.read,
 		});
 	}
 
@@ -31,6 +32,31 @@ class MessageRepository {
 		/** use insertMany query */
 
 		return MessageModel.insertMany(msgs);
+	}
+
+	async findMessages({ chatId, userId }: { chatId: string; userId: string }) {
+		return await MessageModel.find({
+			chat: chatId,
+			read: false,
+			sender: !userId,
+		});
+	}
+
+	async readMessages({ chatId, userId }: { chatId: string; userId: string }) {
+		return await MessageModel.updateMany(
+			{ chat: chatId, read: false, sender: !userId },
+			{ read: true }
+		);
+		/**
+		 * structure of updateMany result.
+		 * {
+    "acknowledged": true,
+    "modifiedCount": 0,
+    "upsertedId": null,
+    "upsertedCount": 0,
+    "matchedCount": 0
+}
+		 */
 	}
 
 	async findById(msgId: string) {

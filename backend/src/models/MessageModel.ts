@@ -5,6 +5,7 @@ export type TMessage = {
 	message: string;
 	sender: string;
 	chat: mongoose.Types.ObjectId;
+	read: boolean;
 	// createdAt?: string;
 	// updatedAt: Date;
 };
@@ -23,6 +24,10 @@ const messageSchema = new mongoose.Schema<TMessage>(
 		chat: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "chat",
+			required: true,
+		},
+		read: {
+			type: Boolean,
 			required: true,
 		},
 	},

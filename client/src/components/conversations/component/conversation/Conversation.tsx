@@ -99,6 +99,7 @@ const Conversation = ({}: Props) => {
 		if (id) {
 			// console.log("room joined", id);
 			joinRoom(id);
+			// TODO : fetch @ /messages/read?chatId=chatId to read all unread messages for the currnet user.
 			return () => {
 				// console.log("room left", id);
 				// console.log("change in id this is where I am supposed to save msgList");

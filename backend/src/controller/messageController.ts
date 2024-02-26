@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { messageService } from "../service/messageService";
-import { Types } from "mongoose";
-import { TMessage } from "../models/MessageModel";
+// import { Types } from "mongoose";
+import { MessageModel, TMessage } from "../models/MessageModel";
 import { TSocketMsgDb } from "../types/socketMsgs";
 
 class MessageController {
@@ -11,7 +11,7 @@ class MessageController {
 		if (!chatId) {
 			res.status(400).json({ msg: "chatId missing" });
 		}
-		const msg = req.body as { message: string; sentAt: string };
+		const msg = req.body as { message: string; sentAt: string; read: boolean };
 		try {
 			const message = await messageService.postMessage({
 				senderId: userId,
@@ -51,6 +51,38 @@ class MessageController {
 			}
 		}
 	}
+
+	async getUnreadMsgs(req: Request, res: Response, next: NextFunction) {
+		// console.log("working");
+		const userId = req.firebaseId;
+		const chatId = req.query.chatId as string;
+		try {
+			const msgs = await messageService.getUnreadMsgs({ chatId, userId });
+			if ("error" in msgs) {
+				res.status(msgs.status);
+				throw new Error(msgs.errMsg);
+			}
+			res.status(msgs.status).json(msgs.data);
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	async readUnreadMsgs(req: Request, res: Response, next: NextFunction) {
+		const userId = req.firebaseId;
+		const chatId = req.query.chatId as string;
+		try {
+			const msgs = await messageService.readUnreadMsgs({ chatId, userId });
+			if ("error" in msgs) {
+				res.status(msgs.status);
+				throw new Error(msgs.errMsg);
+			}
+			res.status(msgs.status).json(msgs.data);
+		} catch (error) {
+			next(error);
+		}
+	}
+
 	async updateMessage(req: Request, res: Response, next: NextFunction) {
 		const { firebaseId: userId } = req;
 		const msgId = req.params.messageId;
