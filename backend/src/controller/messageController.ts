@@ -56,6 +56,7 @@ class MessageController {
 		// console.log("working");
 		const userId = req.firebaseId;
 		const chatId = req.query.chatId as string;
+		console.log("get-unread-msgs-userId", userId);
 		try {
 			const msgs = await messageService.getUnreadMsgs({ chatId, userId });
 			if ("error" in msgs) {

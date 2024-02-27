@@ -98,9 +98,23 @@ export class SocketService {
 			socket.on("join-room", (roomId, cb) => {
 				socket.join(roomId);
 
-				console.log(`room joined: ${roomId}`);
+				console.log(`room joined: ${roomId}` + `uid: ${socket.userId}`);
 
-				cb(`room joined`);
+				// read all unread msgs for the user on joining room
+				(async function () {
+					const result = await messageService.readUnreadMsgs({
+						chatId: roomId,
+						userId: socket.userId,
+					});
+					console.log("unread messages read!!!", result);
+					// console.log(first)
+					if (result.data.modifiedCount != 0) {
+						cb(`msg read`);
+					} else {
+						cb("msg not read");
+					}
+				})();
+				// cb("room joined");
 			});
 
 			socket.on("leave-room", (roomId, cb) => {

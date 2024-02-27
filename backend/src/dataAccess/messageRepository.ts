@@ -38,13 +38,13 @@ class MessageRepository {
 		return await MessageModel.find({
 			chat: chatId,
 			read: false,
-			sender: !userId,
+			sender: { $not: { $eq: userId } },
 		});
 	}
 
 	async readMessages({ chatId, userId }: { chatId: string; userId: string }) {
 		return await MessageModel.updateMany(
-			{ chat: chatId, read: false, sender: !userId },
+			{ chat: chatId, read: false, sender: { $not: { $eq: userId } } },
 			{ read: true }
 		);
 		/**
