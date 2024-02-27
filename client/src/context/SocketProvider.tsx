@@ -33,6 +33,7 @@ const SocketProvider = ({ children }: Props) => {
 	const [socket, setSocket] = useState<Socket>();
 	const [msgList, setMsgList] = useState<MsgListItem[]>([]);
 	// roomId =  chatId
+
 	const joinRoom = (roomId: string) => {
 		socket?.emit("join-room", roomId, (ack: any) => {
 			console.log("join-room server-ack: ", ack);

@@ -10,6 +10,7 @@ import { TMessage } from "../../../../types/message";
 import ChatBubble from "../../../chatbubble/ChatBubble";
 import { dateFormatter } from "../../../../utils/dateFormatter";
 import ProfileModal from "../../../modal/ProfileModal";
+import { useGetUnreadMessagesQuery } from "../../../../api/message";
 
 type Props = {};
 const LIMIT = 5;
@@ -54,6 +55,10 @@ const Conversation = ({}: Props) => {
 		limit: LIMIT,
 	});
 
+	const { refetch } = useGetUnreadMessagesQuery({
+		accessToken,
+		chatId: id || "",
+	});
 	// look for end message
 	useEffect(() => {
 		// console.log("currentData", currentData);
@@ -99,7 +104,10 @@ const Conversation = ({}: Props) => {
 		if (id) {
 			// console.log("room joined", id);
 			joinRoom(id);
-			// TODO : fetch @ /messages/read?chatId=chatId to read all unread messages for the currnet user.
+
+			// re-fetch the unreadMessages; it should be empty by now.
+			refetch();
+
 			return () => {
 				// console.log("room left", id);
 				// console.log("change in id this is where I am supposed to save msgList");
@@ -118,7 +126,7 @@ const Conversation = ({}: Props) => {
 	return (
 		<div className="overflow-auto">
 			<div
-				className="w-full bg-slate-500/80 p-2 flex items-center text-sm gap-2 hover:cursor-pointer"
+				className="fixed z-10 h-12 w-full bg-slate-400 p-2 flex items-center text-sm gap-2 hover:cursor-pointer"
 				onClick={showProfileModal}
 			>
 				<img
@@ -129,7 +137,7 @@ const Conversation = ({}: Props) => {
 				<p className=" ">{state.contact}</p>
 			</div>
 			<ProfileModal ref={profileModalRef} />
-			<div className="px-2">
+			<div className="px-2 pt-12">
 				<div className="flex justify-center py-1">
 					{endOfMessage ? (
 						<p className="text-center w-max text-blue-400 font-normal py-2 text-sm tracking-wide">

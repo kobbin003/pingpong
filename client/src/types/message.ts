@@ -3,6 +3,7 @@ export type TMessage = {
 	message: string;
 	sender: string;
 	createdAt: Date;
+	read: boolean;
 	chat:
 		| {
 				_id: string;

@@ -33,8 +33,20 @@ export const messageApi = createApi({
 			}),
 			// invalidatesTags: ["message"],
 		}),
+		getUnreadMessages: builder.query<
+			TMessage[],
+			{ accessToken: string; chatId: string }
+		>({
+			query: ({ accessToken, chatId }) => ({
+				url: `unread?chatId=${chatId}`,
+				headers: { Authorization: `Bearer ${accessToken}` },
+			}),
+		}),
 	}),
 });
 
-export const { useCreatePostMutation, useCreateMultiplePostMutation } =
-	messageApi;
+export const {
+	useCreatePostMutation,
+	useCreateMultiplePostMutation,
+	useGetUnreadMessagesQuery,
+} = messageApi;
