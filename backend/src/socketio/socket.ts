@@ -146,6 +146,7 @@ export class SocketService {
 						message,
 						sender,
 						createdAt,
+						roomId,
 					});
 
 					// save the messages in db
@@ -156,9 +157,8 @@ export class SocketService {
 							senderId: sender,
 						};
 						try {
-							// TODO: check if this working in app.
-
 							const sockets = await io.in(roomId).fetchSockets();
+							// set message as read:true, if contact is already in a socket connection.
 							if (sockets.length == 2) {
 								msg.msg.read = true;
 							}

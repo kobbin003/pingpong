@@ -63,6 +63,7 @@ class MessageController {
 				res.status(msgs.status);
 				throw new Error(msgs.errMsg);
 			}
+			// TODO: send only unread message length instead of the whole message array.
 			res.status(msgs.status).json(msgs.data);
 		} catch (error) {
 			next(error);

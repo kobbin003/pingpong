@@ -24,7 +24,7 @@ const ChatsList = ({}: Props) => {
 			{data ? (
 				data.map((chat) => <ChatListItem chat={chat} key={chat._id} />)
 			) : (
-				<p>l</p>
+				<p>No chats available</p>
 			)}
 		</ul>
 	);

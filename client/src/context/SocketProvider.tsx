@@ -12,7 +12,7 @@ export type SocketMsg = {
 	// sender: string; //sender uid
 };
 
-export type MsgListItem = SocketMsg & { sender: string };
+export type MsgListItem = SocketMsg & { sender: string; roomId: string };
 export const SocketContext = createContext<{
 	socket: Socket | null;
 	joinRoom: (roomId: string) => void | null;
