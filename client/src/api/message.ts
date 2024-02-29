@@ -34,7 +34,7 @@ export const messageApi = createApi({
 			// invalidatesTags: ["message"],
 		}),
 		getUnreadMessages: builder.query<
-			TMessage[],
+			{ unreadMsgsCount: number },
 			{ accessToken: string; chatId: string }
 		>({
 			query: ({ accessToken, chatId }) => ({

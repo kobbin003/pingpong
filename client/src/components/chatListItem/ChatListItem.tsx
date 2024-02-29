@@ -1,5 +1,5 @@
 import { MouseEvent, useContext, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ProfileModal from "../modal/ProfileModal";
 import { ShowConversationContext } from "../../context/ShowConversationProvider";
 import { TChat } from "../../types/chat";
@@ -16,11 +16,17 @@ const ChatListItem = ({ chat }: Props) => {
 		_id: chatId,
 		relation: { participants },
 	} = chat;
+
+	const param = useParams();
+
 	const { name, profilePicUrl } = participants[0];
-	// console.log("profile pic url", profilePicUrl);
+
 	const { setShowConversation } = useContext(ShowConversationContext);
 
+	const { msgList } = useContext(SocketContext);
+	const [roomMsgList, setRoomMsgList] = useState<MsgListItem[]>([]);
 	const profileModalRef = useRef<HTMLDialogElement>(null);
+	const { accessToken } = useSelector((state: RootState) => state.auth);
 
 	const showProfileModal = (e: MouseEvent<HTMLImageElement>) => {
 		// console.log("e-modal", e);
@@ -31,12 +37,15 @@ const ChatListItem = ({ chat }: Props) => {
 		}
 	};
 
-	const { accessToken } = useSelector((state: RootState) => state.auth);
+	const handleChatSelection = () => {
+		setShowConversation(true);
+	};
 
 	const { isLoading, data, error } = useGetUnreadMessagesQuery({
 		accessToken,
 		chatId,
 	});
+
 	if (error) {
 		console.log("get-unread-msg-error", error);
 	}
@@ -49,9 +58,12 @@ const ChatListItem = ({ chat }: Props) => {
 		limit: 1,
 	}); // get only the latest message
 
-	const { msgList } = useContext(SocketContext);
-	const [roomMsgList, setRoomMsgList] = useState<MsgListItem[]>([]);
+	// refetch when we are changing room.
+	useEffect(() => {
+		msgs.refetch();
+	}, [param.id]);
 
+	// reset roomMsgList by filtering msgList based on the current roomId
 	useEffect(() => {
 		// filter msgList based on the roomId for each ChatListItem.
 		setRoomMsgList(() => {
@@ -60,9 +72,6 @@ const ChatListItem = ({ chat }: Props) => {
 		// console.log("msgList", msgList);
 	}, [msgList]);
 
-	const handleChatSelection = () => {
-		setShowConversation(true);
-	};
 	return (
 		<>
 			<li className="my-2 flex items-center text-sm border-b border-b-black/10 pb-2 ">
@@ -89,17 +98,20 @@ const ChatListItem = ({ chat }: Props) => {
 							) : (
 								<div className="flex justify-between pr-2">
 									<p className="text-gray-500/70 italic">
-										{msgs.isLoading && "Loading..."}
 										{/* if socket msg(msgList) show last message from it
 											else show last message from fetched messages */}
-										{roomMsgList.length > 0
+										{msgs.isLoading
+											? "Loading..."
+											: roomMsgList.length > 0
 											? roomMsgList[roomMsgList.length - 1].message
 											: msgs.data && msgs.data[0]?.message
 											? msgs.data[0]?.message
-											: "empty"}
+											: "<empty>"}
 									</p>
-									{data && data.length > 0 && (
-										<p className="rounded-full bg-green-400">{data.length}</p>
+									{data && data.unreadMsgsCount > 0 && (
+										<p className="rounded-full bg-green-400">
+											{data.unreadMsgsCount}
+										</p>
 									)}
 								</div>
 							)}

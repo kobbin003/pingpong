@@ -6,7 +6,11 @@ import { emptyErrorMsg, setErrorMsg } from "../../redux/reducers/alertSlice";
 import AuthButton from "../../components/AuthButton/AuthButton";
 import googleLogin from "../../firebase/authHandlers/googleLogin";
 import EmailLinkForm from "../../components/authform/EmailLinkForm";
-import { setAccessToken } from "../../redux/reducers/authSlice";
+import {
+	removeAccessToken,
+	setAccessToken,
+} from "../../redux/reducers/authSlice";
+import { removeUser } from "../../redux/reducers/userSlice";
 // import { useGetWelcomeQuery } from "../../api/welcomeQuery";
 
 type Props = {};
@@ -51,6 +55,9 @@ const Auth = (_: Props) => {
 	//* empty error on start
 	useEffect(() => {
 		dispatch(emptyErrorMsg());
+		//* remove accessToken and user info once one lands into this page.
+		dispatch(removeAccessToken());
+		dispatch(removeUser());
 	}, []);
 
 	//* empty error on path change.

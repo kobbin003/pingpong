@@ -1,9 +1,11 @@
-import { ChangeEvent, FormEvent, useContext, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SocketContext } from "../../context/SocketProvider";
 
 const MsgSendForm = () => {
 	const [msg, setMsg] = useState<string>("");
+
+	const { id } = useParams();
 
 	const { sendMsg: sendSocketMsg } = useContext(SocketContext);
 
@@ -11,7 +13,6 @@ const MsgSendForm = () => {
 		const msgInput = e.target.value;
 		setMsg(msgInput);
 	};
-	const { id } = useParams();
 
 	const sendMsg = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -25,7 +26,14 @@ const MsgSendForm = () => {
 				roomId: id,
 			});
 		}
+		// clear input after sending message
+		setMsg("");
 	};
+
+	// empty the send input when changing room
+	useEffect(() => {
+		setMsg("");
+	}, [id]);
 
 	return (
 		<div className="p-2 w-full">
