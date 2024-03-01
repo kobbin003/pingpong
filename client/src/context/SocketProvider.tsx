@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Socket, io } from "socket.io-client";
 import { RootState } from "../redux/store/store";
 
-type Props = { children: ReactNode };
+type Props = { children: ReactNode; accessToken: string };
 const serverURL = `http://localhost:3000`;
 
 export type SocketMsg = {
@@ -20,6 +20,7 @@ export const SocketContext = createContext<{
 	sendMsg: (arg: { msg: SocketMsg; roomId: string }) => void | null;
 	setMsgList: React.Dispatch<React.SetStateAction<MsgListItem[]>> | null;
 	msgList: MsgListItem[];
+	disconnectClient: () => void | null;
 }>({
 	socket: null,
 	joinRoom: () => {},
@@ -27,14 +28,17 @@ export const SocketContext = createContext<{
 	sendMsg: () => {},
 	setMsgList: () => {},
 	msgList: [],
+	disconnectClient: () => {},
 });
 
-const SocketProvider = ({ children }: Props) => {
+const SocketProvider = ({ children, accessToken }: Props) => {
+	console.log("socket-provider");
 	const [socket, setSocket] = useState<Socket>();
 	const [msgList, setMsgList] = useState<MsgListItem[]>([]);
 	// roomId =  chatId
 
 	const joinRoom = (roomId: string) => {
+		console.log("joined room");
 		socket?.emit("join-room", roomId, (ack: any) => {
 			console.log("join-room server-ack: ", ack);
 		});
@@ -62,7 +66,9 @@ const SocketProvider = ({ children }: Props) => {
 		);
 	};
 
-	const { accessToken } = useSelector((state: RootState) => state.auth);
+	const disconnectClient = () => {
+		socket?.disconnect();
+	};
 
 	useEffect(() => {
 		console.log("socket provider");
@@ -116,6 +122,7 @@ const SocketProvider = ({ children }: Props) => {
 				sendMsg: sendPrivateMsg,
 				msgList,
 				setMsgList,
+				disconnectClient,
 			}}
 		>
 			{children}
