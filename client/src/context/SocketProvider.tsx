@@ -1,7 +1,5 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Socket, io } from "socket.io-client";
-import { RootState } from "../redux/store/store";
 
 type Props = { children: ReactNode; accessToken: string };
 const serverURL = `http://localhost:3000`;
