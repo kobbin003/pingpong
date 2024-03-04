@@ -16,7 +16,6 @@ export const router = createBrowserRouter([
 		path: "/user/chat/:id",
 		element: (
 			<PrivateRoute>
-				{/* <UserChats /> */}
 				<Home />
 			</PrivateRoute>
 		),

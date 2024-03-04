@@ -126,7 +126,7 @@ const Conversation = ({}: Props) => {
 	return (
 		<div className="overflow-auto">
 			<div
-				className="fixed z-10 h-12 w-full bg-slate-400 p-2 flex items-center text-sm gap-2 hover:cursor-pointer"
+				className="fixed h-12 w-full bg-slate-400 p-2 flex items-center text-sm gap-2 hover:cursor-pointer z-10"
 				onClick={showProfileModal}
 			>
 				<img
