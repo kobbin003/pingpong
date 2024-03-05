@@ -47,15 +47,18 @@ const EmailLinkForm = ({}: Props) => {
 		setEmail(e.target.value);
 	};
 	return (
-		<form onSubmit={sendEmailLinkRequest}>
+		<form onSubmit={sendEmailLinkRequest} className="flex flex-col gap-2">
 			<input
 				type="email"
 				name=""
 				id=""
 				value={email}
 				onChange={trackInputValueChange}
+				className="input input-sm input-bordered rounded-sm bg-white"
 			/>
-			<button type="submit">send email link</button>
+			<button type="submit" className="bg-orange-400 py-1">
+				send email link
+			</button>
 			{loading && <p>Loading...</p>}
 			{linkSent && <p>we have sent sign-in link to you email</p>}
 		</form>

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/store/store";
 import { useEffect } from "react";
 import { emptyErrorMsg, setErrorMsg } from "../../redux/reducers/alertSlice";
@@ -11,7 +11,6 @@ import {
 	setAccessToken,
 } from "../../redux/reducers/authSlice";
 import { removeUser } from "../../redux/reducers/userSlice";
-// import { useGetWelcomeQuery } from "../../api/welcomeQuery";
 
 type Props = {};
 // console.log("vite-base url", VITE_BASE_URL);
@@ -48,10 +47,7 @@ const Auth = (_: Props) => {
 				dispatch(setErrorMsg("could not login"));
 			});
 	};
-	//
-	// useEffect(() => {
-	// 	console.log("lazydata", result, lastPromiseInfo);
-	// }, [result]);
+
 	//* empty error on start
 	useEffect(() => {
 		dispatch(emptyErrorMsg());
@@ -66,17 +62,17 @@ const Auth = (_: Props) => {
 	}, [pathname]);
 
 	return (
-		<div className="bg-slate-50">
+		<div className="w-screen h-screen flex justify-center items-center bg-white text-black/80">
 			{alert.errorMessage && <p>Error Alert:{alert.errorMessage}</p>}
-			{/* <button onClick={() => trigger()}>trigger welcom</button> */}
-			<div className="">
-				<div>LOGO</div>
+			<div className="border border-gray-300 p-4 rounded-sm">
+				<div className="py-2">LOGO</div>
 				<>
 					<EmailLinkForm />
-					<div className="">
-						<div className=""></div>
-						<div className="">OR</div>
-						<div className=""></div>
+
+					<div className="w-full flex items-center py-2">
+						<div className="flex-1 h-0 border-b-2 border-gray-500"></div>
+						<div className="px-2">OR</div>
+						<div className="flex-1 h-0 border-b-2 border-gray-500"></div>
 					</div>
 					<AuthButton
 						bgColor=""
@@ -87,8 +83,6 @@ const Auth = (_: Props) => {
 					<div className=""></div>
 				</>
 			</div>
-			<Link to={`/user/chat/welcome`}>chat:id</Link>
-			{/* <Trial /> */}
 		</div>
 	);
 };
