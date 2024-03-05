@@ -44,6 +44,8 @@ const Conversation = ({}: Props) => {
 		console.log("e-modal", e);
 		e.stopPropagation();
 		e.preventDefault();
+		// set modalProfile
+
 		if (profileModalRef.current) {
 			profileModalRef.current.showModal();
 		}

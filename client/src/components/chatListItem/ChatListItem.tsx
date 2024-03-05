@@ -4,10 +4,11 @@ import ProfileModal from "../modal/ProfileModal";
 import { ShowConversationContext } from "../../context/ShowConversationProvider";
 import { TChat } from "../../types/chat";
 import { useGetUnreadMessagesQuery } from "../../api/message";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store/store";
 import { useGetMessageByChatIdQuery } from "../../api/chats";
 import { MsgListItem, SocketContext } from "../../context/SocketProvider";
+import { setModalProfile } from "../../redux/reducers/modalSlice";
 
 type Props = { chat: TChat };
 
@@ -19,7 +20,8 @@ const ChatListItem = ({ chat }: Props) => {
 
 	const param = useParams();
 
-	const { name, profilePicUrl } = participants[0];
+	const { name, profilePicUrl, email, status, _id, email_verified } =
+		participants[0];
 
 	const { setShowConversation } = useContext(ShowConversationContext);
 
@@ -27,11 +29,22 @@ const ChatListItem = ({ chat }: Props) => {
 	const [roomMsgList, setRoomMsgList] = useState<MsgListItem[]>([]);
 	const profileModalRef = useRef<HTMLDialogElement>(null);
 	const { accessToken } = useSelector((state: RootState) => state.auth);
-
+	const dispatch = useDispatch();
 	const showProfileModal = (e: MouseEvent<HTMLImageElement>) => {
 		// console.log("e-modal", e);
 		e.stopPropagation();
 		e.preventDefault();
+		// set modalprofile state
+		dispatch(
+			setModalProfile({
+				name,
+				profilePicUrl: profilePicUrl || "",
+				email,
+				status,
+				email_verified,
+				uid: _id,
+			})
+		);
 		if (profileModalRef.current) {
 			profileModalRef.current.showModal();
 		}
@@ -39,6 +52,18 @@ const ChatListItem = ({ chat }: Props) => {
 
 	const handleChatSelection = () => {
 		setShowConversation(true);
+		// ALSO set the modalProfile,
+		// so that we don't have to set it in conversation header
+		dispatch(
+			setModalProfile({
+				name,
+				profilePicUrl: profilePicUrl || "",
+				email,
+				status,
+				email_verified,
+				uid: _id,
+			})
+		);
 	};
 
 	const { isLoading, data, error } = useGetUnreadMessagesQuery({

@@ -5,6 +5,7 @@ import { SocketContext } from "../../context/SocketProvider";
 import { auth } from "../../firebase/config";
 import { removeUser } from "../../redux/reducers/userSlice";
 import { removeAccessToken } from "../../redux/reducers/authSlice";
+import { removeModalProfile } from "../../redux/reducers/modalSlice";
 
 const Signout = () => {
 	const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const Signout = () => {
 		// empty redux state
 		dispatch(removeUser());
 		dispatch(removeAccessToken());
+		dispatch(removeModalProfile());
 		// go to auth page
 		navigate("/");
 		// disconnect socket connection when
