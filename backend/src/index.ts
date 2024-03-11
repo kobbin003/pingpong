@@ -71,25 +71,29 @@ async function init() {
 		console.log(`server is running on port: ${PORT}`)
 	);
 
-	// // handle termination:
-	// function shutdown() {
-	// 	httpServer.close(() => {
-	// 		console.log(`server closed. exiting process`);
-	// 		process.exit(0);
-	// 	});
-	// }
+	// handle termination:
+	function shutdown() {
+		// disconnect all connected sockets
+		socketService.io.disconnectSockets();
 
-	// // signal interrupt
-	// process.on("SIGINT", () => {
-	// 	console.log(`received SIGINT. Closing server gracefully...`);
-	// 	shutdown();
-	// });
+		// close http server:
+		httpServer.close(() => {
+			console.log(`server closed. exiting process`);
+			process.exit(0);
+		});
+	}
 
-	// // signal termination
-	// process.on("SIGTERM", () => {
-	// 	console.log(`received SIGTERM. Closing server gracefully...`);
-	// 	shutdown();
-	// });
+	// signal interrupt
+	process.on("SIGINT", () => {
+		console.log(`received SIGINT. Closing server gracefully...`);
+		shutdown();
+	});
+
+	// signal termination
+	process.on("SIGTERM", () => {
+		console.log(`received SIGTERM. Closing server gracefully...`);
+		shutdown();
+	});
 }
 
 init();

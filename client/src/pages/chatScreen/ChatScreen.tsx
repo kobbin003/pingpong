@@ -8,7 +8,7 @@ export const ChatScreen = ({}: Props) => {
 	return (
 		<div
 			className="flex flex-col h-screen text-xs sm:text-sm"
-			data-theme="cupcake"
+			// data-theme="cupcake"
 		>
 			<ShowConversationProvider>
 				<div className="flex h-full">

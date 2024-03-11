@@ -56,15 +56,15 @@ class MessageController {
 		// console.log("working");
 		const userId = req.firebaseId;
 		const chatId = req.query.chatId as string;
-		console.log("get-unread-msgs-userId", userId);
+		// console.log("get-unread-msgs-userId", userId);
 		try {
 			const msgs = await messageService.getUnreadMsgs({ chatId, userId });
 			if ("error" in msgs) {
 				res.status(msgs.status);
 				throw new Error(msgs.errMsg);
 			}
-			// TODO: send only unread message length instead of the whole message array.
-			res.status(msgs.status).json(msgs.data);
+
+			res.status(msgs.status).json({ unreadMsgsCount: msgs.data.length });
 		} catch (error) {
 			next(error);
 		}

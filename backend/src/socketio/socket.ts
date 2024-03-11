@@ -3,14 +3,8 @@ import { TSocketMsg } from "../types/socketMsgs";
 import { messageService } from "../service/messageService";
 import { NextFunction } from "express";
 import admin from "firebase-admin";
-import { createAdapter } from "@socket.io/mongo-adapter";
-import { MongoClient } from "mongodb";
 import "dotenv/config";
-import mongoose from "mongoose";
-const dbPassword = process.env.MONGODBPASSWORD;
 
-const uri = `mongodb+srv://kobin369:${dbPassword}@cluster0.xeiow6y.mongodb.net/?retryWrites=true&w=majority`;
-const COLLECTION = "socket.io-adapter-events";
 export class SocketService {
 	private _io: Server;
 
@@ -106,7 +100,7 @@ export class SocketService {
 						chatId: roomId,
 						userId: socket.userId,
 					});
-					console.log("unread messages read!!!", result);
+					// console.log("unread messages read!!!", result);
 					// console.log(first)
 					if (result.data.modifiedCount != 0) {
 						cb(`msg read`);
