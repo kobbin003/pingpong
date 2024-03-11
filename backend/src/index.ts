@@ -4,7 +4,7 @@ import cors from "cors";
 import { connectDb } from "./db/connectDb";
 import { notFound } from "./utils/notFound";
 import { errorHandler } from "./utils/errorHandler";
-import { createServer } from "http";
+import { createServer } from "https";
 import { messageRouter } from "./routes/messages";
 import { chatRouter } from "./routes/chats";
 import { userRouter } from "./routes/users";

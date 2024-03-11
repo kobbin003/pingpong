@@ -12,7 +12,8 @@ export class SocketService {
 		// attach httpserver on instantiation
 		this._io = new Server({
 			cors: {
-				origin: process.env.NODE_ENV == "production" ? "" : "*",
+				origin:
+					process.env.NODE_ENV == "production" ? "http://localhost:5173" : "*",
 			},
 		});
 		// this._initMongoAdaptor();
