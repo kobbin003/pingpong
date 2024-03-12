@@ -1,7 +1,11 @@
-import ChatNav from "../../components/chatNav/ChatNav";
-import Conversations from "../../components/conversations/Conversations";
+import { Suspense, lazy } from "react";
+// import ChatNav from "../../components/chatNav/ChatNav";
+// import Conversations from "../../components/conversations/Conversations";
 import { ShowConversationProvider } from "../../context/ShowConversationProvider";
-
+const ChatNav = lazy(() => import("../../components/chatNav/ChatNav"));
+const Conversations = lazy(
+	() => import("../../components/conversations/Conversations")
+);
 type Props = {};
 
 export const ChatScreen = ({}: Props) => {
@@ -12,8 +16,12 @@ export const ChatScreen = ({}: Props) => {
 		>
 			<ShowConversationProvider>
 				<div className="flex h-full">
-					<ChatNav />
-					<Conversations />
+					<Suspense fallback={<>Loading..</>}>
+						<ChatNav />
+					</Suspense>
+					<Suspense fallback={<>Loading...</>}>
+						<Conversations />
+					</Suspense>
 				</div>
 			</ShowConversationProvider>
 		</div>

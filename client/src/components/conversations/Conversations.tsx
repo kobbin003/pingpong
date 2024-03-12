@@ -1,12 +1,17 @@
-import { useContext } from "react";
+import { Suspense, lazy, useContext } from "react";
 // import { ShowConversationContext } from "../../pages/userChats/UserChats";
-import Conversation from "./component/conversation/Conversation";
+// import Conversation from "./component/conversation/Conversation";
 import { ShowConversationContext } from "../../context/ShowConversationProvider";
 import Welcome from "../Welcome/Welcome";
 import { useParams } from "react-router-dom";
-import MsgSendForm from "../msgSendForm/MsgSendForm";
+// import MsgSendForm from "../msgSendForm/MsgSendForm";
 import Signout from "../signout/Signout";
 
+const Conversation = lazy(
+	() => import("./component/conversation/Conversation")
+);
+
+const MsgSendForm = lazy(() => import("../msgSendForm/MsgSendForm"));
 type Props = {};
 
 const Conversations = ({}: Props) => {
@@ -39,8 +44,18 @@ const Conversations = ({}: Props) => {
 				<Signout />
 			</div>
 			<div className="h-screen max-h-screen flex flex-col justify-between">
-				{id == "welcome" ? <Welcome /> : <Conversation />}
-				{id !== "welcome" && <MsgSendForm />}
+				{id == "welcome" ? (
+					<Welcome />
+				) : (
+					<Suspense fallback={<>Loading...</>}>
+						<Conversation />
+					</Suspense>
+				)}
+				{id !== "welcome" && (
+					<Suspense fallback={<>Loading...</>}>
+						<MsgSendForm />
+					</Suspense>
+				)}
 			</div>
 		</div>
 	);

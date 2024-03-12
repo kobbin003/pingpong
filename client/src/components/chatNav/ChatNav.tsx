@@ -1,8 +1,12 @@
-import { FC, MouseEvent, useContext, useState } from "react";
-import ChatsList from "../chatsList/ChatsList";
-import Request from "../requests/Request";
-import Friends from "../friends/Friends";
+import { FC, MouseEvent, Suspense, lazy, useContext, useState } from "react";
+// import ChatsList from "../chatsList/ChatsList";
+// import Request from "../requests/Request";
+// import Friends from "../friends/Friends";
 import { ShowConversationContext } from "../../context/ShowConversationProvider";
+
+const ChatsList = lazy(() => import("../chatsList/ChatsList"));
+const Request = lazy(() => import("../requests/Request"));
+const Friends = lazy(() => import("../friends/Friends"));
 
 type Props = {};
 
@@ -45,7 +49,9 @@ const ChatNav = ({}: Props) => {
 					);
 				})}
 			</div>
-			<CurrentTab />
+			<Suspense fallback={<>Loading...</>}>
+				<CurrentTab />
+			</Suspense>
 		</div>
 	);
 };

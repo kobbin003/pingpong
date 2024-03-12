@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const useDevEffect = (cb: any, onUnMount: any, deps: any[]) => {
+const useDevEffect = (cb: any, _: any, deps: any[]) => {
 	let ran = false;
 	useEffect(() => {
 		if (ran) return;

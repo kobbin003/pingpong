@@ -7,7 +7,6 @@ import { setUser } from "../../redux/reducers/userSlice";
 import { auth } from "../../firebase/config";
 import { setAccessToken } from "../../redux/reducers/authSlice";
 import { ChatScreen } from "../chatScreen/ChatScreen";
-
 type Props = {};
 
 const Home = ({}: Props) => {

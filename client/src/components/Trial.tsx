@@ -1,6 +1,6 @@
 import {
 	useGetWelcomeQuery,
-	useLazyGetWelcomeQuery,
+	// useLazyGetWelcomeQuery,
 } from "../api/welcomeQuery";
 import { TError } from "../types/error";
 const Trial = () => {
@@ -23,7 +23,7 @@ const Trial = () => {
 		.then((data) => console.log("welcome", data))
 		.catch((err) => console.log("welcome error", err));
 
-	const [trigger, result, lastPromiseInfo] = useLazyGetWelcomeQuery();
+	// const [trigger, result, lastPromiseInfo] = useLazyGetWelcomeQuery();
 	return <div>Welcome</div>;
 };
 
