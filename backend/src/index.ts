@@ -33,7 +33,14 @@ async function init() {
 	firebaseInit();
 
 	// app.use(cors());
-	app.use(cors({ origin: "http://localhost:5173" }));
+	app.use(
+		cors({
+			origin:
+				process.env.NODE_ENV == "production"
+					? "https://pingpong-zeta.vercel.app/"
+					: "*",
+		})
+	);
 
 	app.use(express.json());
 

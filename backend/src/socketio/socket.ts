@@ -12,9 +12,10 @@ export class SocketService {
 		// attach httpserver on instantiation
 		this._io = new Server({
 			cors: {
-				origin: "http://localhost:5173",
-				// origin:
-				// 	process.env.NODE_ENV == "production" ? "*" : "http://localhost:5174",
+				origin:
+					process.env.NODE_ENV == "production"
+						? "https://pingpong-zeta.vercel.app/"
+						: "*",
 			},
 		});
 		// this._initMongoAdaptor();
