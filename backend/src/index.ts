@@ -37,7 +37,7 @@ async function init() {
 		cors({
 			origin:
 				process.env.NODE_ENV == "production"
-					? "https://pingpong-zeta.vercel.app/"
+					? "https://pingpong-zeta.vercel.app"
 					: "*",
 		})
 	);
