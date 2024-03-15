@@ -11,7 +11,7 @@ import {
 	setAccessToken,
 } from "../../redux/reducers/authSlice";
 import { removeUser } from "../../redux/reducers/userSlice";
-
+import googleIcon from "../../assets/google.svg";
 type Props = {};
 // console.log("vite-base url", VITE_BASE_URL);
 const Auth = (_: Props) => {
@@ -76,7 +76,7 @@ const Auth = (_: Props) => {
 					</div>
 					<AuthButton
 						bgColor=""
-						img="/src/assets/google.svg"
+						img={googleIcon}
 						desc="Continue with Google"
 						onClick={handleGoogleAuth}
 					/>

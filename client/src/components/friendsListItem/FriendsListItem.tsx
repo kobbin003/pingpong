@@ -6,6 +6,7 @@ import { TRelation } from "../../types/relation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store/store";
 import { setModalProfile } from "../../redux/reducers/modalSlice";
+import defaultProfilePic from "../../assets/defaultProfilePic.svg";
 
 type Props = { item: TRelation };
 
@@ -55,7 +56,7 @@ const FriendsListItem = ({ item }: Props) => {
 				>
 					<div className=" flex items-center">
 						<img
-							src={profilePicUrl || "/src/assets/defaultProfilePic.svg"}
+							src={profilePicUrl || defaultProfilePic}
 							alt=""
 							className=" h-12 w-12"
 							// className="h-14 w-14"

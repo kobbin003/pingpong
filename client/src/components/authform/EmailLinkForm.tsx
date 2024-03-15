@@ -3,6 +3,7 @@ import { sendSignInLinkToEmail } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { setErrorMsg } from "../../redux/reducers/alertSlice";
 import { auth } from "../../firebase/config";
+import { VITE_BASE_URL } from "../../utils/env";
 
 type Props = {};
 
@@ -20,7 +21,7 @@ const EmailLinkForm = ({}: Props) => {
 		const actionCodeSettings = {
 			// URL you want to redirect back to. The domain (www.example.com) for this
 			// URL must be in the authorized domains list in the Firebase Console.
-			url: "http://localhost:5173/logIn",
+			url: `${VITE_BASE_URL}/logIn`,
 			// This must be true.
 			handleCodeInApp: true,
 		};

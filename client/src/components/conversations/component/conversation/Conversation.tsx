@@ -11,9 +11,11 @@ import ChatBubble from "../../../chatbubble/ChatBubble";
 import { dateFormatter } from "../../../../utils/dateFormatter";
 import ProfileModal from "../../../modal/ProfileModal";
 import { useGetUnreadMessagesQuery } from "../../../../api/message";
+import defaultProfilePic from "../../../../assets/defaultProfilePic.svg";
 
 type Props = {};
 const LIMIT = 5;
+
 const Conversation = ({}: Props) => {
 	const { state } = useLocation() as {
 		state: { contact: string; profilePicUrl: string };
@@ -132,7 +134,7 @@ const Conversation = ({}: Props) => {
 				onClick={showProfileModal}
 			>
 				<img
-					src={state.profilePicUrl || "/src/assets/defaultProfilePic.svg"}
+					src={state.profilePicUrl || defaultProfilePic}
 					alt=""
 					className="h-6 w-6 "
 				/>

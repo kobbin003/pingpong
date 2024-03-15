@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store/store";
+import defaultProfilePic from "../../assets/defaultProfilePic.svg";
 
 type Props = {};
 
@@ -19,10 +20,7 @@ const ProfileModal = ({}: Props, ref: any) => {
 				</form>
 
 				<div className="flex flex-col gap-2 pb-2 items-center border-b">
-					<img
-						src={profilePicUrl || "/src/assets/defaultProfilePic.svg"}
-						className="h-48"
-					/>
+					<img src={profilePicUrl || defaultProfilePic} className="h-48" />
 
 					<p>{name}</p>
 					<p>mail: {email}</p>

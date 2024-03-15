@@ -1,5 +1,7 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import "./searchBar.css";
+import closeSearch from "../../assets/closeSearch.svg";
+
 type Props = {
 	setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 };
@@ -63,7 +65,7 @@ const SearchBar = ({ setSearchQuery: setSearch }: Props) => {
 			/>
 			<button onClick={handleReset}>
 				<img
-					src="/src/assets/closeSearch.svg"
+					src={closeSearch}
 					height={20}
 					width={20}
 					style={{ visibility: `${clearButtonVisibility}` }}

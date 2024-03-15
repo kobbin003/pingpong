@@ -9,6 +9,7 @@ import { RootState } from "../../redux/store/store";
 import { useGetMessageByChatIdQuery } from "../../api/chats";
 import { MsgListItem, SocketContext } from "../../context/SocketProvider";
 import { setModalProfile } from "../../redux/reducers/modalSlice";
+import defaultProfilePic from "../../assets/defaultProfilePic.svg";
 
 type Props = { chat: TChat };
 
@@ -108,7 +109,7 @@ const ChatListItem = ({ chat }: Props) => {
 				>
 					<div className=" flex items-center">
 						<img
-							src={profilePicUrl || "/src/assets/defaultProfilePic.svg"}
+							src={profilePicUrl || defaultProfilePic}
 							alt=""
 							className=" h-12 w-12"
 							// className="h-14 w-14"
