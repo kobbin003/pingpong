@@ -4,8 +4,8 @@ import cors from "cors";
 import { connectDb } from "./db/connectDb";
 import { notFound } from "./utils/notFound";
 import { errorHandler } from "./utils/errorHandler";
-// import { createServer } from "http";
-import { createServer } from "https";
+import { createServer } from "http";
+// import { createServer } from "https";
 import { messageRouter } from "./routes/messages";
 import { chatRouter } from "./routes/chats";
 import { userRouter } from "./routes/users";
@@ -17,15 +17,15 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 async function init() {
-	app.use(cors());
-	// app.use(
-	// 	cors({
-	// 		origin:
-	// 			process.env.NODE_ENV == "production"
-	// 				? "https://pingpong-zeta.vercel.app"
-	// 				: "*",
-	// 	})
-	// );
+	// app.use(cors());
+	app.use(
+		cors({
+			origin:
+				process.env.NODE_ENV == "production"
+					? "https://pingpong-zeta.vercel.app"
+					: "*",
+		})
+	);
 
 	/** express app is attached to the httpserver */
 	const httpServer = createServer(app);
