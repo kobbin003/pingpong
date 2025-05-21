@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
 		errorElement: <ErrorBoundary />,
 	},
 	{
-		path: "logIn",
+		path: "/email-link",
 		element: (
 			<Suspense fallback={<>Loading...</>}>
 				<LogIn />

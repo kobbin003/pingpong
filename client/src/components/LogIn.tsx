@@ -5,10 +5,10 @@ import { isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { emptyErrorMsg, setErrorMsg } from "../redux/reducers/alertSlice";
 import { setAccessToken } from "../redux/reducers/authSlice";
-type Props = {};
+
 /** Used with EMail link login */
 
-const LogIn = ({}: Props) => {
+const LogIn = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	useEffect(() => {

@@ -12,16 +12,16 @@ import {
 } from "../../redux/reducers/authSlice";
 import { removeUser } from "../../redux/reducers/userSlice";
 import googleIcon from "../../assets/google.svg";
-type Props = {};
+
 // console.log("vite-base url", VITE_BASE_URL);
-const Auth = (_: Props) => {
+const Auth = () => {
 	const { pathname } = useLocation();
 	const dispatch = useDispatch();
 
 	const navigate = useNavigate();
 
 	const alert = useSelector((state: RootState) => state.alert);
-	console.log("alert", alert);
+	// console.log("alert", alert);
 
 	const handleGoogleAuth = () => {
 		googleLogin()

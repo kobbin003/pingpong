@@ -5,9 +5,7 @@ import { setErrorMsg } from "../../redux/reducers/alertSlice";
 import { auth } from "../../firebase/config";
 import { VITE_BASE_URL } from "../../utils/env";
 
-type Props = {};
-
-const EmailLinkForm = ({}: Props) => {
+const EmailLinkForm = () => {
 	const [email, setEmail] = useState("");
 	const [linkSent, setLinkSent] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -21,7 +19,7 @@ const EmailLinkForm = ({}: Props) => {
 		const actionCodeSettings = {
 			// URL you want to redirect back to. The domain (www.example.com) for this
 			// URL must be in the authorized domains list in the Firebase Console.
-			url: `${VITE_BASE_URL}/logIn`,
+			url: `${VITE_BASE_URL}/email-link`,
 			// This must be true.
 			handleCodeInApp: true,
 		};

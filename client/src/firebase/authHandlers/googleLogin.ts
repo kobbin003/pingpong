@@ -22,6 +22,7 @@ export default async function googleLogin() {
 			// console.log(getAdditionalUserInfo(result));
 		}
 	} catch (error) {
-		throw error;
+		console.error(error);
+		// throw error;
 	}
 }
