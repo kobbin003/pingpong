@@ -3,7 +3,9 @@ import { Socket, io } from "socket.io-client";
 import { VITE_BASE_URL } from "../utils/env";
 
 type Props = { children: ReactNode; accessToken: string };
+
 const serverURL = VITE_BASE_URL;
+
 export type SocketMsg = {
 	message: string;
 	createdAt: string;
@@ -11,8 +13,9 @@ export type SocketMsg = {
 };
 
 export type MsgListItem = SocketMsg & { sender: string; roomId: string };
+
 export const SocketContext = createContext<{
-	socket: Socket | null;
+	// socket: Socket | null;
 	joinRoom: (roomId: string) => void | null;
 	leaveRoom: (roomId: string) => void | null;
 	sendMsg: (arg: { msg: SocketMsg; roomId: string }) => void | null;
@@ -20,7 +23,7 @@ export const SocketContext = createContext<{
 	msgList: MsgListItem[];
 	disconnectClient: () => void | null;
 }>({
-	socket: null,
+	// socket: null,
 	joinRoom: () => {},
 	leaveRoom: () => {},
 	sendMsg: () => {},
@@ -37,13 +40,13 @@ const SocketProvider = ({ children, accessToken }: Props) => {
 
 	const joinRoom = (roomId: string) => {
 		console.log("joined room");
-		socket?.emit("join-room", roomId, (ack: any) => {
+		socket?.emit("join-room", roomId, (ack: "msg read" | "msg not read") => {
 			console.log("join-room server-ack: ", ack);
 		});
 	};
 
 	const leaveRoom = (roomId: string) => {
-		socket?.emit("leave-room", roomId, (ack: any) => {
+		socket?.emit("leave-room", roomId, (ack: "room left") => {
 			console.log("leave-room server-ack: ", ack);
 		});
 	};
@@ -83,12 +86,15 @@ const SocketProvider = ({ children, accessToken }: Props) => {
 		const onSocketDisconnect = () => {
 			console.log(`User disconnected: ${_socket.id}`);
 		};
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const onConnError = (err: any) => {
 			console.log("socket connection error", err);
 		};
-		const onAnyHandler = (event: any, ...args: any) => {
-			console.log("event: ", event, "args: ", args);
-		};
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		// const onAnyHandler = (event: any, ...args: any) => {
+		// 	console.log("event: ", event, "args: ", args);
+		// };
 
 		// listening broadcasted private message.
 		_socket.on("private-msg-receive", (msg: MsgListItem) => {
@@ -101,12 +107,12 @@ const SocketProvider = ({ children, accessToken }: Props) => {
 
 		_socket.on("connect", onSocketConnect);
 		_socket.on("disconnect", onSocketDisconnect);
-		_socket.on("onAny", onAnyHandler);
+		// _socket.on("onAny", onAnyHandler);
 
 		return () => {
 			_socket.off("connect", onSocketConnect);
 			_socket.off("disconnect", onSocketDisconnect);
-			_socket.off("onAny", onAnyHandler);
+			// _socket.off("onAny", onAnyHandler);
 			_socket.off("connect_error", onConnError);
 		};
 	}, []);
@@ -114,7 +120,7 @@ const SocketProvider = ({ children, accessToken }: Props) => {
 	return (
 		<SocketContext.Provider
 			value={{
-				socket: socket || null,
+				// socket: socket || null,
 				joinRoom,
 				leaveRoom,
 				sendMsg: sendPrivateMsg,
@@ -128,4 +134,12 @@ const SocketProvider = ({ children, accessToken }: Props) => {
 	);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// function safeLog(data: any) {
+// 	try {
+// 		return JSON.parse(JSON.stringify(data));
+// 	} catch {
+// 		return "[Circular]";
+// 	}
+// }
 export default SocketProvider;

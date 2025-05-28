@@ -1,4 +1,10 @@
+import { FlattenMaps, Types } from "mongoose";
+import { ChatModel } from "../models/ChatsModel";
 import { RelationModel, TRelation } from "../models/RelationModel";
+type TRelationWithChatId = FlattenMaps<TRelation> & {
+	_id: Types.ObjectId;
+	chatId?: Types.ObjectId;
+};
 
 class RelationRepository {
 	async create(relation: TRelation) {
@@ -64,6 +70,12 @@ class RelationRepository {
 			.populate({
 				path: "participants",
 				select: "_id name status profilePicUrl email",
+			})
+			.populate({
+				path: "chat",
+				// select: "", // all fields
+				select: "_id",
+				match: status === "accepted" ? {} : null, // Only populate chat if status is accepted
 			});
 	}
 }

@@ -1,6 +1,4 @@
-type Props = {};
-
-const SearchFriendsListItem = ({}: Props) => {
+const SearchFriendsListItem = () => {
 	return (
 		<li className="flex flex-col border border-black">
 			<p>name</p>

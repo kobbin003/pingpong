@@ -53,9 +53,9 @@ async function init() {
 
 	app.get("/welcome", (req, res) => {
 		// res.send("Welcome!");
-		// res.json({ msg: "Welcome" });
-		res.status(400);
-		throw new Error("welcome error");
+		res.json({ msg: "Welcome" });
+		// res.status(400);
+		// throw new Error("welcome error");
 	});
 
 	/** routes */

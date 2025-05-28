@@ -22,3 +22,48 @@ const addPad = (num: number) => {
 
 	return numStr.padStart(2, "0");
 };
+
+export const messageTimeFormat = (dateString: string) => {
+	const date = new Date(dateString);
+	// console.log(
+	// 	"*_*_*_*_*_*_*_*_*_*_*_",
+	// 	"date: ",
+	// 	date,
+	// 	" typof- ",
+	// 	typeof date
+	// );
+	if (isToday(date)) {
+		return date.toLocaleTimeString("en-US", {
+			hour12: true,
+			hour: "2-digit",
+			minute: "2-digit",
+		});
+	}
+
+	if (isYesterday(date)) {
+		return "Yesterday";
+	}
+
+	return date.toLocaleDateString();
+	// return "demo time";
+};
+
+const isToday = (date: Date) => {
+	const now = new Date();
+	return (
+		now.getFullYear() === date.getFullYear() &&
+		now.getMonth() === date.getMonth() &&
+		now.getDate() === date.getDate()
+	);
+};
+
+const isYesterday = (date: Date) => {
+	const yesterday = new Date();
+	yesterday.setDate(yesterday.getDate() - 1);
+
+	return (
+		yesterday.getFullYear() === date.getFullYear() &&
+		yesterday.getMonth() === date.getMonth() &&
+		yesterday.getDate() === date.getDate()
+	);
+};

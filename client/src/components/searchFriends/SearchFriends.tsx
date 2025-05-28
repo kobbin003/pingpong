@@ -1,17 +1,15 @@
 import { useState } from "react";
-import SearchFriendsLists from "./components/searchFriendsLists/SearchFriendsLists";
 import SearchBar from "../searchBar/SearchBar";
+import SearchFriendsLists from "./components/searchFriendsLists/SearchFriendsLists";
 
-type Props = {};
-
-const SearchFriends = ({}: Props) => {
+const SearchFriends = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 
 	return (
-		<div className="py-2">
-			<SearchBar setSearchQuery={setSearchQuery} />
+		<>
+			<SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 			<SearchFriendsLists searchQuery={searchQuery} />
-		</div>
+		</>
 	);
 };
 

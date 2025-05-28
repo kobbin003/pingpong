@@ -3,22 +3,30 @@ import RequestListItem from "../requestListItem/RequestListItem";
 import { useGetRelationByStatusQuery } from "../../../../api/relations";
 import { RootState } from "../../../../redux/store/store";
 
-type Props = {};
-
-const RequestsList = ({}: Props) => {
-	// TODO change the status to "pending"
+export type Status = "accepted" | "declined" | "pending";
+type Props = {
+	status: Status;
+};
+const RequestsList = ({ status }: Props) => {
 	const { accessToken } = useSelector((state: RootState) => state.auth);
 	const { data, error, isLoading } = useGetRelationByStatusQuery({
 		accessToken,
-		status: "accepted",
+		status,
 	});
-	console.log("relation by status", data, error, isLoading);
+
+	if (error) console.error(error);
+	// console.log("relation by status", status, "---", data, error, isLoading);
 	return (
 		<ul>
-			{data &&
+			{isLoading ? (
+				<p>Loading...</p>
+			) : (
+				data &&
+				data.length > 0 &&
 				data.map((relation) => (
-					<RequestListItem key={relation._id} item={relation} />
-				))}
+					<RequestListItem key={relation._id} item={relation} status={status} />
+				))
+			)}
 		</ul>
 	);
 };

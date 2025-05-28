@@ -33,7 +33,17 @@ relationSchema.pre("save", function (next) {
 	console.log("two");
 	next();
 });
-// relationSchema.virtual('receiver')
+
+relationSchema.virtual("chat", {
+	ref: "chat",
+	localField: "_id", // field in Relation
+	foreignField: "relation", // field in Chat
+	justOne: true, // one-to-one
+});
+
+// Make sure virtuals are included in JSON output
+relationSchema.set("toJSON", { virtuals: true });
+relationSchema.set("toObject", { virtuals: true });
 
 export const RelationModel = mongoose.model<TRelation>(
 	"relationship",

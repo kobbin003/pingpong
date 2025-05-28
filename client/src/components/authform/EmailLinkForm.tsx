@@ -47,16 +47,17 @@ const EmailLinkForm = () => {
 	};
 	return (
 		<form onSubmit={sendEmailLinkRequest} className="flex flex-col gap-2">
+			<label htmlFor="email">Enter your email</label>
 			<input
 				type="email"
-				name=""
-				id=""
+				name="email"
+				id="email"
 				value={email}
 				onChange={trackInputValueChange}
 				className="input input-sm input-bordered rounded-sm bg-white"
 			/>
-			<button type="submit" className="bg-orange-400 py-1">
-				send email link
+			<button type="submit" className="bg-orange-400 py-2 rounded-md">
+				Send email link
 			</button>
 			{loading && <p>Loading...</p>}
 			{linkSent && <p>we have sent sign-in link to you email</p>}

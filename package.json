@@ -1,16 +1,19 @@
 {
-  "name": "pingpong",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build --prefix backend",
-    "server": "npm run start --prefix backend",
-    "dev":"npm run dev --prefix client"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
- 
+	"name": "pingpong",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "npm run build --prefix backend",
+		"server": "npm run server --prefix backend",
+		"dev": "npm run dev --prefix client",
+		"start": "concurrently \"npm run server\" \"npm run dev\""
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"concurrently": "^9.1.2"
+	}
 }

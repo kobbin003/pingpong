@@ -1,11 +1,12 @@
-import { forwardRef } from "react";
+import React, { forwardRef } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store/store";
 import defaultProfilePic from "../../assets/defaultProfilePic.svg";
 
-type Props = {};
+interface Props {}
 
-const ProfileModal = ({}: Props, ref: any) => {
+// eslint-disable-next-line no-empty-pattern
+const ProfileModal = ({}: Props, ref: React.Ref<HTMLDialogElement>) => {
 	const { email, email_verified, name, profilePicUrl, status } = useSelector(
 		(state: RootState) => state.modal
 	);

@@ -2,7 +2,7 @@ export type TMessage = {
 	_id: string;
 	message: string;
 	sender: string;
-	createdAt: Date;
+	createdAt: string;
 	read: boolean;
 	chat:
 		| {

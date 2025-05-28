@@ -5,7 +5,8 @@ import { TRelation } from "../models/RelationModel";
 class RelationController {
 	async sendFriendRequest(req: Request, res: Response, next: NextFunction) {
 		const { firebaseId: senderId } = req;
-		const recipientId = req.query.recipientId as string;
+		// const recipientId = req.query.recipientId as string;
+		const { recipientId } = req.body;
 		try {
 			const relation = await relationService.sendFriendRequest({
 				senderId,

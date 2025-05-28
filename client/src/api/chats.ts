@@ -25,6 +25,18 @@ export const chatsApi = createApi({
 			}),
 			keepUnusedDataFor: 1,
 		}),
+		createNewChat: builder.mutation<
+			TChat,
+			{ accessToken: string; relationId: string }
+		>({
+			query: ({ accessToken, relationId }) => ({
+				method: "POST",
+				url: "",
+				headers: { Authorization: `Bearer ${accessToken}` },
+
+				body: { relationId },
+			}),
+		}),
 	}),
 });
 
@@ -32,4 +44,5 @@ export const {
 	useGetUserChatsQuery,
 	useGetMessageByChatIdQuery,
 	useLazyGetMessageByChatIdQuery,
+	useCreateNewChatMutation,
 } = chatsApi;

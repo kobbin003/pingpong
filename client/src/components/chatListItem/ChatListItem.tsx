@@ -10,6 +10,8 @@ import { useGetMessageByChatIdQuery } from "../../api/chats";
 import { MsgListItem, SocketContext } from "../../context/SocketProvider";
 import { setModalProfile } from "../../redux/reducers/modalSlice";
 import defaultProfilePic from "../../assets/defaultProfilePic.svg";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { messageTimeFormat } from "@/utils/dateFormatter";
 
 type Props = { chat: TChat };
 
@@ -77,16 +79,20 @@ const ChatListItem = ({ chat }: Props) => {
 	}
 	// console.log("unread-messages", data, isLoading);
 
-	const msgs = useGetMessageByChatIdQuery({
+	const latestMsg = useGetMessageByChatIdQuery({
 		accessToken,
 		chatId,
 		offset: 0,
 		limit: 1,
 	}); // get only the latest message
 
+	// console.log("latestMsg: ............", latestMsg);
+	const msgTime = latestMsg?.data
+		? messageTimeFormat(latestMsg?.data[0]?.createdAt)
+		: "";
 	// refetch when we are changing room.
 	useEffect(() => {
-		msgs.refetch();
+		latestMsg.refetch();
 	}, [param.id]);
 
 	// reset roomMsgList by filtering msgList based on the current roomId
@@ -108,36 +114,52 @@ const ChatListItem = ({ chat }: Props) => {
 					state={{ contact: name, profilePicUrl }}
 				>
 					<div className=" flex items-center">
-						<img
+						{/* <img
 							src={profilePicUrl || defaultProfilePic}
 							alt=""
 							className=" h-12 w-12"
 							// className="h-14 w-14"
 							onClick={showProfileModal}
-						/>
+						/> */}
+						<Avatar onClick={showProfileModal}>
+							<AvatarImage
+								src={profilePicUrl || defaultProfilePic}
+								alt={name}
+							/>
+							<AvatarFallback>CN</AvatarFallback>
+						</Avatar>
 					</div>
 					<div className="flex flex-col gap-1  w-full">
-						<div>{name}</div>
-						<div className="">
+						<div className="flex justify-between items-baseline">
+							<p className="font-medium">{name}</p>
+							<span className="text-xs text-gray-500 dark:text-gray-400">
+								{msgTime}
+							</span>
+						</div>
+
+						<div className="flex-1 overflow-hidden">
 							{isLoading ? (
 								<p>Loading...</p>
 							) : (
-								<div className="flex justify-between pr-2">
-									<p className="text-gray-500/70 italic">
+								<div className="">
+									<p className="text-sm text-gray-500 dark:text-gray-400 truncate">
 										{/* if socket msg(msgList) show last message from it
 											else show last message from fetched messages */}
-										{msgs.isLoading
+										{latestMsg.isLoading
 											? "Loading..."
 											: roomMsgList.length > 0
 											? roomMsgList[roomMsgList.length - 1].message
-											: msgs.data && msgs.data[0]?.message
-											? msgs.data[0]?.message
-											: "<empty>"}
+											: latestMsg.data && latestMsg.data[0]?.message
+											? latestMsg.data[0]?.message
+											: ""}
 									</p>
 									{data && data.unreadMsgsCount > 0 && (
-										<p className="rounded-full bg-green-400">
+										// <p className="rounded-full bg-green-400">
+										// 	{data.unreadMsgsCount}
+										// </p>
+										<div className="ml-2 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
 											{data.unreadMsgsCount}
-										</p>
+										</div>
 									)}
 								</div>
 							)}

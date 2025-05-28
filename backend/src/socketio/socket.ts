@@ -93,6 +93,7 @@ export class SocketService {
 			console.log("user uid", socket.userId);
 			/* ---------------------- ROOM ------------------------------- */
 			socket.on("join-room", (roomId, cb) => {
+				// cb is used to acknowledge that the user read all the unread message on entering a room
 				socket.join(roomId);
 
 				console.log(`room joined: ${roomId}` + `uid: ${socket.userId}`);
@@ -131,7 +132,7 @@ export class SocketService {
 						msg: TSocketMsg;
 						roomId: string;
 					},
-					cb
+					cb // used to acknowledge if the message was succesfully saved in the database
 				) => {
 					console.log("msg-backend", msg);
 					const { message, createdAt } = msg;
@@ -139,6 +140,7 @@ export class SocketService {
 					console.log(`private-msg received: ${message}`);
 					console.log("roomId", roomId);
 
+					// the message is sent to a particular room for the other counterpart to see.
 					io.to(roomId).emit("private-msg-receive", {
 						message,
 						sender,
@@ -156,6 +158,7 @@ export class SocketService {
 						try {
 							const sockets = await io.in(roomId).fetchSockets();
 							// set message as read:true, if contact is already in a socket connection.
+							// two connection means that there are two people in the room
 							if (sockets.length == 2) {
 								msg.msg.read = true;
 							}

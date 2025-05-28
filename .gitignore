@@ -67,3 +67,8 @@ node_modules/
 
 
 *.txt
+
+
+# mine
+notes.md
+problems.md

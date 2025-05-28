@@ -7,9 +7,8 @@ import { setUser } from "../../redux/reducers/userSlice";
 import { auth } from "../../firebase/config";
 import { setAccessToken } from "../../redux/reducers/authSlice";
 import { ChatScreen } from "../chatScreen/ChatScreen";
-type Props = {};
 
-const Home = ({}: Props) => {
+const Home = () => {
 	const dispatch = useDispatch();
 
 	const { accessToken } = useSelector((state: RootState) => state.auth);
@@ -23,7 +22,7 @@ const Home = ({}: Props) => {
 		console.log("userchats error", error);
 	}
 
-	// console.log("userprofile-data", data, error, isLoading);
+	console.log("userprofile-data", data, error, isLoading);
 
 	// user state update
 	useEffect(() => {
@@ -66,7 +65,7 @@ const Home = ({}: Props) => {
 		//* step-1: fetch the token whenever the component is refreshed:
 		auth.currentUser?.getIdToken(true).then((token) => {
 			const accessToken = token as string;
-			console.log("access-token-refetched", accessToken);
+			// console.log("access-token-refetched", accessToken);
 			dispatch(setAccessToken(accessToken));
 		});
 

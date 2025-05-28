@@ -64,14 +64,16 @@ const Auth = () => {
 	return (
 		<div className="w-screen h-screen flex justify-center items-center bg-white text-black/80">
 			{alert.errorMessage && <p>Error Alert:{alert.errorMessage}</p>}
-			<div className="border border-gray-300 p-4 rounded-sm">
-				<div className="py-2">LOGO</div>
+			<div className="border border-gray-300 p-8 rounded-md">
+				<div className="py-2">
+					<img src="/pingpong.png" alt="logo" width={150} />
+				</div>
 				<>
 					<EmailLinkForm />
 
 					<div className="w-full flex items-center py-2">
 						<div className="flex-1 h-0 border-b-2 border-gray-500"></div>
-						<div className="px-2">OR</div>
+						<div className="px-2">or</div>
 						<div className="flex-1 h-0 border-b-2 border-gray-500"></div>
 					</div>
 					<AuthButton

@@ -6,6 +6,7 @@ import { auth } from "../../firebase/config";
 import { removeUser } from "../../redux/reducers/userSlice";
 import { removeAccessToken } from "../../redux/reducers/authSlice";
 import { removeModalProfile } from "../../redux/reducers/modalSlice";
+import { Button } from "../ui/button";
 
 const Signout = () => {
 	const dispatch = useDispatch();
@@ -23,12 +24,12 @@ const Signout = () => {
 		disconnectClient();
 	};
 	return (
-		<button
+		<Button
 			onClick={handleSignout}
-			className="right-0 btn btn-xs md:btn-sm rounded-none lowercase font-medium"
+			// className="right-0 btn btn-xs md:btn-sm rounded-none lowercase font-medium"
 		>
 			signout
-		</button>
+		</Button>
 	);
 };
 

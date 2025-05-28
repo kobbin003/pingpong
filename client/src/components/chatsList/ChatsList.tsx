@@ -3,9 +3,7 @@ import ChatListItem from "../chatListItem/ChatListItem";
 import { RootState } from "../../redux/store/store";
 import { useGetUserChatsQuery } from "../../api/chats";
 
-type Props = {};
-
-const ChatsList = ({}: Props) => {
+const ChatsList = () => {
 	//* fetch user chats
 	const { accessToken } = useSelector((state: RootState) => state.auth);
 
@@ -21,7 +19,7 @@ const ChatsList = ({}: Props) => {
 
 	return (
 		<ul className="list-none">
-			{data ? (
+			{data && data.length > 0 ? (
 				data.map((chat) => <ChatListItem chat={chat} key={chat._id} />)
 			) : (
 				<p>No chats available</p>

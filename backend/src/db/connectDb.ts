@@ -11,11 +11,18 @@ export async function connectDb(io: Server) {
 		const conn = await mongoose.connect(uri);
 		console.log(`MongoDB connected: ${conn.connection.host}`);
 		/* --------------------------------------------------------------- */
+		// this COLLECTION is necessary to implement the mongo adapter for socket
 		const COLLECTION = "my-socket.io-adapter-events";
 		const db = conn.connection.db;
+
+		// lists all the collection in the db
 		const colls = db.listCollections().toArray();
+
+		// checks if the "COLLECTION" is already present
 		const hasCOLLECTION = (await colls).some((coll) => coll.name == COLLECTION);
 
+		// We will create the colection only if it is not found
+		// else we do not have to create one.
 		if (!hasCOLLECTION) {
 			db.createCollection(COLLECTION, { capped: true, size: 1e6 })
 				.then(() => {

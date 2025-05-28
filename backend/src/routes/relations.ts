@@ -6,7 +6,7 @@ const router = express.Router();
 
 // send friend request
 // PRIVATE
-// query: recipientId
+// body: recipientId
 router.post("/request", firebaseAuth, relationController.sendFriendRequest);
 
 // accept friend request

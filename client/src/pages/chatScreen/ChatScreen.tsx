@@ -6,12 +6,11 @@ const ChatNav = lazy(() => import("../../components/chatNav/ChatNav"));
 const Conversations = lazy(
 	() => import("../../components/conversations/Conversations")
 );
-type Props = {};
 
-export const ChatScreen = ({}: Props) => {
+export const ChatScreen = () => {
 	return (
 		<div
-			className="flex flex-col h-screen text-xs sm:text-sm"
+			className="flex flex-col h-screen text-xs sm:text-sm "
 			// data-theme="cupcake"
 		>
 			<ShowConversationProvider>

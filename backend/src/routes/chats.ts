@@ -6,7 +6,7 @@ const router = express.Router();
 
 // create chat
 // PRIVATE
-// query: relationId
+// body: {relationId:string}
 router.post("/", firebaseAuth, chatController.createChat);
 
 //get all chats of a user

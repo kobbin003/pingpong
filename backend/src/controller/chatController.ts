@@ -4,7 +4,8 @@ import { chatService } from "../service/chatService";
 class ChatController {
 	async createChat(req: Request, res: Response, next: NextFunction) {
 		const { firebaseId: userId } = req;
-		const relationId = req.query.relationId as string;
+		const relationId = req.body.relationId as string;
+		console.log("chat-controller----------", relationId);
 		try {
 			const chat = await chatService.createChat({ relationId, userId });
 			if ("error" in chat) {

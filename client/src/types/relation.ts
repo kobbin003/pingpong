@@ -5,4 +5,5 @@ export type TRelation = {
 	participants: TUserServer[];
 	sender: string;
 	status: "accepted" | "pending" | "declined";
+	chat: { _id: string; relation: string } | null;
 };
