@@ -1,12 +1,6 @@
-import { useContext } from "react";
 import welcomeSvg from "../../assets/welcome.svg";
-import { ShowConversationContext } from "@/context/ShowConversationProvider";
-import { Menu } from "lucide-react";
 import Signout from "../signout/Signout";
 const Welcome = () => {
-	const { setShowConversation, showConversation } = useContext(
-		ShowConversationContext
-	);
 	return (
 		<div>
 			<div className="w-full fixed right-2 border-b flex justify-end py-1.5">
