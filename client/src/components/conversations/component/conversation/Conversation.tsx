@@ -177,9 +177,6 @@ const Conversation = () => {
 				<div className="fixed right-2">
 					<Signout />
 				</div>
-				{/* <div className="fixed right-2">
-					<Signout />
-				</div> */}
 			</div>
 			{/* profile modal */}
 			<ProfileModal ref={profileModalRef} />

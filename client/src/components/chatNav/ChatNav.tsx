@@ -21,15 +21,33 @@ const ChatNav = () => {
 	const handleValueChange = (val: string) => {
 		setActiveTab(val as Ttabs);
 	};
+
+	console.log("showConversation: ", showConversation);
 	return (
 		<div
 			className={`${
 				showConversation ? "hidden sm:block" : "block"
 			} fixed w-full sm:w-1/4 sm:min-w-max sm:relative h-full z-50 px-2 text-black border-r bg-white`}
 		>
+			{/* <div className="flex items-center gap-2">
+				{!showConversation && (
+					<Menu
+						color="grey"
+						size={24}
+						onClick={() => {
+							console.log("clicked");
+							setShowConversation(true);
+						}}
+					/>
+				)}
+				<div className="py-2">
+					<img src="/pingpong.png" alt="logo" width={100} />
+				</div>
+			</div> */}
 			<div className="py-2">
 				<img src="/pingpong.png" alt="logo" width={100} />
 			</div>
+
 			<Tabs
 				value={activeTab}
 				onValueChange={handleValueChange}
