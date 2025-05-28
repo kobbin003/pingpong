@@ -16,7 +16,8 @@ export const relationsApi = createApi({
 				url: `friends?status=${status}`,
 				headers: { Authorization: `Bearer ${accessToken}` },
 			}),
-			providesTags: (result, error, { status }) => [
+
+			providesTags: (_result, _error, { status }) => [
 				{ type: "Relations", id: status },
 			],
 			// providesTags: ["Relations"],
