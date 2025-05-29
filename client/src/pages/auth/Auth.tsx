@@ -13,7 +13,6 @@ import {
 import { removeUser } from "../../redux/reducers/userSlice";
 import googleIcon from "../../assets/google.svg";
 
-// console.log("vite-base url", VITE_BASE_URL);
 const Auth = () => {
 	const { pathname } = useLocation();
 	const dispatch = useDispatch();

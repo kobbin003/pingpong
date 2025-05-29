@@ -1,10 +1,10 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
-import { VITE_BASE_URL } from "../utils/env";
+import { VITE_SERVER_BASE_URL } from "../utils/env";
 
 type Props = { children: ReactNode; accessToken: string };
 
-const serverURL = VITE_BASE_URL;
+const serverURL = VITE_SERVER_BASE_URL;
 
 export type SocketMsg = {
 	message: string;
