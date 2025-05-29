@@ -29,6 +29,11 @@ const ChatNav = () => {
 				showConversation ? "hidden sm:block" : "block"
 			} fixed w-full sm:w-1/4 sm:min-w-max sm:relative h-full z-50 px-2 text-black border-r bg-white`}
 		>
+			{/* <div
+			className={`${
+				showConversation ? "hidden sm:block" : "block"
+			} fixed w-full sm:w-1/4 sm:min-w-max sm:relative h-full z-50 px-2 text-black border-r bg-white`}
+		> */}
 			{/* <div className="flex items-center gap-2">
 				{!showConversation && (
 					<Menu
@@ -51,7 +56,7 @@ const ChatNav = () => {
 			<Tabs
 				value={activeTab}
 				onValueChange={handleValueChange}
-				className="flex-1 flex flex-col "
+				className="flex-1 flex flex-col relative"
 			>
 				<TabsList className="grid grid-cols-3">
 					<TabsTrigger value="chats">Chats</TabsTrigger>

@@ -93,7 +93,7 @@ const ChatListItem = ({ chat }: Props) => {
 	// refetch when we are changing room.
 	useEffect(() => {
 		latestMsg.refetch();
-	}, [param.id]);
+	}, [param.id, latestMsg]);
 
 	// reset roomMsgList by filtering msgList based on the current roomId
 	useEffect(() => {
@@ -129,7 +129,7 @@ const ChatListItem = ({ chat }: Props) => {
 							<AvatarFallback>CN</AvatarFallback>
 						</Avatar>
 					</div>
-					<div className="flex flex-col gap-1  w-full">
+					<div className="flex flex-col gap-1 flex-1 max-w-[80vw] sm:max-w-[250px] pr-2 sm:pr-0">
 						<div className="flex justify-between items-baseline">
 							<p className="font-medium">{name}</p>
 							<span className="text-xs text-gray-500 dark:text-gray-400">
@@ -141,8 +141,8 @@ const ChatListItem = ({ chat }: Props) => {
 							{isLoading ? (
 								<p>Loading...</p>
 							) : (
-								<div className="">
-									<p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+								<div className="flex justify-between w-50 truncate">
+									<p className="text-sm text-gray-500 dark:text-gray-400 truncate pr-2">
 										{/* if socket msg(msgList) show last message from it
 											else show last message from fetched messages */}
 										{latestMsg.isLoading
