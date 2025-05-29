@@ -12,6 +12,7 @@ import { setModalProfile } from "../../redux/reducers/modalSlice";
 import defaultProfilePic from "../../assets/defaultProfilePic.svg";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { messageTimeFormat } from "@/utils/dateFormatter";
+import { Badge } from "../ui/badge";
 
 type Props = { chat: TChat };
 
@@ -106,10 +107,10 @@ const ChatListItem = ({ chat }: Props) => {
 
 	return (
 		<>
-			<li className="my-2 flex items-center text-sm border-b border-b-black/10 pb-2 ">
+			<li className="my-2 flex items-center text-sm border-b border-b-black/10 pb-2">
 				<Link
 					to={`/user/chat/${chatId}`}
-					className="flex gap-2 w-full"
+					className="flex gap-2 "
 					onClick={handleChatSelection}
 					state={{ contact: name, profilePicUrl }}
 				>
@@ -129,7 +130,7 @@ const ChatListItem = ({ chat }: Props) => {
 							<AvatarFallback>CN</AvatarFallback>
 						</Avatar>
 					</div>
-					<div className="flex flex-col gap-1 flex-1 max-w-[80vw] sm:max-w-[250px] pr-2 sm:pr-0">
+					<div className="flex flex-col gap-1 flex-1 max-w-[75vw] xs:max-w-[80vw] px-1 sm:max-w-[250px] pr-2 sm:pr-0">
 						<div className="flex justify-between items-baseline">
 							<p className="font-medium">{name}</p>
 							<span className="text-xs text-gray-500 dark:text-gray-400">
@@ -141,7 +142,7 @@ const ChatListItem = ({ chat }: Props) => {
 							{isLoading ? (
 								<p>Loading...</p>
 							) : (
-								<div className="flex justify-between w-50 truncate">
+								<div className="flex items-center justify-between truncate py-1">
 									<p className="text-sm text-gray-500 dark:text-gray-400 truncate pr-2">
 										{/* if socket msg(msgList) show last message from it
 											else show last message from fetched messages */}
@@ -154,12 +155,9 @@ const ChatListItem = ({ chat }: Props) => {
 											: ""}
 									</p>
 									{data && data.unreadMsgsCount > 0 && (
-										// <p className="rounded-full bg-green-400">
-										// 	{data.unreadMsgsCount}
-										// </p>
-										<div className="ml-2 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+										<Badge className="rounded-full aspect-square text-xs bg-blue-500 scale-75">
 											{data.unreadMsgsCount}
-										</div>
+										</Badge>
 									)}
 								</div>
 							)}
